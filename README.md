@@ -1,5 +1,11 @@
 # State Laws Affecting Frontier US AI Companies
 
+> **GENERATED MIRROR — do not edit here.** The canonical working tree is
+> `Works/FAI_Hackathon/lawmap/` in the studio; this repo is a one-way publish
+> artifact written by `lawmap/publish.sh`. Direct edits here will be
+> overwritten by the next sync. (Repo private since 2026-08-01 pending the
+> diff-tool rework; re-publishing is a separate gated step.)
+
 A single-page site mapping enacted US state legislation on frontier AI companies,
 read against the California SB 53 baseline (the Transparency in Frontier AI Act):
 for each provision axis, which state goes furthest, exactly how each state's law
