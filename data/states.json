@@ -31,7 +31,7 @@
    "label": "Critical incident reporting",
    "definition": "The developer must report critical safety incidents to a state authority within a fixed window. The California Report concluded that an adverse event reporting system combining mandatory developer reporting with voluntary user reporting maximally grows the evidence base, and SB 53 takes exactly this approach by establishing a tightly defined set of critical safety incidents that AI developers are required to report. Under the enacted statute those reports go to the Office of Emergency Services, which must also establish a mechanism for the public to report critical safety incidents.",
    "strongest_state": "IL",
-   "provision_cite": "IL Public Act 104-0538, Sec. 15(c) (72 hours to the designated Agency and the Attorney General; 24 hours where death or serious injury is imminent)",
+   "provision_cite": "IL Public Act 104-0538, Sec. 15(c) (72 hours to the designated Agency and the Attorney General; 24 hours — to an authority with jurisdiction, including law enforcement or public safety — where death or serious injury is imminent)",
    "rationale": "Illinois and New York both run a 72-hour clock against California's 15 days. Illinois edges New York by requiring the 72-hour report to go to both the designated agency and the Attorney General, so the enforcing authority learns of the incident directly rather than secondhand. In the 24-hour imminent-risk case, all three states route the report to an authority with jurisdiction (as in California), not only to the primary regulator.",
    "confidence": "high",
    "definition_source": "Encode pillar language, adapted — its clause naming the Attorney General as recipient is NOT used, because the enacted statute routes California incident reports to the Office of Emergency Services: Encode AI et al., SB 53 coalition letter to Gov. Newsom (23 signatory organizations), 2025-09-24 · https://encodeai.org/wp-content/uploads/2025/09/SB-53-Coalition-Letter-9_24_2025.pdf — recipient per Justine Gluck, Future of Privacy Forum, 2025-10-03 · https://fpf.org/blog/californias-sb-53-the-first-frontier-ai-law-explained/"
@@ -358,9 +358,9 @@
    "bills": [
     {
      "id": "Public Act 26-15 (SB 5)",
-     "name": "Connecticut Artificial Intelligence Responsibility and Transparency Act (CART); official statutory title: An Act Concerning Online Safety",
+     "name": "An Act Concerning Online Safety (no statutory short title; the 'CART' label in some firm alerts appears nowhere in the enacted text — primary-verified 2026-08-01)",
      "signed_date": "2026-05-27",
-     "effective": "Frontier provisions (Sec. 2) 2026-10-01",
+     "effective": "Two clocks: anti-retaliation (Sec. 2(b)) 2026-10-01; anonymous internal reporting channel (Sec. 2(c)) due 2027-01-01",
      "status": "Enacted",
      "text_url": "https://www.cga.ct.gov/2026/act/pa/pdf/2026PA-00015-R00SB-00005-PA.pdf",
      "explainers": [
@@ -796,7 +796,7 @@
        "category": "minimum-bar-standards",
        "cite": "compare original § 1421(2) with enacted §§ 1421, 1427",
        "source": "https://legislation.nysenate.gov/pdf/bills/2025/S6953B and https://www.nysenate.gov/legislation/laws/GBS/1421",
-       "verification_note": "Method: all ten sections of the enacted article were read in full — § 1420 Definitions, § 1421 Transparency, § 1422 Reporting, § 1423 Loss of equity, § 1424 Duties, § 1425 Scope, § 1426 Exceptions, § 1427 Violations, § 1428 Disclosure, § 1429 Rulemaking — and a full-text search of §§ 1420–1429 returns zero occurrences of 'unreasonable risk', 'critical harm', or 'shall not deploy', so the prohibition did not migrate to another section.",
+       "verification_note": "Method: all ten sections of the enacted article were read in full — § 1420 Definitions, § 1421 Transparency, § 1422 Reporting, § 1423 Loss of equity, § 1424 Duties, § 1425 Scope, § 1426 Exceptions, § 1427 Violations, § 1428 Disclosure, § 1429 Rulemaking — and a full-text search of §§ 1420–1429 returns zero occurrences of 'unreasonable risk', 'critical harm', or 'shall not deploy', so the prohibition did not migrate to another section. Independently re-verified 2026-08-01 against two primary sources fetched fresh (consolidated law at nysenate.gov/legislation/laws/GBS/A44-B and the S8828 chapter text at nyassembly.gov; token similarity 0.9996, texts archived in lawmap_texts/ny/): FPF's 'removed' reading is correct, Norton Rose's 'retained' reading is wrong.",
        "confidence": "high"
       },
       {
