@@ -119,14 +119,15 @@ h1.bill{display:block;}
   .split.bill .panel{background:var(--panel);border:1px solid var(--rule);
     border-radius:2px;padding:22px 24px 24px;}
 
-  /* One step smaller inside the card (statute 14.5px -> 13px, metadata to match). */
-  .split.bill .p-eyebrow{font-size:9px;letter-spacing:.14em;}
-  .split.bill .p-head{margin-bottom:11px;}
-  .split.bill .p-title{font-size:17px;margin-bottom:6px;}
-  .split.bill .p-cite{font-size:11px;}
-  .split.bill .p-rule{margin:15px 0;}
-  .split.bill .src{font-size:13px;line-height:1.72;max-width:none;}
-  .split.bill .p-more{font-size:10.5px;}
+  /* Two steps smaller inside the card (statute 14.5px -> 12px, metadata to
+     match). Same metrics as the composite card: one card, two pages. */
+  .split.bill .p-eyebrow{font-size:8.5px;letter-spacing:.14em;}
+  .split.bill .p-head{margin-bottom:10px;}
+  .split.bill .p-title{font-size:16px;margin-bottom:5px;}
+  .split.bill .p-cite{font-size:10.5px;}
+  .split.bill .p-rule{margin:13px 0;}
+  .split.bill .src{font-size:12px;line-height:1.7;max-width:none;}
+  .split.bill .p-more{font-size:10.5px;margin-top:12px;padding-top:10px;}
 }
 
 /* The continuation affordance under a trimmed excerpt: where the card stops,

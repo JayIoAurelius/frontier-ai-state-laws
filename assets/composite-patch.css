@@ -49,21 +49,32 @@
   /* ~64/36 — the card is comfortably under half the page. */
   .split{grid-template-columns:9fr 5fr;}
   .right{position:static;height:auto;align-self:stretch;overflow:visible;
-    background:none;border-left:none;padding:34px 44px 60px 30px;}
+    background:none;border-left:none;padding:20px 44px 60px 30px;}
   .right > .panel{top:26px;background:var(--panel);border:1px solid var(--rule);
-    border-radius:2px;padding:22px 24px 24px;}
+    border-radius:2px;padding:20px 22px 20px;}
 
-  /* One step smaller inside the card (statute 15.5px -> 13px, metadata to match). */
-  .right .p-eyebrow{font-size:9px;letter-spacing:.14em;}
-  .right .p-head{margin-bottom:11px;}
-  .right .p-title{font-size:17px;margin-bottom:6px;}
-  .right .p-cite{font-size:11px;}
-  .right .p-rule{margin:15px 0;}
-  .right .src{font-size:13px;line-height:1.72;}
-  .right .note{margin-top:17px;padding-top:13px;}
-  .right .note h3{font-size:9px;letter-spacing:.13em;margin-bottom:6px;}
-  .right .note p{font-size:11.5px;line-height:1.58;}
+  /* Two steps smaller inside the card (statute 14.5px -> 12px, metadata to
+     match): a card is a reference, not a reading column, and the WHY note and
+     the first-in-the-nation line have to clear the fold with it (Jay, 08-01). */
+  .right .p-eyebrow{font-size:8.5px;letter-spacing:.14em;}
+  .right .p-head{margin-bottom:10px;}
+  .right .p-title{font-size:16px;margin-bottom:5px;}
+  .right .p-cite{font-size:10.5px;}
+  .right .p-rule{margin:13px 0;}
+  .right .src{font-size:12px;line-height:1.7;}
+  .right .p-more{font-size:10.5px;margin-top:10px;padding-top:9px;}
+  .right .note{margin-top:13px;padding-top:10px;}
+  .right .note h3{font-size:8.5px;letter-spacing:.13em;margin-bottom:5px;}
+  .right .note p{font-size:11px;line-height:1.56;}
 }
+
+/* The continuation affordance under a trimmed excerpt: where the card stops, the
+   official text carries on. Duplicated from billpage-patch.css on purpose — the
+   composite page never loads that file, and site.css is frozen. */
+.p-more{margin-top:14px;padding-top:12px;border-top:1px solid var(--rule);
+  font-size:11.5px;letter-spacing:.02em;}
+.p-more a{color:var(--blue-ink);text-decoration:none;
+  border-bottom:1px solid rgba(30,127,169,.35);padding-bottom:1px;}
 
 /* The scope footnote reuses the .contd rail, so its label sits on the rail grid. */
 .contd .secno{text-transform:uppercase;}

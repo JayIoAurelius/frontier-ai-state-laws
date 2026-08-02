@@ -129,6 +129,23 @@
   .right .src,.right .note p,.right .p-cite{max-width:none;}
   .facts{grid-template-columns:96px 1fr;column-gap:12px;}
 
+  /* ---------- compact card typography in the sheet ----------
+     The desktop card steps its type down inside a min-width query, so below
+     900px the sheet was still inheriting site.css's full-size SPINE metrics
+     (14.5px statute, 20px title) — the widest column on the site rendered at
+     the narrowest width. Same numbers as the desktop card: 55vh of phone is
+     less room than the card has, not more. */
+  .right .p-eyebrow{font-size:8.5px;letter-spacing:.14em;}
+  .right .p-head{margin-bottom:10px;}
+  .right .p-title{font-size:16px;margin-bottom:5px;}
+  .right .p-cite{font-size:10.5px;}
+  .right .p-rule{margin:13px 0;}
+  .right .src{font-size:12px;line-height:1.7;}
+  .right .p-more{font-size:10.5px;margin-top:12px;padding-top:10px;}
+  .right .note{margin-top:15px;padding-top:12px;}
+  .right .note h3{font-size:8.5px;letter-spacing:.13em;margin-bottom:5px;}
+  .right .note p{font-size:11px;line-height:1.56;}
+
   /* Room to keep reading the spine underneath an open sheet. */
   body.panel-open .left,
   .split.bill:has(.sec:target) .left{padding-bottom:58vh;}
