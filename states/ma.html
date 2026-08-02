@@ -56,8 +56,8 @@
     <div class="subdek">A plain-language summary laid over the statute. Every row below
       opens the text it comes from; the margin marks where Massachusetts departs from the
       California baseline.</div>
-    <div class="byline">
-  <button class="byline-t" type="button">maintained by Jay Kim &middot; corrections welcome</button>
+    <div class="byline" id="fb-byline">
+  <button class="byline-t" id="fb-open" type="button" aria-expanded="false">maintained by Jay Kim &middot; corrections welcome</button>
   <div class="byline-card">
     <div class="byline-who">Jay Kim</div>
     <p class="byline-creed">An unsourced claim is a bug.</p>
@@ -627,6 +627,29 @@
 </script>
 <script id="feedback">
 (function () {
+  var root = document.getElementById("fb-byline");
+  var trig = document.getElementById("fb-open");
+  if (root && trig && root.classList && root.contains) {
+    /* Take the open state off the CSS: .byline-js turns the hover and
+       focus-within rules off, so nothing fights the toggle. */
+    root.classList.add("byline-js");
+    var open = false;
+    var setOpen = function (next) {
+      open = next;
+      if (next) { root.classList.add("is-open"); } else { root.classList.remove("is-open"); }
+      trig.setAttribute("aria-expanded", next ? "true" : "false");
+    };
+    trig.addEventListener("click", function () { setOpen(!open); });
+    document.addEventListener("click", function (e) {
+      // The trigger's own handler has already run; the card is inside root, so
+      // this closes on outside clicks only.
+      if (open && !root.contains(e.target)) { setOpen(false); }
+    });
+    document.addEventListener("keydown", function (e) {
+      if (open && (e.key === "Escape" || e.key === "Esc")) { setOpen(false); trig.focus(); }
+    });
+  }
+
   var box = document.getElementById("fb-text");
   var send = document.getElementById("fb-send");
   var out = document.getElementById("fb-status");

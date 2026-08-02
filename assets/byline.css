@@ -7,10 +7,13 @@
    ========================================================================== */
 /* ---------- maintainer byline + corrections card (change 1) ----------
    Site-wide chrome, so it belongs here and not in a page patch: map.html and
-   about.html load site.css and nothing else. Opening is CSS only — :hover for a
-   mouse, :focus-within for a tap or the keyboard, since tapping the trigger
-   focuses it — so the issue link and the email are reachable with scripting
-   off. The card is out of flow: opening it never moves the page. */
+   about.html load site.css and nothing else. Opening is a click when the script
+   runs (.byline-js .is-open) and CSS when it does not — :hover for a mouse,
+   :focus-within for a tap or the keyboard, since tapping the trigger focuses it
+   — so the issue link and the email stay reachable with scripting off. The two
+   CSS rules are scoped :not(.byline-js) because a live hover rule would undo
+   click-to-close while the pointer is still on the trigger (fix 1, 2026-08-02).
+   The card is out of flow: opening it never moves the page. */
 .byline{position:relative;display:inline-block;margin-top:16px;}
 .byline-t{font-family:'Sohne',-apple-system,sans-serif;font-size:11.5px;letter-spacing:.01em;
   color:var(--ink-3);background:none;border:0;border-bottom:1px dotted #CFC8AE;
@@ -20,7 +23,9 @@
   max-width:calc(100vw - 40px);background:var(--off);border:1px solid var(--rule);
   border-radius:2px;box-shadow:0 3px 12px rgba(55,50,40,.10);padding:14px 15px 13px;
   visibility:hidden;opacity:0;transition:opacity .12s ease;}
-.byline:hover .byline-card,.byline:focus-within .byline-card{visibility:visible;opacity:1;}
+.byline:not(.byline-js):hover .byline-card,
+.byline:not(.byline-js):focus-within .byline-card{visibility:visible;opacity:1;}
+.byline.is-open .byline-card{visibility:visible;opacity:1;}
 .byline-who{font-size:12.5px;font-weight:500;color:var(--ink);letter-spacing:.005em;}
 .byline-creed{font-family:'Tiempos',Georgia,serif;font-size:13.5px;line-height:1.5;
   color:var(--ink-2);margin-top:4px;}

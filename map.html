@@ -27,8 +27,8 @@
     <div class="eyebrow">State bills</div>
     <h1>Frontier AI law, state by state</h1>
     <div class="dek">Color follows what is <b>on the books</b>, not how strict it is. Five states have a bill page &mdash; click the state, or use the list below. States with no frontier statute are left plain even where they regulate AI in other ways.</div>
-  <div class="byline">
-  <button class="byline-t" type="button">maintained by Jay Kim &middot; corrections welcome</button>
+  <div class="byline" id="fb-byline">
+  <button class="byline-t" id="fb-open" type="button" aria-expanded="false">maintained by Jay Kim &middot; corrections welcome</button>
   <div class="byline-card">
     <div class="byline-who">Jay Kim</div>
     <p class="byline-creed">An unsourced claim is a bug.</p>
@@ -139,7 +139,6 @@
 <div class="summary">
   <div class="sum-head">
     <h2>Bill pages</h2>
-    <span>One page per state &middot; the enacted text is the spine</span>
   </div>
 
   <div class="sum-row">
@@ -181,7 +180,7 @@
 <div class="strip">
   <div class="sum-head">
     <h2>Also on the books</h2>
-    <span>AI statutes that reach companies but not frontier development &middot; no bill page</span>
+    <span>AI statutes that reach companies but not frontier development</span>
   </div>
 
   <div class="sum-row">
@@ -204,12 +203,33 @@
       <span class="sub">In force since 1 May 2024, sunsets 1 July 2027. Generative-AI disclosure duties in regulated occupations and high-risk interactions.</span></div>
     <a class="sum-l" href="https://le.utah.gov/~2024/bills/static/SB0149.html"><u>Official text</u> &#8599;</a>
   </div>
-
-  <div class="strip-note">New York City Local Law 144 (automated employment decision tools) sits on the New York state page rather than here, because it is a city ordinance inside a state that also has a frontier law.</div>
 </div>
 
 <script id="feedback">
 (function () {
+  var root = document.getElementById("fb-byline");
+  var trig = document.getElementById("fb-open");
+  if (root && trig && root.classList && root.contains) {
+    /* Take the open state off the CSS: .byline-js turns the hover and
+       focus-within rules off, so nothing fights the toggle. */
+    root.classList.add("byline-js");
+    var open = false;
+    var setOpen = function (next) {
+      open = next;
+      if (next) { root.classList.add("is-open"); } else { root.classList.remove("is-open"); }
+      trig.setAttribute("aria-expanded", next ? "true" : "false");
+    };
+    trig.addEventListener("click", function () { setOpen(!open); });
+    document.addEventListener("click", function (e) {
+      // The trigger's own handler has already run; the card is inside root, so
+      // this closes on outside clicks only.
+      if (open && !root.contains(e.target)) { setOpen(false); }
+    });
+    document.addEventListener("keydown", function (e) {
+      if (open && (e.key === "Escape" || e.key === "Esc")) { setOpen(false); trig.focus(); }
+    });
+  }
+
   var box = document.getElementById("fb-text");
   var send = document.getElementById("fb-send");
   var out = document.getElementById("fb-status");
