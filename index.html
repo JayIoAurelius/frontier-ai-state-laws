@@ -376,6 +376,8 @@
     secs.forEach(function (s) { s.classList.toggle("sel", s.dataset.n === n); });
     panels.forEach(function (p) { p.hidden = p.dataset.n !== n; });
     document.body.classList.add("panel-open");
+    var right = document.querySelector(".right");
+    if (right) right.scrollTop = 0;
   }
   secs.forEach(function (s) {
     s.addEventListener("click", function () { open(s.dataset.n); });
