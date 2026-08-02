@@ -236,3 +236,54 @@ html{scroll-behavior:smooth;}
   html{scroll-behavior:auto;}
   .split.bill .sec:target,.split.bill .sec.newhi:target{animation:none;}
 }
+
+/* ---------- copy controls (change A) ----------
+   .copylink sits beside the official deep link in a provision's dropdown and
+   hands over that same URL — on a bill page the statute is the artifact. Same
+   treatment as its neighbour so neither reads as the primary action, and the
+   confirmation swaps colour and word only, so the dropdown never reflows.
+
+   .anchorlink is the § beside our plain-language heading: the way to grab a
+   link to THIS page. It never swaps its glyph (the heading would reflow mid-
+   read), so its confirmation is an absolute ::after flag. */
+.drop .dlink .dot{color:#C6BFA6;padding:0 6px;}
+.copylink{cursor:pointer;white-space:nowrap;color:var(--blue-ink);text-decoration:none;
+  border-bottom:1px solid rgba(30,127,169,.35);padding-bottom:1px;}
+.copylink.copied{color:var(--green);border-bottom-color:rgba(63,122,78,.42);}
+.copylink:focus-visible,.anchorlink:focus-visible{outline:2px solid var(--blue-d);
+  outline-offset:2px;}
+.anchorlink{position:relative;margin-left:5px;color:#C6BFA6;text-decoration:none;
+  font-size:11px;font-weight:400;cursor:pointer;}
+.ourhead .anchorlink{visibility:hidden;}
+.sec:hover .ourhead .anchorlink,.sec:target .ourhead .anchorlink,
+.ourhead .anchorlink:focus-visible{visibility:visible;}
+.anchorlink:hover{color:var(--blue-ink);}
+.anchorlink.copied{color:var(--green);visibility:visible;}
+.anchorlink.copied::after{content:"Copied";position:absolute;left:calc(100% + 5px);top:0;
+  font-family:'Sohne',-apple-system,sans-serif;font-size:8.5px;font-weight:600;
+  letter-spacing:.11em;text-transform:uppercase;color:var(--green);white-space:nowrap;}
+
+/* ---------- the version stamp is a link (change B) ----------
+   Which version a page reads is the most consequential word on it, so the stamp
+   opens the official text of that version. It stays a stamp, not a button:
+   inherits its colour and keeps a hairline underline, so the meta column and the
+   spine label read exactly as before until the reader goes looking. */
+.mast .meta dd a{color:inherit;text-decoration:none;
+  border-bottom:1px solid var(--rule);padding-bottom:1px;}
+.mast .meta dd a:hover{color:var(--blue-ink);border-bottom-color:rgba(30,127,169,.35);}
+.sec-label a{color:inherit;text-decoration:none;
+  border-bottom:1px solid var(--rule);padding-bottom:1px;}
+.sec-label a:hover{color:var(--blue-ink);border-bottom-color:rgba(30,127,169,.35);}
+.mast .meta dd a:focus-visible,.sec-label a:focus-visible{
+  outline:2px solid var(--blue-d);outline-offset:2px;}
+
+/* ---------- the effective date cites its clause (change D) ----------
+   On a bill page the date is a fact row, not a chip, so the citation follows
+   the date as a small link. An uncited date carries its explanation in a title
+   tooltip on an empty span and links nowhere. */
+a.chip.eff{color:inherit;text-decoration:none;}
+.effsrc{color:var(--blue-ink);text-decoration:none;font-size:.92em;
+  border-bottom:1px solid rgba(30,127,169,.3);padding-bottom:1px;white-space:nowrap;}
+.effsrc:focus-visible{outline:2px solid var(--blue-d);outline-offset:2px;}
+.effsrc-none{border-bottom:1px dotted var(--rule);cursor:help;
+  display:inline-block;width:.9em;}

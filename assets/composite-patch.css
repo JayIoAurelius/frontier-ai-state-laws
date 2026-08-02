@@ -79,3 +79,50 @@
 /* The scope footnote reuses the .contd rail, so its label sits on the rail grid. */
 .contd .secno{text-transform:uppercase;}
 .entries .row .nowrap{white-space:nowrap;}
+
+/* ---------- copy controls (change A) ----------
+   Two quiet affordances, both anchors so they work with scripting off.
+
+   .seclink — directly BELOW the section text (Jay, 2026-08-02 11:34 ET), on
+   the leg column so it lines up with the statute it copies. Reveals itself on
+   hover or when the section is selected, like the "Source →" label on the rail:
+   the reader's eye should meet statute text, not a row of buttons.
+
+   .anchorlink — the § beside the run-in heading. It never swaps its glyph (that
+   would reflow the first line of a section), so its confirmation is an absolute
+   ::after flag instead. */
+.seclink{grid-column:1;margin-top:12px;}
+.sec .seclink{visibility:hidden;}
+.sec.sel .seclink,.sec[data-n]:hover .seclink,.sec .copylink:focus-visible{visibility:visible;}
+.copylink{font-family:'Sohne',-apple-system,sans-serif;font-size:9px;font-weight:600;
+  letter-spacing:.11em;text-transform:uppercase;color:var(--ink-3);text-decoration:none;
+  border-bottom:1px solid var(--rule);padding-bottom:2px;cursor:pointer;white-space:nowrap;}
+.copylink:hover{color:var(--blue-ink);border-bottom-color:rgba(30,127,169,.35);}
+.copylink.copied{color:var(--green);border-bottom-color:rgba(63,122,78,.42);}
+.copylink:focus-visible,.anchorlink:focus-visible{outline:2px solid var(--blue-d);
+  outline-offset:2px;}
+.anchorlink{position:relative;margin-left:5px;color:#C6BFA6;text-decoration:none;
+  font-size:11px;cursor:pointer;}
+.anchorlink:hover{color:var(--blue-ink);}
+.anchorlink.copied{color:var(--green);}
+.anchorlink.copied::after{content:"Copied";position:absolute;left:calc(100% + 5px);top:-1px;
+  font-family:'Sohne',-apple-system,sans-serif;font-size:8.5px;font-weight:600;
+  letter-spacing:.11em;text-transform:uppercase;color:var(--green);white-space:nowrap;}
+
+/* ---------- one-line notes (change C) ----------
+   "WHY → one line; FIN → claim + source only" (Jay, 2026-08-02). The card is
+   attribution and proof, so its notes are labels with one line beside them, not
+   stacked paragraphs. The label keeps its uppercase register and never wraps
+   away from the sentence it introduces. */
+.note.one{display:flex;align-items:baseline;gap:9px;}
+.note.one h3{margin-bottom:0;white-space:nowrap;}
+.note.one p{margin:0;}
+
+/* ---------- the effective-date chip cites its clause (change D) ----------
+   A cited date is a link out to the clause that establishes it; an uncited one
+   stays an inert span whose tooltip names the general rule instead. The link
+   must not read as a call to action — a chip that changed colour would look
+   like a state change, and the chip's job is to state a date. */
+a.chip.eff{color:inherit;text-decoration:none;cursor:pointer;}
+a.chip.eff:hover{border-color:var(--blue-d);color:var(--blue-ink);}
+a.chip.eff:focus-visible{outline:2px solid var(--blue-d);outline-offset:2px;}
