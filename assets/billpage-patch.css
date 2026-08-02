@@ -1,0 +1,101 @@
+/* ==========================================================================
+   LAWMAP v2 — bill-page patch. Scoped to site/states/*.html; loaded AFTER
+   site.css, which stays the frozen design system and is not edited here.
+
+   Everything below exists because the frozen system describes a static mockup
+   (mock3e_textspine.html) and the built page has two behaviours the mockup only
+   depicted: every provision row is a dropdown (ruling 2) and the tag chip opens
+   the source panel on the right (rulings 2, 4). Both are done with native HTML
+   and CSS — <details>/<summary> and :target/:has() — so the pages carry no
+   JavaScript. Visual metrics are inherited, not restated.
+   ========================================================================== */
+
+/* ---------- rows as dropdowns ----------
+   .sec is a grid in site.css; on a <details> that grid has to move onto the
+   <summary>, which is the part that stays visible when the row is closed. */
+details.sec{display:block;}
+details.sec>summary.sec-row{display:grid;grid-template-columns:var(--railw) 1fr;
+  gap:var(--railgap);cursor:pointer;list-style:none;}
+details.sec>summary.sec-row::-webkit-details-marker{display:none;}
+details.sec[open]>summary.sec-row .openat{color:var(--ink-3);}
+
+/* the provision heading is OURS, not the statute's: Söhne, quiet, above the text
+   (BRAND.md — Tiempos is statute and display only, Söhne is everything editorial) */
+.leg .ourhead{font-family:'Sohne',-apple-system,sans-serif;font-size:10.5px;font-weight:600;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:8px;}
+
+/* dropdown body: the per-provision facts the summary layer compresses away */
+.drop{grid-column:2;max-width:620px;margin:14px 0 2px var(--railw);
+  padding:14px 0 2px calc(var(--railgap));border-top:1px solid var(--rule-2);}
+.drop .facts{margin-top:0;padding-top:0;border-top:none;}
+.drop .dlink{margin-top:14px;font-size:11.5px;letter-spacing:.02em;}
+.drop .dlink a,.drop .facts a{color:var(--blue-ink);text-decoration:none;
+  border-bottom:1px solid rgba(30,127,169,.35);padding-bottom:1px;}
+
+/* ---------- tag chip as the panel control ---------- */
+a.chip{text-decoration:none;cursor:pointer;}
+a.chip:hover{border-color:var(--blue-d);}
+
+/* ---------- the split, and which panel is open ----------
+   One panel is visible on load (.panel.default, mock3e's compared row). As soon
+   as any row is targeted the generated pairing rules in the page's <style>
+   reveal that row's panel, and the default steps aside. */
+.panelwrap{position:sticky;top:24px;}
+.panel{display:none;}
+.panel.default{display:block;}
+.split.bill:has(.sec:target) .panel.default{display:none;}
+
+/* selection state (register B, blue): the targeted row, styled like .sec.sel */
+.split.bill .sec:target{background:rgba(65,196,252,.085);}
+.split.bill .sec:target::before{content:"";position:absolute;left:-20px;top:0;bottom:0;
+  width:2px;background:var(--blue-d);}
+.split.bill .sec:target .chip.vs,.split.bill .sec:target .chip.tag-tightens{
+  color:#fff;background:var(--ca);border-color:var(--ca);}
+.split.bill .sec:target .secno{color:var(--ink-2);}
+.split.bill .sec:target .openat{color:var(--blue-ink);}
+/* a targeted NEW row keeps its editorial band (register A stays purple) and
+   takes the selection bar only — the two registers never merge into one look */
+.split.bill .sec.newhi:target{background:rgba(138,86,181,.075);}
+/* once the reader picks a row, the load-time selection lets go */
+.split.bill:has(.sec:target) .sec.sel:not(:target){background:none;}
+.split.bill:has(.sec:target) .sec.sel:not(:target)::before{content:none;}
+.split.bill:has(.sec:target) .sec.sel:not(:target) .chip.vs{
+  color:var(--ca);background:none;border-color:rgba(38,88,185,.42);}
+
+/* ---------- long bill titles ----------
+   mock3e sets no display on its bill h1 — the title is ordinary inline flow
+   ("Public Act 104-0538 <span class=thin>· AI Safety Measures Act</span>").
+   site.css added `display:flex;flex-wrap:wrap`, which makes the thin span one
+   atomic flex item: the real MA and CA titles ("· Transparency in Frontier
+   Artificial Intelligence Act") cannot fit beside the bill number, so the whole
+   span dropped to line 2 with the middot orphaned at its head. Restoring the
+   mock's inline flow lets the title wrap word by word as it does in the PNG. */
+h1.bill{display:block;}
+
+/* ---------- long citations ----------
+   mock3e's rail was sized for "Sec. 10(d)". Real cites run to
+   "G.L. c. 93M s. 1 (proposed), definition of 'Catastrophic risk'", and the
+   frozen `white-space:nowrap` pushed those off both edges of the page. Cites
+   wrap here rather than being shortened: a trimmed citation is a wrong one. */
+.split.bill .secno,.split.bill .contd .secno{white-space:normal;overflow-wrap:break-word;}
+/* .rail is a column flexbox: its children size to content and would otherwise
+   spill out of the 132px rail and off the left edge of the page. */
+.split.bill .rail>*{max-width:100%;}
+.summary .sum-l,.strip .sum-l{white-space:normal;overflow-wrap:break-word;}
+
+/* ---------- the promoted NEW band ----------
+   site.css drops the rule between banded rows so one promoted row reads as a
+   single band; where a state has several NEW rows they still need separating. */
+.summary .sum-row.hi + .sum-row.hi{border-top:1px solid rgba(138,86,181,.22);}
+
+/* the "compared →" affordance is quiet until the row is the one being shown */
+.split.bill .openat{color:var(--ink-3);}
+.split.bill .sec.sel .openat{color:var(--blue-ink);}
+
+/* ---------- long right-hand panels ---------- */
+.right .src{max-width:476px;}
+.right .note p,.right .p-cite{max-width:476px;}
+
+/* ---------- "also on the books" strip ---------- */
+.strip .sec-label{max-width:1160px;margin-bottom:2px;}
+.strip .sum-row:first-of-type{border-top:none;}

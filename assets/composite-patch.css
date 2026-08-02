@@ -1,0 +1,35 @@
+/* ==========================================================================
+   composite-patch.css — page-scoped additions for site/index.html only.
+   site.css is the frozen design system and is not edited; everything here is
+   an affordance the static mockup had no need for (the mock was a still of one
+   selected section), plus the hidden-panel plumbing for the live split view.
+   No new colours, sizes or type: only state, cursor and visibility.
+   ========================================================================== */
+
+/* Sections are clickable (ruling 1: click a section, the source opens at right). */
+.sec[data-n]{cursor:pointer;}
+.sec[data-n]:focus-visible{outline:2px solid var(--blue-d);outline-offset:2px;}
+.sec[data-n]:hover{background:rgba(55,55,55,.026);}
+.sec[data-n]:hover .secno{color:var(--ink-2);}
+.sec.sel[data-n]:hover{background:rgba(65,196,252,.085);}
+
+/* "Source →" is the affordance label: it belongs to the row you are on. */
+.sec .openat{visibility:hidden;}
+.sec.sel .openat,.sec[data-n]:hover .openat{visibility:visible;}
+
+/* Selection chips: site.css colours the IL chip on the selected row; the other
+   three state chips need the same treatment now that any row can be selected. */
+.sec.sel .chip.ca{color:#fff;background:var(--ca);border-color:var(--ca);}
+.sec.sel .chip.ny{color:#fff;background:var(--ny);border-color:var(--ny);}
+.sec.sel .chip.ct{color:#fff;background:var(--ct);border-color:var(--ct);}
+
+/* One source panel per section; all but the open one are hidden. The panel
+   sticks: the bill runs to eleven sections, so the source you just opened must
+   not scroll away while you read the section that opened it.
+   The panel content sticks, not the column, so the panel's background still
+   runs the full height of the bill as it does in the mockup. */
+.panel[hidden]{display:none;}
+.right > .panel{position:sticky;top:40px;}
+
+/* The scope footnote reuses the .contd rail, so its label sits on the rail grid. */
+.contd .secno{text-transform:uppercase;}

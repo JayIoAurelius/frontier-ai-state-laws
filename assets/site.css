@@ -1,0 +1,291 @@
+/* ==========================================================================
+   LAWMAP v2 — frozen design system.
+   Extracted (not invented) from mockups/mock1e_composite.html (composite),
+   mock3e_textspine.html (bill page), mock4b_map.html (map), mock_shared.css.
+   PNG ground truth: mock1e.png, mock3e.png, mock4b.png.
+   Typography per Inputs/IFP_Brand/BRAND.md: Tiempos Text = statute + display,
+   Söhne = navigation, labels, chips, anything editorial (never statute text).
+   Fonts are licensed and gitignored: referenced by relative path out of the
+   ========================================================================== */
+
+
+/* ---------- tokens (IFP palette: off-white #FFFEF2, rich black #373737,
+   light blue #41C4FC/#35ABDD, dark blue #2658B9, mulberry #B52964) ---------- */
+:root{
+  --off:#FFFEF2; --panel:#F7F4E2; --ink:#373737;
+  --ink-2:#5C574C; --ink-3:#8B8474; --rule:#E4DFC8; --rule-2:#EFEBD8;
+  --blue:#41C4FC; --blue-d:#35ABDD; --blue-ink:#1E7FA9;
+  --ca:#2658B9; --ny:#B52964; --il:#8A56B5; --ct:#4A4A4A; --ma:#3F6BAE; --green:#3F7A4E;
+  --m-full:#3F6BAE; --m-on:#2E5B9E; --m-partial:#9DB6D9; --m-usage:#C3BBA6; --m-none:#EDE8D2;
+  --railw:128px; --railgap:22px;              /* bill pages override to 132/24 */
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{-webkit-font-smoothing:antialiased;}
+body{max-width:1440px;margin:0 auto;background:var(--off);color:var(--ink);
+  font-family:'Sohne',-apple-system,sans-serif;font-size:14px;}
+
+/* ---------- site chrome / nav (templates/nav.html) ---------- */
+.chrome{display:flex;align-items:center;justify-content:space-between;
+  height:58px;padding:0 56px;border-bottom:1px solid var(--rule);}
+.wordmark{font-weight:600;font-size:13px;letter-spacing:.055em;text-transform:uppercase;color:var(--ink);}
+.wordmark .thin{font-weight:400;color:var(--ink-3);letter-spacing:.055em;}
+nav{display:flex;gap:30px;align-items:center;}
+nav a{font-size:12.5px;color:var(--ink-2);text-decoration:none;letter-spacing:.01em;
+  padding:20px 0 19px;border-bottom:2px solid transparent;}
+nav a.on{color:var(--ink);font-weight:500;border-bottom-color:var(--blue-d);}
+nav a.mute{color:var(--ink-3);}
+
+/* ---------- masthead ---------- */
+.mast{display:grid;grid-template-columns:1fr 300px;gap:64px;
+  padding:44px 56px 34px;border-bottom:1px solid var(--rule);}
+.mast.tight{padding:40px 56px 32px;}            /* bill pages */
+.eyebrow{font-size:10.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--blue-ink);margin-bottom:16px;}
+.mast.tight .eyebrow{margin-bottom:14px;}
+h1{font-family:'Tiempos',Georgia,serif;font-weight:700;font-size:40px;line-height:1.1;
+  letter-spacing:-.012em;margin-bottom:16px;}
+h1.bill{font-size:38px;line-height:1.12;margin-bottom:14px;
+  display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;}
+h1 .thin{font-weight:400;color:var(--ink-2);}
+.dek{font-size:15px;line-height:1.62;color:var(--ink-2);max-width:660px;font-weight:400;}
+.dek b{font-weight:500;color:var(--ink);}
+.subdek{font-size:13px;line-height:1.6;color:var(--ink-3);max-width:660px;}
+.statusline{margin:-4px 0 14px;}
+.status{font-family:'Sohne';font-size:9.5px;font-weight:600;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--green);border:1px solid rgba(63,122,78,.42);
+  background:rgba(63,122,78,.10);padding:4px 9px 3px;border-radius:2px;}
+.status.live{color:var(--blue-ink);border-color:rgba(30,127,169,.42);background:rgba(65,196,252,.10);}
+.entries{margin-top:20px;padding-top:14px;border-top:1px solid var(--rule-2);max-width:660px;}
+.entries dt{font-size:9.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-3);margin-bottom:8px;}
+.entries .row{display:flex;flex-wrap:wrap;align-items:baseline;gap:0 4px;font-size:12.5px;}
+.entries a{color:var(--ink-2);text-decoration:none;border-bottom:1px solid #CFC8AE;
+  padding-bottom:1px;letter-spacing:.005em;}
+.entries a.soon{color:var(--ink-3);border-bottom-style:dashed;border-bottom-color:#D8D1B8;}
+.entries .sep{color:#C6BFA6;padding:0 4px;}
+.entries .conf{font-size:11px;color:var(--ink-3);letter-spacing:.02em;}
+.meta{border-left:1px solid var(--rule);padding-left:22px;margin-top:6px;}
+.meta dt{font-size:9.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-3);margin-bottom:5px;}
+.meta dd{font-size:12.5px;color:var(--ink-2);line-height:1.45;margin-bottom:16px;}
+.meta dd:last-child{margin-bottom:0;}
+
+/* ---------- section labels ---------- */
+.sec-label{display:flex;justify-content:space-between;align-items:baseline;
+  padding-bottom:11px;border-bottom:1px solid var(--ink);margin-bottom:12px;}
+.sec-label h2{font-size:10.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--ink);}
+.sec-label span{font-size:11.5px;color:var(--ink-3);letter-spacing:.01em;}
+
+/* ---------- delta-first summary + one-line strips (same register) ---------- */
+.summary{padding:34px 56px 36px;border-bottom:1px solid var(--rule);}
+.sum-head{display:flex;justify-content:space-between;align-items:baseline;max-width:1160px;margin-bottom:6px;}
+.sum-head h2{font-size:10.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--ink);}
+.sum-head span{font-size:11.5px;color:var(--ink-3);letter-spacing:.01em;}
+.sum-lede{font-family:'Tiempos',Georgia,serif;font-size:20.5px;line-height:1.45;
+  letter-spacing:-.004em;color:var(--ink);max-width:1180px;margin:15px 0 24px;}
+.sum-row{display:grid;grid-template-columns:112px 1fr 152px;gap:0 20px;align-items:baseline;
+  max-width:1160px;padding:13px 0 12px;border-top:1px solid var(--rule-2);}
+.sum-row:first-of-type{border-top:1px solid var(--rule);}
+.sum-row.hi + .sum-row{border-top:none;}
+.sum-row.hi .sum-t{font-size:17.5px;}
+.sum-t{font-family:'Tiempos',Georgia,serif;font-size:16.5px;line-height:1.5;color:var(--ink);}
+.sum-t i{font-style:italic;color:var(--ink-2);}
+.sum-t .sub{display:block;font-family:'Sohne';font-size:11.5px;line-height:1.5;
+  color:var(--ink-3);margin-top:4px;letter-spacing:.005em;}
+.sum-l{text-align:right;font-size:11.5px;letter-spacing:.02em;color:var(--blue-ink);
+  text-decoration:none;white-space:nowrap;}
+.sum-l u{text-decoration:none;border-bottom:1px solid rgba(30,127,169,.35);padding-bottom:1px;}
+/* "also on the books" strip (ruling 17): quieter than a summary block, same rows */
+.strip{padding:26px 56px 40px;}
+.strip .sum-row{padding:11px 0 10px;}
+.strip .sum-t{font-size:14.5px;}
+.strip-note{max-width:1160px;margin-top:14px;padding-top:12px;border-top:1px solid var(--rule-2);
+  font-size:11.5px;line-height:1.6;color:var(--ink-3);}
+
+/* ---------- split view (composite + bill pages) ---------- */
+.split{display:grid;grid-template-columns:3fr 2fr;} /* 864:576 of the 1440 mock, fluid below it */
+.split.bill{--railw:132px;--railgap:24px;}
+.left{padding:40px 60px 56px 56px;}
+.right{padding:40px 56px 56px 44px;background:var(--panel);border-left:1px solid var(--rule);
+  position:sticky;top:0;align-self:start;height:100vh;overflow-y:auto;overscroll-behavior:contain;}
+
+/* ---------- the bill (composite head) ---------- */
+.bill-head{text-align:center;padding:0 40px 22px 150px;}
+.act{font-family:'Tiempos',Georgia,serif;font-size:17px;line-height:1.55;color:var(--ink);}
+.act .sc{font-variant-caps:all-small-caps;letter-spacing:.07em;font-weight:700;}
+.assembled{font-size:11.5px;line-height:1.6;color:var(--ink-3);margin:12px auto 0;max-width:470px;letter-spacing:.005em;}
+.dbl{border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);height:3px;margin-bottom:34px;opacity:.55;}
+
+/* ---------- statute sections ---------- */
+.sec{display:grid;grid-template-columns:var(--railw) 1fr;gap:var(--railgap);
+  padding:14px 20px 16px 0;margin:0 0 6px -20px;border-radius:2px;position:relative;}
+.split.bill .sec{padding:16px 20px 18px 0;margin-bottom:4px;}
+.rail{display:flex;flex-direction:column;align-items:flex-end;text-align:right;padding-top:2px;}
+.secno{font-size:10.5px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--ink-3);white-space:nowrap;}
+.rail .chip{margin-top:8px;}
+.rail .chip.eff{margin-top:5px;}
+.leg{font-family:'Tiempos',Georgia,serif;font-size:15.5px;line-height:1.74;color:var(--ink);max-width:598px;}
+.split.bill .leg{max-width:620px;}
+.leg .rin{font-weight:700;}
+/* editorial gloss on a defined term — Sohne, never statute text (ruling 12) */
+.gloss{font-family:'Sohne',-apple-system,sans-serif;font-size:11.5px;line-height:1;
+  color:#9A937F;letter-spacing:.004em;font-weight:400;}
+.gloss.tight{white-space:nowrap;}
+.contd{display:grid;grid-template-columns:var(--railw) 1fr;gap:var(--railgap);margin-top:26px;
+  padding-top:18px;border-top:1px solid var(--rule);}
+.contd .secno{color:#9C9584;text-align:right;}
+.contd p{font-size:12.5px;line-height:1.65;color:var(--ink-3);max-width:610px;}
+
+/* ---------- chips ----------
+   Tag hierarchy (BUILD_SPEC §3): solid purple NEW — NO CA ANALOGUE  >
+   outline blue TIGHTENS CA  >  gray MATCHES.  Provision `tag` -> class:
+     NEW_NO_CA_ANALOGUE -> .chip.newf   (alias .chip.tag-new)
+     TIGHTENS_CA        -> .chip.vs     (alias .chip.tag-tightens)
+     MATCHES            -> .chip.same   (alias .chip.tag-matches)
+     BASELINE           -> .chip.ca     (alias .chip.tag-baseline)
+   .chip.new is the quieter outline-purple NEW used outside the promoted band. */
+.chip{display:inline-block;font-family:'Sohne';font-size:9.5px;font-weight:600;
+  letter-spacing:.1em;text-transform:uppercase;padding:2.5px 7px 2px;border-radius:2px;
+  border:1px solid;line-height:1.2;}
+.chip.ca,.chip.tag-baseline{color:var(--ca);border-color:rgba(38,88,185,.42);}
+.chip.ny{color:var(--ny);border-color:rgba(181,41,100,.42);}
+.chip.il{color:var(--il);border-color:rgba(138,86,181,.45);}
+.chip.ct{color:var(--ct);border-color:rgba(74,74,74,.35);}
+.chip.ma{color:var(--ma);border-color:rgba(63,107,174,.42);}
+/* effective-date chips — outline only, uncolored, quieter than the state chip */
+.chip.eff{font-weight:500;letter-spacing:.085em;color:#9C9584;border-color:#D9D2BA;background:transparent;}
+.chip.eff.live{color:var(--green);border-color:rgba(63,122,78,.34);}
+/* tag chips wrap to two lines inside the rail, so they carry their own metrics */
+.chip.vs,.chip.same,.chip.new,.chip.newf,.chip.scope,
+.chip.tag-tightens,.chip.tag-matches,.chip.tag-new{
+  padding:3px 7px 2.5px;line-height:1.5;max-width:132px;text-align:center;}
+.chip.vs,.chip.tag-tightens{color:var(--ca);border-color:rgba(38,88,185,.42);}
+.chip.same,.chip.tag-matches,.chip.scope{color:#9C9584;border-color:#C3BCA6;}
+.chip.new{color:var(--il);border-color:rgba(138,86,181,.45);background:rgba(138,86,181,.09);}
+.chip.newf,.chip.tag-new{color:#fff;background:var(--il);border-color:var(--il);}
+
+/* ---------- register A: EDITORIAL BAND (purple) ----------
+   Ours, not the statute's: promotes a NEW — NO CA ANALOGUE provision
+   (ruling 15). Never used to mark selection. */
+.sec.newhi{background:rgba(138,86,181,.075);margin-bottom:22px;padding-top:18px;padding-bottom:20px;
+  border-top:1px solid rgba(138,86,181,.22);border-bottom:1px solid rgba(138,86,181,.22);}
+.sec.newhi::before{content:"";position:absolute;left:-20px;top:-1px;bottom:-1px;width:3px;background:var(--il);}
+.sec.newhi .secno{color:var(--ink-2);}
+.sum-row.hi{position:relative;background:rgba(138,86,181,.105);max-width:1196px;margin:0 -18px;
+  padding:17px 18px;border-top:1px solid rgba(138,86,181,.22);border-bottom:1px solid rgba(138,86,181,.22);}
+.sum-row.hi::before{content:"";position:absolute;left:0;top:-1px;bottom:-1px;width:3px;background:var(--il);}
+.sublab{font-size:9px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;
+  color:#8E77AB;margin-top:8px;white-space:nowrap;}
+.meaning{grid-column:2;max-width:620px;margin-top:16px;padding-top:13px;
+  border-top:1px solid rgba(138,86,181,.24);
+  font-family:'Sohne';font-size:12.5px;line-height:1.62;color:var(--ink-3);}
+
+/* ---------- register B: SELECTION STATE (blue) ----------
+   Which row the right-hand panel is currently showing, and the identical
+   words inside it. Never used to say a provision is new. */
+.sec.sel{background:rgba(65,196,252,.085);}
+.sec.sel::before{content:"";position:absolute;left:-20px;top:0;bottom:0;width:2px;background:var(--blue-d);}
+.sec.sel .chip.il{color:#fff;background:var(--il);border-color:var(--il);}
+.sec.sel .chip.vs,.sec.sel .chip.tag-tightens{color:#fff;background:var(--ca);border-color:var(--ca);}
+.sec.sel .secno{color:var(--ink-2);}
+.sec.hov{background:rgba(55,55,55,.026);}
+.sec.hov .secno{color:var(--ink-2);}
+.openat{font-size:9px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--blue-ink);margin-top:9px;white-space:nowrap;}
+.hl{background:rgba(65,196,252,.26);box-shadow:0 1px 0 var(--blue-d);padding-bottom:.5px;}
+
+/* ---------- source panel (right half of the split) ---------- */
+.p-head{display:flex;align-items:center;gap:10px;margin-bottom:13px;}
+.p-eyebrow{font-size:9.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--blue-ink);}
+.p-title{font-family:'Tiempos',Georgia,serif;font-size:20px;font-weight:700;
+  line-height:1.25;letter-spacing:-.005em;margin-bottom:7px;}
+.p-cite{font-size:12px;color:var(--ink-2);letter-spacing:.005em;}
+.p-cite .dot{color:#C6BFA6;padding:0 5px;}
+.p-cite a{color:var(--ink-2);text-decoration:none;border-bottom:1px solid #CFC8AE;}
+.p-rule{height:1px;background:var(--rule);margin:20px 0;}
+.src{font-family:'Tiempos',Georgia,serif;font-size:14.5px;line-height:1.76;color:#7A7364;}
+.src .hl{color:var(--ink);}
+.note{margin-top:26px;padding-top:18px;border-top:1px solid var(--rule);}
+.note h3{font-size:9.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-3);margin-bottom:9px;}
+.note p{font-size:13px;line-height:1.62;color:var(--ink-2);}
+.note i{font-style:italic;}
+.facts{margin-top:24px;padding-top:18px;border-top:1px solid var(--rule);
+  display:grid;grid-template-columns:112px 1fr;row-gap:9px;column-gap:14px;}
+.facts dt{font-size:9.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink-3);padding-top:2px;}
+.facts dd{font-size:12.5px;color:var(--ink-2);line-height:1.45;font-variant-numeric:tabular-nums;}
+
+/* ---------- map board ---------- */
+.board{display:grid;grid-template-columns:1fr 300px;gap:64px;padding:34px 56px 60px;}
+.board .sec-label{margin-bottom:6px;}
+.mapwrap{position:relative;max-width:850px;margin:14px auto 0;}
+svg.usmap{display:block;width:100%;height:auto;overflow:visible;}
+.st{stroke:var(--off);stroke-width:1.1;stroke-linejoin:round;fill:var(--m-none);}
+.st.full{fill:var(--m-full);}
+.st.partial{fill:var(--m-partial);}
+.st.usage{fill:var(--m-usage);}
+.st.moving{fill:url(#hatch);stroke:var(--m-full);stroke-width:1.2;stroke-dasharray:3 2.2;}
+.st.on{fill:var(--m-on);stroke:var(--blue-d);stroke-width:1.8;}
+svg.usmap a{cursor:pointer;}
+svg.usmap a:hover .st,svg.usmap a:focus .st{stroke:var(--blue-d);stroke-width:1.8;stroke-dasharray:none;}
+svg.usmap a:hover .st.full{fill:var(--m-on);}
+.lead{stroke:#BDB6A0;stroke-width:1;fill:none;}
+.dot{fill:var(--blue-d);stroke:var(--off);stroke-width:1.4;}
+/* hover tooltip — kept from mock4b for a future JS hover layer (no JS in v1) */
+.tip{position:absolute;background:var(--off);border:1px solid var(--rule);border-radius:2px;
+  box-shadow:0 3px 12px rgba(55,50,40,.10);padding:10px 13px 11px;white-space:nowrap;}
+.tip::before{content:"";position:absolute;left:-5px;top:16px;width:8px;height:8px;
+  background:var(--off);border-left:1px solid var(--rule);border-bottom:1px solid var(--rule);transform:rotate(45deg);}
+.tip .t{font-size:12.5px;font-weight:500;color:var(--ink);letter-spacing:.005em;}
+.tip .s{font-size:11.5px;color:var(--ink-3);margin-top:3px;letter-spacing:.005em;}
+.tip .go{font-size:9.5px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--blue-ink);margin-top:8px;}
+.matag{position:absolute;left:100%;top:21.4%;margin-left:10px;white-space:nowrap;
+  font-size:9.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--m-full);line-height:1.55;}
+.matag em{display:block;font-style:normal;color:var(--ink-3);font-weight:500;letter-spacing:.09em;}
+.matag a{color:inherit;text-decoration:none;border-bottom:1px solid rgba(63,107,174,.4);}
+
+/* ---------- legend / right rail list ---------- */
+.legend{border-left:1px solid var(--rule);padding-left:22px;margin-top:14px;}
+.legend h3{font-size:9.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-3);margin-bottom:14px;}
+.lrow{display:grid;grid-template-columns:14px 1fr;gap:11px;align-items:start;
+  padding:9px 0;border-top:1px solid var(--rule-2);}
+.lrow:first-of-type{border-top:none;padding-top:0;}
+.sw{width:14px;height:14px;border-radius:2px;margin-top:2px;background:var(--m-none);}
+.sw.full{background:var(--m-full);}
+.sw.partial{background:var(--m-partial);}
+.sw.usage{background:var(--m-usage);}
+.sw.moving{background:var(--m-none);border:1px dashed var(--m-full);
+  background-image:repeating-linear-gradient(45deg,rgba(63,107,174,.55) 0 1.5px,transparent 1.5px 4.5px);}
+.lrow .n{font-size:12.5px;color:var(--ink);line-height:1.35;letter-spacing:.005em;}
+.lrow .w,.jump .w{font-size:11.5px;color:var(--ink-3);line-height:1.4;margin-top:2px;display:block;}
+/* jump list — same rail, no swatches (the swatches mean map status, nothing else) */
+.jump{display:block;padding:9px 0;border-top:1px solid var(--rule-2);font-size:12.5px;
+  color:var(--ink);text-decoration:none;letter-spacing:.005em;}
+.jump:first-of-type{border-top:none;padding-top:0;}
+.jump:hover,.jump:hover .w{color:var(--blue-ink);}
+.lnote{margin-top:20px;padding-top:14px;border-top:1px solid var(--rule);
+  font-size:11.5px;line-height:1.6;color:var(--ink-3);}
+
+/* ---------- prose (About) — Tiempos body on off-white, per BRAND.md ---------- */
+.page{padding:34px 56px 60px;}
+.prose{max-width:660px;}
+.prose p{font-family:'Tiempos',Georgia,serif;font-size:15.5px;line-height:1.74;
+  color:var(--ink);margin-bottom:16px;}
+.prose p:last-child{margin-bottom:0;}
+.prose p.small{font-family:'Sohne';font-size:12.5px;line-height:1.65;color:var(--ink-3);}
+.prose ul{list-style:none;margin:0 0 18px;}
+.prose li{font-family:'Tiempos',Georgia,serif;font-size:15.5px;line-height:1.7;
+  color:var(--ink);padding-left:18px;position:relative;margin-bottom:9px;}
+.prose li::before{content:"·";position:absolute;left:4px;color:var(--ink-3);}
+.prose a{color:var(--ink);text-decoration:none;border-bottom:1px solid #CFC8AE;padding-bottom:1px;}
+.prose a:hover{border-bottom-color:var(--blue-d);}
+.prose code{font-family:ui-monospace,Menlo,monospace;font-size:.86em;color:var(--ink-2);}
+.prose h3{font-family:'Sohne';font-size:10.5px;font-weight:600;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--ink);margin:26px 0 10px;}
+.block{margin-bottom:38px;}
+.block:last-child{margin-bottom:0;}

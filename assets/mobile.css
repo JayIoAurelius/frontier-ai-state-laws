@@ -1,0 +1,151 @@
+/* ==========================================================================
+   mobile.css — phone layout for every v2 page. Loaded LAST on every page so
+   its overrides beat site.css (frozen design system), composite-patch.css and
+   billpage-patch.css without any of them being edited.
+
+   Why this file exists: distribution is a Signal group opened on phones, and
+   below ~900px the desktop split view (3fr/2fr) rendered as two unusable
+   slivers. Jay's ruling, 2026-08-01.
+
+   Contract, in one line each:
+     - one column below 900px: .mast, .board, .split and .sec all stack;
+     - the source panel (.right) stops being a column and becomes a bottom
+       sheet over the lower 55vh, hidden until a row is opened;
+     - the sheet carries a visible close affordance (.sheet-close) that
+       returns the reader to the text spine;
+     - at >=900px NOTHING here applies: the approved desktop layout is
+       untouched, which is why every rule below sits inside the media query
+       except the two that hide the close affordance on desktop.
+
+   The two mechanisms differ because the pages differ. The composite runs a
+   small inline script already (open(n)); it toggles body.panel-open and the
+   close button clears it. The bill pages are deliberately JavaScript-free, so
+   the sheet opens on :has(.sec:target) — the same selector billpage-patch.css
+   already uses to reveal a panel — and the close affordance is an <a> that
+   retargets the URL at the inert #closed anchor in templates/billpage.html.
+   ========================================================================== */
+
+/* Desktop: the sheet affordance does not exist. Outside the media query so it
+   is hidden even on the pages that never open a sheet. */
+.sheet-close{display:none;}
+
+@media (max-width: 899px){
+
+  /* ---------- page frame ----------
+     56px of side padding is a third of a 390px screen. 18px throughout. */
+  body{max-width:none;}
+
+  /* ---------- chrome / nav ----------
+     The wordmark is a sentence, not a logotype, so it takes its own line and
+     wraps; the three nav items (ruling 19) stay on one line at a smaller size,
+     which is the whole reason the chrome stacks rather than wrapping as a row. */
+  .chrome{flex-direction:column;align-items:flex-start;gap:6px;
+    height:auto;padding:12px 18px 0;}
+  .wordmark{font-size:11.5px;line-height:1.4;letter-spacing:.045em;}
+  nav{gap:20px;flex-wrap:nowrap;white-space:nowrap;align-self:stretch;}
+  nav a{font-size:11.5px;padding:8px 0 7px;}
+
+  /* ---------- masthead + map board: the 1fr/300px grids stack ----------
+     The meta rail's left rule becomes a top rule; it is a separator either way. */
+  .mast,.mast.tight{grid-template-columns:1fr;gap:22px;padding:24px 18px 22px;}
+  .board{grid-template-columns:1fr;gap:26px;padding:22px 18px 40px;}
+  .meta,.legend{border-left:none;border-top:1px solid var(--rule);
+    padding-left:0;padding-top:16px;margin-top:0;}
+  h1{font-size:27px;}
+  h1.bill{font-size:25px;}
+  .dek,.subdek,.entries,.strip-note{max-width:none;}
+  .entries{margin-top:16px;}
+  .sec-label,.sum-head{flex-wrap:wrap;gap:3px 12px;}
+
+  /* ---------- summary rows: chip / text / link stack ---------- */
+  .summary{padding:24px 18px 26px;}
+  .sum-head,.sum-lede,.sum-row,.strip .sec-label{max-width:none;}
+  .sum-lede{font-size:18px;margin:13px 0 20px;}
+  .sum-row{grid-template-columns:1fr;gap:7px;padding:14px 0 13px;}
+  .sum-row.hi{margin:0 -18px;padding:15px 18px;max-width:none;}
+  .sum-t,.sum-row.hi .sum-t{font-size:16px;}
+  .sum-l{text-align:left;white-space:normal;}
+
+  /* ---------- the split becomes one column ---------- */
+  .split{grid-template-columns:1fr;}
+  .left{padding:24px 18px 40px;}
+  .bill-head{padding:0 0 18px;text-align:left;}
+  .assembled{margin-left:0;max-width:none;}
+  .strip{padding:22px 18px 32px;}
+  .page{padding:24px 18px 40px;}
+  .prose{max-width:none;}
+
+  /* ---------- statute rows: rail on top, text below ----------
+     site.css hangs .sec 20px into the left gutter so the selection bar sits
+     outside the text column. At 390px that gutter is off-screen, so the row
+     un-hangs and the bar moves to x=0 — otherwise the page scrolls sideways. */
+  .sec,.contd,details.sec>summary.sec-row{grid-template-columns:1fr;
+    gap:9px;}
+  .sec{margin:0 0 6px;padding:14px 0 15px 12px;}
+  .split.bill .sec{padding:15px 0 16px 12px;margin-bottom:4px;}
+  .sec.newhi{padding-top:16px;padding-bottom:18px;margin-bottom:18px;}
+  .sec.newhi::before,.sec.sel::before,.split.bill .sec:target::before{left:0;}
+  .rail{flex-direction:row;flex-wrap:wrap;align-items:center;
+    justify-content:flex-start;text-align:left;gap:7px;padding-top:0;}
+  .rail>*{margin-top:0 !important;}
+  .rail .secno,.contd .secno{text-align:left;}
+  .chip.vs,.chip.same,.chip.new,.chip.newf,.chip.scope,
+  .chip.tag-tightens,.chip.tag-matches,.chip.tag-new{max-width:none;}
+  .leg,.split.bill .leg,.meaning,.contd p{max-width:none;}
+  .meaning{grid-column:1;margin-top:13px;}
+  .drop{grid-column:1;margin-left:0;padding-left:0;max-width:none;}
+  .contd{margin-top:22px;}
+
+  /* ---------- the source panel becomes a bottom sheet ----------
+     Fixed to the lower 55vh, slid out of view until a row is opened. It is
+     `position:fixed`, so it takes no space in the stacked column and the
+     spine keeps its own scroll. */
+  .right{
+    position:fixed;left:0;right:0;bottom:0;top:auto;
+    height:55vh;max-height:55vh;width:auto;align-self:auto;
+    padding:14px 18px 26px;
+    background:var(--panel);
+    border-left:none;border-top:1px solid var(--rule);
+    box-shadow:0 -8px 26px rgba(55,50,40,.20);
+    overflow-y:auto;overscroll-behavior:contain;
+    z-index:60;
+    transform:translateY(100%);visibility:hidden;
+    transition:transform .22s ease-out, visibility .22s;
+  }
+  /* Composite: the inline script sets body.panel-open on open(n). */
+  body.panel-open .right,
+  /* Bill pages: JS-free — the same :has(.sec:target) billpage-patch.css uses. */
+  .split.bill:has(.sec:target) .right{transform:translateY(0);visibility:visible;}
+
+  /* Neither panel stack sticks inside the sheet — the sheet is the viewport. */
+  .panelwrap,.right>.panel{position:static;top:auto;}
+  .right .src,.right .note p,.right .p-cite{max-width:none;}
+  .facts{grid-template-columns:96px 1fr;column-gap:12px;}
+
+  /* Room to keep reading the spine underneath an open sheet. */
+  body.panel-open .left,
+  .split.bill:has(.sec:target) .left{padding-bottom:58vh;}
+
+  /* ---------- close affordance ----------
+     A <button> on the composite (script-driven), an <a href="#closed"> on the
+     bill pages (retargets the URL, which closes the sheet with no script).
+     Sticky so it stays reachable however far the source text is scrolled. */
+  .sheet-close{
+    display:flex;align-items:center;justify-content:center;
+    position:sticky;top:0;z-index:2;margin:0 0 6px auto;
+    width:34px;height:34px;border-radius:50%;
+    background:var(--off);border:1px solid var(--rule);
+    color:var(--ink-2);font-family:'Sohne',-apple-system,sans-serif;
+    font-size:15px;line-height:1;text-decoration:none;cursor:pointer;
+    box-shadow:0 1px 5px rgba(55,50,40,.14);
+  }
+  .sheet-close:focus-visible{outline:2px solid var(--blue-d);outline-offset:2px;}
+
+  /* ---------- map ----------
+     mock4b hangs the Massachusetts tag off the right edge of the SVG at
+     left:100%. On a phone that is off-screen and drags a horizontal scrollbar
+     onto every page, so the tag drops below the map instead. */
+  .mapwrap{margin-top:10px;}
+  .matag{position:static;margin:14px 0 0;left:auto;top:auto;white-space:normal;}
+  .lnote{max-width:none;}
+}
