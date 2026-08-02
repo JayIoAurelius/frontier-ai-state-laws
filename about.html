@@ -3,6 +3,7 @@
 <title>About &mdash; State Laws Affecting Frontier US AI Companies</title>
 <meta name="description" content="What the combined state frontier law is and is not, where every quotation comes from, and how the quote verifier works.">
 <link rel="stylesheet" href="assets/site.css">
+<link rel="stylesheet" href="assets/byline.css">
 <link rel="stylesheet" href="assets/mobile.css">
 </head><body>
 
@@ -20,6 +21,19 @@
     <div class="eyebrow">About</div>
     <h1>What this is, and how to check it</h1>
     <div class="dek">This site assembles the frontier AI obligations that US states have <b>actually enacted</b> into one readable bill, and gives every state with a law its own text-centered page. Everything on it is a quotation from an official text, and every quotation is machine-checked against an archived copy of that text before the page is built.</div>
+  <div class="byline">
+  <button class="byline-t" type="button">maintained by Jay Kim &middot; corrections welcome</button>
+  <div class="byline-card">
+    <div class="byline-who">Jay Kim</div>
+    <p class="byline-creed">An unsourced claim is a bug.</p>
+    <p class="byline-ways"><a href="https://github.com/JayIoAurelius/frontier-ai-state-laws/issues">File a GitHub issue</a><span class="sep">&middot;</span><a href="mailto:jay.ifp.automation@gmail.com">jay.ifp.automation@gmail.com</a></p>
+    <label class="byline-lab" for="fb-text">Or send a note from this page</label>
+    <textarea id="fb-text" rows="3" placeholder="What is wrong, and where?"></textarea>
+    <input id="fb-hp" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <button class="byline-send" id="fb-send" type="button">Send</button>
+    <p class="byline-status" id="fb-status" role="status" aria-live="polite"></p>
+  </div>
+</div>
   </div>
   <dl class="meta">
     <dt>Maintainer</dt><dd>Jay Kim</dd>
@@ -121,6 +135,7 @@
         <p>The obligation categories adapt pillar language from the <a href="https://encodeai.org/wp-content/uploads/2025/09/SB-53-Coalition-Letter-9_24_2025.pdf">SB 53 coalition letter to Gov. Newsom</a> (Encode AI and 22 other signatory organizations, 24 September 2025), and the framing of what these laws still leave uncovered follows the <a href="https://secureaiproject.org/about">Secure AI Project&rsquo;s statement of policy priorities</a>. Neither organization is responsible for how the vocabulary is used here.</p>
         <p>The annotated-statute format owes a debt to <a href="https://sb53.info/">sb53.info</a>, Miles Kodama&rsquo;s annotated SB 53 (AI Futures Project). All quotations on this site are drawn directly from official statute texts. The state outlines are from <a href="https://simplemaps.com/resources/svg-license">simplemaps.com</a>, free for commercial use.</p>
         <p><b>Corrections are welcome, and an unsourced claim is a bug.</b> If a quotation does not match the enacted text, if a section is attributed to the wrong state, or if a law has moved since 1 August 2026, that is a defect and it will be fixed. Maintainer: Jay Kim. File corrections as <a href="https://github.com/JayIoAurelius/frontier-ai-state-laws/issues">GitHub issues</a> or by email to <a href="mailto:jay.ifp.automation@gmail.com">jay.ifp.automation@gmail.com</a>.</p>
+        <p class="small">Corrections that changed a page, and every republication of the site, are listed on the <a href="changelog.html">changelog</a>.</p>
       </div>
     </div>
 
@@ -144,4 +159,44 @@
   </div>
 </div>
 
+<script id="feedback">
+(function () {
+  var box = document.getElementById("fb-text");
+  var send = document.getElementById("fb-send");
+  var out = document.getElementById("fb-status");
+  var hp = document.getElementById("fb-hp");
+  if (!box || !send || !out || typeof fetch !== "function") return;
+  var FAILED = 'Could not send. Please <a href="https://github.com/JayIoAurelius/frontier-ai-state-laws/issues">file a GitHub issue</a>'
+    + ' or email <a href="mailto:jay.ifp.automation@gmail.com">jay.ifp.automation@gmail.com</a>.';
+  send.addEventListener("click", function () {
+    var comment = box.value.trim();
+    if (!comment) { out.textContent = "Type a note first."; return; }
+    send.disabled = true;
+    out.textContent = "Sending\u2026";
+    fetch("https://jayiomini.tail2094be.ts.net:8443/feedback", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        page: location.pathname,
+        section: null,
+        comment: comment,
+        website: hp ? hp.value : ""
+      })
+    }).then(function (r) {
+      return r.json().then(function (d) { return r.ok && d && d.ok === true; },
+        function () { return false; });
+    }).catch(function () {
+      return false;
+    }).then(function (accepted) {
+      if (accepted) {
+        box.value = "";
+        out.textContent = "Sent \u2014 thank you.";
+      } else {
+        out.innerHTML = FAILED;
+      }
+      send.disabled = false;
+    });
+  });
+})();
+</script>
 </body></html>

@@ -1,0 +1,46 @@
+/* ==========================================================================
+   BYLINE — the maintainer line and its corrections card (change 1, 2026-08-02).
+   Site-wide chrome, loaded by every page, kept OUT of site.css because the
+   design system there is frozen (BUILD_SPEC section 3: extract, don't invent)
+   and this card is new vocabulary rather than extracted mockup vocabulary.
+   Loads after site.css and any page patch, before mobile.css.
+   ========================================================================== */
+/* ---------- maintainer byline + corrections card (change 1) ----------
+   Site-wide chrome, so it belongs here and not in a page patch: map.html and
+   about.html load site.css and nothing else. Opening is CSS only — :hover for a
+   mouse, :focus-within for a tap or the keyboard, since tapping the trigger
+   focuses it — so the issue link and the email are reachable with scripting
+   off. The card is out of flow: opening it never moves the page. */
+.byline{position:relative;display:inline-block;margin-top:16px;}
+.byline-t{font-family:'Sohne',-apple-system,sans-serif;font-size:11.5px;letter-spacing:.01em;
+  color:var(--ink-3);background:none;border:0;border-bottom:1px dotted #CFC8AE;
+  padding:0 0 1px;cursor:pointer;}
+.byline:hover .byline-t,.byline:focus-within .byline-t{color:var(--ink-2);}
+.byline-card{position:absolute;left:0;top:calc(100% + 8px);z-index:20;width:320px;
+  max-width:calc(100vw - 40px);background:var(--off);border:1px solid var(--rule);
+  border-radius:2px;box-shadow:0 3px 12px rgba(55,50,40,.10);padding:14px 15px 13px;
+  visibility:hidden;opacity:0;transition:opacity .12s ease;}
+.byline:hover .byline-card,.byline:focus-within .byline-card{visibility:visible;opacity:1;}
+.byline-who{font-size:12.5px;font-weight:500;color:var(--ink);letter-spacing:.005em;}
+.byline-creed{font-family:'Tiempos',Georgia,serif;font-size:13.5px;line-height:1.5;
+  color:var(--ink-2);margin-top:4px;}
+.byline-ways{font-size:11.5px;line-height:1.5;margin-top:9px;}
+.byline-ways a{color:var(--blue-ink);text-decoration:none;
+  border-bottom:1px solid rgba(30,127,169,.35);}
+.byline-ways .sep{color:#C6BFA6;padding:0 5px;}
+.byline-lab{display:block;font-size:9.5px;font-weight:600;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-3);margin:13px 0 6px;}
+.byline-card textarea{display:block;width:100%;font-family:'Sohne',-apple-system,sans-serif;
+  font-size:12px;line-height:1.5;color:var(--ink);background:#fff;border:1px solid var(--rule);
+  border-radius:2px;padding:7px 8px;resize:vertical;}
+.byline-card textarea:focus{outline:none;border-color:var(--blue-d);}
+#fb-hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0;}
+.byline-send{margin-top:8px;font-family:'Sohne',-apple-system,sans-serif;font-size:9.5px;
+  font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:var(--blue-ink);
+  background:transparent;border:1px solid rgba(30,127,169,.42);border-radius:2px;
+  padding:5px 11px 4px;cursor:pointer;}
+.byline-send:hover{background:rgba(65,196,252,.10);}
+.byline-send[disabled]{color:var(--ink-3);border-color:var(--rule);cursor:default;}
+.byline-status{font-size:11.5px;line-height:1.5;color:var(--ink-3);margin-top:8px;}
+.byline-status:empty{display:none;}
+.byline-status a{color:var(--blue-ink);}
