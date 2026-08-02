@@ -23,13 +23,47 @@
 .sec.sel .chip.ny{color:#fff;background:var(--ny);border-color:var(--ny);}
 .sec.sel .chip.ct{color:#fff;background:var(--ct);border-color:var(--ct);}
 
-/* One source panel per section; all but the open one are hidden. The panel
-   sticks: the bill runs to eleven sections, so the source you just opened must
-   not scroll away while you read the section that opened it.
-   The panel content sticks, not the column, so the panel's background still
-   runs the full height of the bill as it does in the mockup. */
+/* One source panel per section; all but the open one are hidden. */
 .panel[hidden]{display:none;}
 .right > .panel{position:sticky;top:40px;}
+
+/* ==========================================================================
+   THE SOURCE CARD (desktop only) — Jay, 2026-08-01:
+   "a static thing that does not scroll ... less than half of the page in width
+   ... clearly like a box that fills up with leg text as needed ... font size
+   smaller too."
+
+   So the right side stops being a full-height scrolling column. site.css line
+   119-120 (`.right{height:100vh;overflow-y:auto}`) is FROZEN and is overridden
+   here, never edited: the column becomes plain page ground, and the panel
+   inside it becomes a bounded box — panel fill, hairline rule, the 2px radius
+   the chips already use — that ends where its text ends and rides along on
+   position:sticky as the reader scrolls the bill.
+
+   Everything is inside the min-width query so mobile.css keeps the <900px
+   bottom sheet exactly as approved. The sheet KEEPS its internal scroll: 55vh
+   is not enough room to sit still, which is the whole reason the desktop card
+   can drop the scrollbar and the sheet cannot.
+   ========================================================================== */
+@media (min-width: 900px){
+  /* ~64/36 — the card is comfortably under half the page. */
+  .split{grid-template-columns:9fr 5fr;}
+  .right{position:static;height:auto;align-self:stretch;overflow:visible;
+    background:none;border-left:none;padding:34px 44px 60px 30px;}
+  .right > .panel{top:26px;background:var(--panel);border:1px solid var(--rule);
+    border-radius:2px;padding:22px 24px 24px;}
+
+  /* One step smaller inside the card (statute 15.5px -> 13px, metadata to match). */
+  .right .p-eyebrow{font-size:9px;letter-spacing:.14em;}
+  .right .p-head{margin-bottom:11px;}
+  .right .p-title{font-size:17px;margin-bottom:6px;}
+  .right .p-cite{font-size:11px;}
+  .right .p-rule{margin:15px 0;}
+  .right .src{font-size:13px;line-height:1.72;}
+  .right .note{margin-top:17px;padding-top:13px;}
+  .right .note h3{font-size:9px;letter-spacing:.13em;margin-bottom:6px;}
+  .right .note p{font-size:11.5px;line-height:1.58;}
+}
 
 /* The scope footnote reuses the .contd rail, so its label sits on the rail grid. */
 .contd .secno{text-transform:uppercase;}

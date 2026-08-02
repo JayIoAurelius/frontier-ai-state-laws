@@ -92,9 +92,50 @@ h1.bill{display:block;}
 .split.bill .openat{color:var(--ink-3);}
 .split.bill .sec.sel .openat{color:var(--blue-ink);}
 
-/* ---------- long right-hand panels ---------- */
-.right .src{max-width:476px;}
-.right .note p,.right .p-cite{max-width:476px;}
+/* ==========================================================================
+   THE SOURCE CARD (desktop only) — Jay, 2026-08-01:
+   "a static thing that does not scroll ... less than half of the page in width
+   ... clearly like a box that fills up with leg text as needed ... font size
+   smaller too. remove the delta section."
+
+   The right side stops being a full-height scrolling column. site.css line
+   119-120 (`.right{height:100vh;overflow-y:auto}`) is FROZEN and is overridden
+   here, never edited: the column becomes plain page ground and the open panel
+   becomes a bounded box — panel fill, hairline rule, the 2px radius the chips
+   already use — that ends where its text ends. .panelwrap keeps the sticky, so
+   the card rides along while the reader scrolls the spine.
+
+   Inside the min-width query, so mobile.css keeps the <900px bottom sheet
+   exactly as approved. The sheet KEEPS its internal scroll: 55vh is not enough
+   room to sit still, which is why the desktop card can drop the scrollbar and
+   the sheet cannot.
+   ========================================================================== */
+@media (min-width: 900px){
+  /* ~64/36 — the card is comfortably under half the page. */
+  .split.bill{grid-template-columns:9fr 5fr;}
+  .split.bill .right{position:static;height:auto;align-self:stretch;overflow:visible;
+    background:none;border-left:none;padding:34px 44px 60px 30px;}
+  .split.bill .panelwrap{top:26px;}
+  .split.bill .panel{background:var(--panel);border:1px solid var(--rule);
+    border-radius:2px;padding:22px 24px 24px;}
+
+  /* One step smaller inside the card (statute 14.5px -> 13px, metadata to match). */
+  .split.bill .p-eyebrow{font-size:9px;letter-spacing:.14em;}
+  .split.bill .p-head{margin-bottom:11px;}
+  .split.bill .p-title{font-size:17px;margin-bottom:6px;}
+  .split.bill .p-cite{font-size:11px;}
+  .split.bill .p-rule{margin:15px 0;}
+  .split.bill .src{font-size:13px;line-height:1.72;max-width:none;}
+  .split.bill .p-more{font-size:10.5px;}
+}
+
+/* The continuation affordance under a trimmed excerpt: where the card stops,
+   the official text carries on. Styled at every width — the bottom sheet needs
+   it as much as the card does. */
+.p-more{margin-top:14px;padding-top:12px;border-top:1px solid var(--rule);
+  font-size:11.5px;letter-spacing:.02em;}
+.p-more a{color:var(--blue-ink);text-decoration:none;
+  border-bottom:1px solid rgba(30,127,169,.35);padding-bottom:1px;}
 
 /* ---------- "also on the books" strip ---------- */
 .strip .sec-label{max-width:1160px;margin-bottom:2px;}
