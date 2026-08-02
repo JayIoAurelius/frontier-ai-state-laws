@@ -118,8 +118,7 @@ h1.bill{display:block;}
 .summary{padding:22px 56px 24px;}
 .sum-head{margin-bottom:3px;}
 .sum-lede{font-size:18.5px;line-height:1.4;margin:11px 0 15px;}
-.summary .sum-row,.summary details.sum-row{grid-template-columns:168px 1fr 152px;}
-.summary .sum-row{padding:6px 0 5px;}
+.summary .sum-row{grid-template-columns:168px 1fr 152px;padding:6px 0 5px;}
 .summary .sum-t{font-size:14.5px;line-height:1.38;}
 .summary .sum-l{font-size:11px;}
 /* the chip is the scan column: one line, left-aligned, so rows keep a common
@@ -131,18 +130,20 @@ h1.bill{display:block;}
 .summary .sum-row.hi .sum-t{font-size:15.5px;}
 
 /* ---------- rows that expand ----------
-   A row with relocated detail is a <details>; the grid moves onto it so the
-   visible line stays column-aligned with the plain rows around it. */
-details.sum-row{display:grid;gap:0 20px;align-items:baseline;}
-details.sum-row>summary.sum-line{grid-column:1/3;display:flex;gap:0 20px;
-  align-items:baseline;cursor:pointer;list-style:none;}
-details.sum-row>summary.sum-line::-webkit-details-marker{display:none;}
-details.sum-row>summary.sum-line>div:first-child{flex:0 0 168px;}
+   The <details> spans the chip and heading columns of the row grid; the cite
+   link is its sibling in column 3, never its child (a closed <details> hides
+   everything but its <summary>). The summary line is a flex whose first box is
+   the width of the chip column, so expandable and plain rows stay aligned. */
+.sum-x{grid-column:1/3;}
+.sum-x>summary.sum-line{display:flex;gap:0 20px;align-items:baseline;
+  cursor:pointer;list-style:none;}
+.sum-x>summary.sum-line::-webkit-details-marker{display:none;}
+.sum-x>summary.sum-line>div:first-child{flex:0 0 168px;}
 /* the only affordance saying there is more under the line */
-details.sum-row>summary.sum-line .sum-t::after{content:" ▸";font-family:'Sohne',sans-serif;
+.sum-x>summary.sum-line .sum-t::after{content:" ▸";font-family:'Sohne',sans-serif;
   font-size:8.5px;color:var(--ink-3);vertical-align:1px;}
-details.sum-row[open]>summary.sum-line .sum-t::after{content:" ▾";color:var(--blue-ink);}
-.sum-drop{grid-column:1/-1;margin:7px 0 3px 188px;padding-top:8px;
+.sum-x[open]>summary.sum-line .sum-t::after{content:" ▾";color:var(--blue-ink);}
+.sum-drop{margin:7px 0 3px 188px;padding-top:8px;
   border-top:1px solid var(--rule-2);max-width:900px;
   font-size:12px;line-height:1.6;color:var(--ink-3);}
 .sum-why{margin-bottom:8px;}

@@ -64,15 +64,10 @@
   .summary{padding:22px 18px 24px;}
   .sum-head,.sum-lede,.sum-row,.strip .sec-label{max-width:none;}
   .sum-lede{font-size:17px;margin:11px 0 16px;}
-  .summary .sum-row,.summary details.sum-row,
-  .summary details.sum-row>summary.sum-line{grid-template-columns:1fr;
-    display:grid;gap:5px;}
-  .summary .sum-row,.summary details.sum-row>summary.sum-line{padding:10px 0 9px;}
-  .summary details.sum-row{padding:0;}
-  .summary details.sum-row>summary.sum-line>div:first-child{flex:none;}
+  .summary .sum-row{grid-template-columns:1fr;gap:5px;padding:10px 0 9px;}
   .summary .sum-row.hi{margin:0 -18px;padding:11px 18px;max-width:none;}
-  .summary details.sum-row.hi{padding:0 18px;}
-  .summary details.sum-row.hi>summary.sum-line{padding:11px 0 10px;}
+  .sum-x>summary.sum-line{flex-direction:column;align-items:flex-start;gap:5px;}
+  .sum-x>summary.sum-line>div:first-child{flex:none;}
   .summary .sum-t,.summary .sum-row.hi .sum-t{font-size:15px;}
   .sum-l{text-align:left;white-space:normal;}
   .sum-drop{margin-left:0;max-width:none;}
