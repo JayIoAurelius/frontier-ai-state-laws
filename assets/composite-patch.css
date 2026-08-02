@@ -33,3 +33,4 @@
 
 /* The scope footnote reuses the .contd rail, so its label sits on the rail grid. */
 .contd .secno{text-transform:uppercase;}
+.entries .row .nowrap{white-space:nowrap;}

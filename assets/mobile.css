@@ -57,14 +57,26 @@
   .entries{margin-top:16px;}
   .sec-label,.sum-head{flex-wrap:wrap;gap:3px 12px;}
 
-  /* ---------- summary rows: chip / text / link stack ---------- */
-  .summary{padding:24px 18px 26px;}
+  /* ---------- summary rows: chip / text / link stack ----------
+     billpage-patch.css compresses these rows to one desktop scan line with
+     `.summary .sum-row` selectors; the overrides below carry at least the same
+     specificity, or the three-column grid would survive past the breakpoint. */
+  .summary{padding:22px 18px 24px;}
   .sum-head,.sum-lede,.sum-row,.strip .sec-label{max-width:none;}
-  .sum-lede{font-size:18px;margin:13px 0 20px;}
-  .sum-row{grid-template-columns:1fr;gap:7px;padding:14px 0 13px;}
-  .sum-row.hi{margin:0 -18px;padding:15px 18px;max-width:none;}
-  .sum-t,.sum-row.hi .sum-t{font-size:16px;}
+  .sum-lede{font-size:17px;margin:11px 0 16px;}
+  .summary .sum-row,.summary details.sum-row,
+  .summary details.sum-row>summary.sum-line{grid-template-columns:1fr;
+    display:grid;gap:5px;}
+  .summary .sum-row,.summary details.sum-row>summary.sum-line{padding:10px 0 9px;}
+  .summary details.sum-row{padding:0;}
+  .summary details.sum-row>summary.sum-line>div:first-child{flex:none;}
+  .summary .sum-row.hi{margin:0 -18px;padding:11px 18px;max-width:none;}
+  .summary details.sum-row.hi{padding:0 18px;}
+  .summary details.sum-row.hi>summary.sum-line{padding:11px 0 10px;}
+  .summary .sum-t,.summary .sum-row.hi .sum-t{font-size:15px;}
   .sum-l{text-align:left;white-space:normal;}
+  .sum-drop{margin-left:0;max-width:none;}
+  .sum-list{grid-template-columns:1fr;}
 
   /* ---------- the split becomes one column ---------- */
   .split{grid-template-columns:1fr;}
@@ -140,6 +152,14 @@
     box-shadow:0 1px 5px rgba(55,50,40,.14);
   }
   .sheet-close:focus-visible{outline:2px solid var(--blue-d);outline-offset:2px;}
+
+  /* ---------- the way back to the summary ----------
+     Shown by the same :target that opens the sheet, so on a phone it would
+     otherwise sit underneath it: it rides on top of the sheet's 55vh instead.
+     A landed spine row also needs far less headroom than on a desktop. */
+  .split.bill>.tosum{left:12px;bottom:12px;padding:7px 10px 6px;}
+  .split.bill:has(.sec:target)>.tosum{bottom:calc(55vh + 12px);}
+  .split.bill .sec{scroll-margin-top:18px;}
 
   /* ---------- map ----------
      mock4b hangs the Massachusetts tag off the right edge of the SVG at
