@@ -80,6 +80,15 @@
 .contd .secno{text-transform:uppercase;}
 .entries .row .nowrap{white-space:nowrap;}
 
+/* ---------- view switch (two-view ruling, 2026-08-02) ----------
+   "Viewing: Enacted · In force today" on the masthead, in the existing entries
+   list — no new design vocabulary. The view you are on is inert text, carrying
+   the weight of the page's own ink; the other view is an ordinary entries link. */
+.entries .here{color:var(--ink);font-weight:500;}
+/* site.css sized .entries for a single dt/dd pair; a second pair needs the
+   gap the first one gets from .entries' own padding-top. */
+.entries dd + dt{margin-top:15px;}
+
 /* ---------- copy controls (change A) ----------
    Two quiet affordances, both anchors so they work with scripting off.
 

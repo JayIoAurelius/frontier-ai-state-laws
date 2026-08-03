@@ -160,6 +160,11 @@ h1.bill{display:block;}
 .summary{padding:22px 56px 24px;}
 .sum-head{margin-bottom:3px;}
 .sum-lede{font-size:18.5px;line-height:1.4;margin:11px 0 15px;}
+/* The delta is one paragraph per line (California's is a five-part stanza);
+   a single-line delta keeps its old shape because the last child has no
+   trailing margin. */
+.sum-lede p{margin:0 0 10px;}
+.sum-lede p:last-child{margin-bottom:0;}
 .summary .sum-row{grid-template-columns:168px 1fr 152px;padding:6px 0 5px;}
 .summary .sum-t{font-size:14.5px;line-height:1.38;}
 .summary .sum-l{font-size:11px;}
