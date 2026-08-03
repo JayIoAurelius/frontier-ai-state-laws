@@ -135,3 +135,9 @@
 a.chip.eff{color:inherit;text-decoration:none;cursor:pointer;}
 a.chip.eff:hover{border-color:var(--blue-d);color:var(--blue-ink);}
 a.chip.eff:focus-visible{outline:2px solid var(--blue-d);outline-offset:2px;}
+
+/* A5 (2026-08-03) — the status label on the face of the composite.
+   Reuses the frozen .subdek scale; the rule at the left marks it as the
+   document's own status line rather than another line of the standfirst. */
+.mast .subdek.notalaw{margin-top:10px;padding-left:10px;
+  border-left:2px solid var(--rule);color:var(--ink-2);}
