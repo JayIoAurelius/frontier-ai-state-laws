@@ -67,6 +67,21 @@
     <dt>Effective</dt><dd>2026-10-01 (Sec. 2, the frontier-developer provisions); the Sec. 2(c) anonymous internal reporting channel must exist by 2027-01-01</dd>
     <dt>Last verified</dt><dd><span data-verified-stamp>1 August 2026</span></dd>
     <dt>Baseline</dt><dd>Cal. SB 53</dd>
+    <dt>Cite</dt><dd><details class="citeblk">
+  <summary class="cite-t">Cite this page</summary>
+  <div class="cite-body">
+    <p class="cite-line" id="cite-line">Frontier State Law (frontierstatelaw.com), Connecticut Public Act No. 26-15 — An Act Concerning Online Safety, verified <span data-verified-stamp>1 August 2026</span><span data-accessed-stamp hidden></span>. https://frontierstatelaw.com/states/ct.html</p>
+    <button class="citecopy" type="button" data-copy-target="cite-line">Copy citation</button>
+    <pre class="cite-bib" id="cite-bib">@misc{frontierstatelaw-ct,
+  author  = {{Frontier State Law}},
+  title   = {Connecticut Public Act No. 26-15 — An Act Concerning Online Safety},
+  year    = {2026},
+  url     = {https://frontierstatelaw.com/states/ct.html},
+  note    = {Verified <span data-verified-stamp>1 August 2026</span>},<span data-accessed-line hidden></span>
+}</pre>
+    <button class="citecopy" type="button" data-copy-target="cite-bib">Copy BibTeX</button>
+  </div>
+</details></dd>
   </dl>
 </div>
 
@@ -410,6 +425,41 @@
       }
     })
     .catch(function () {});
+})();
+</script>
+<script id="cite">
+(function () {
+  var MONTHS = ["January", "February", "March", "April", "May", "June", "July",
+    "August", "September", "October", "November", "December"];
+  var now = new Date();
+  var pad = function (n) { return (n < 10 ? "0" : "") + n; };
+  var human = now.getDate() + " " + MONTHS[now.getMonth()] + " " + now.getFullYear();
+  var iso = now.getFullYear() + "-" + pad(now.getMonth() + 1) + "-" + pad(now.getDate());
+  var show = function (sel, value) {
+    var all = document.querySelectorAll(sel);
+    for (var i = 0; i < all.length; i++) {
+      all[i].textContent = value;
+      all[i].removeAttribute("hidden");
+    }
+  };
+  show("[data-accessed-stamp]", ", accessed " + human);
+  show("[data-accessed-line]", "\n  urldate = {" + iso + "},");
+
+  if (!navigator.clipboard) return;
+  var buttons = document.querySelectorAll("button[data-copy-target]");
+  Array.prototype.forEach.call(buttons, function (b) {
+    b.addEventListener("click", function () {
+      var target = document.getElementById(b.getAttribute("data-copy-target"));
+      if (!target) return;
+      navigator.clipboard.writeText(target.textContent.trim()).then(function () {
+        if (b.dataset.busy) return;
+        b.dataset.busy = "1";
+        var was = b.textContent;
+        b.textContent = "Copied";
+        setTimeout(function () { b.textContent = was; delete b.dataset.busy; }, 1600);
+      });
+    });
+  });
 })();
 </script>
 </body></html>

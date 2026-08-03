@@ -164,6 +164,10 @@ h1 .thin{font-weight:400;color:var(--ink-2);}
 .chip.same,.chip.tag-matches,.chip.scope{color:#9C9584;border-color:#C3BCA6;}
 .chip.new{color:var(--il);border-color:rgba(138,86,181,.45);background:rgba(138,86,181,.09);}
 .chip.newf,.chip.tag-new{color:#fff;background:var(--il);border-color:var(--il);}
+/* An ABSENCE row: what an amended act removed. Struck-through label, no fill,
+   muted ink — it must not read as a duty in the way every other chip does. */
+.chip.repealed{color:var(--ink-3);border-color:#C3BCA6;background:transparent;
+  text-decoration:line-through;text-decoration-thickness:1px;}
 
 /* ---------- register A: EDITORIAL BAND (purple) ----------
    Ours, not the statute's: promotes a NEW — NO CA ANALOGUE provision
@@ -242,6 +246,10 @@ svg.usmap a:hover .st.full{fill:var(--m-on);}
 .tip .s{font-size:11.5px;color:var(--ink-3);margin-top:3px;letter-spacing:.005em;}
 .tip .go{font-size:9.5px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;
   color:var(--blue-ink);margin-top:8px;}
+/* Crop-safe caption: sits under the SVG and inside .mapwrap so a screenshot of
+   the map carries the claim's scope and its date (build/test_mapcrop.test.js). */
+.mapcap{margin:12px 0 0;padding-top:9px;border-top:1px solid var(--rule-2);
+  font-size:11.5px;line-height:1.5;letter-spacing:.005em;color:var(--ink-2);}
 .matag{position:absolute;left:100%;top:21.4%;margin-left:10px;white-space:nowrap;
   font-size:9.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
   color:var(--m-full);line-height:1.55;}
@@ -289,3 +297,58 @@ svg.usmap a:hover .st.full{fill:var(--m-on);}
   text-transform:uppercase;color:var(--ink);margin:26px 0 10px;}
 .block{margin-bottom:38px;}
 .block:last-child{margin-bottom:0;}
+
+/* ---------- landscape table (map page) ----------
+   The five bill pages compared on the statutes' own terms. Same type scale and
+   rules as .sum-row, laid out as a table because five columns of statutory
+   detail are a table; nothing here introduces a colour or a size site.css does
+   not already define. Pinned by build/test_landscape.test.js. */
+.lscape{max-width:1160px;}
+.lst{width:100%;border-collapse:collapse;table-layout:fixed;}
+.lst th,.lst td{vertical-align:top;text-align:left;padding:12px 16px 13px 0;
+  border-top:1px solid var(--rule-2);}
+.lst thead th{border-top:none;border-bottom:1px solid var(--rule);padding-top:0;
+  font-size:9.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-3);}
+.lst td{font-size:12px;line-height:1.55;color:var(--ink-2);letter-spacing:.004em;}
+.lst td b{font-weight:600;color:var(--ink);}
+.lst-law{width:19%;font-family:'Tiempos',Georgia,serif;font-size:14px;
+  line-height:1.4;font-weight:400;color:var(--ink);}
+.lst-law .chip{margin-bottom:6px;}
+.lst-law a{color:var(--ink);text-decoration:none;
+  border-bottom:1px solid rgba(30,127,169,.35);}
+.lst-law a:hover{color:var(--blue-ink);}
+.lst thead th:nth-child(2),.lst thead th:nth-child(3){width:20%;}
+.lst thead th:nth-child(4){width:23%;}
+.lst thead th:nth-child(5){width:18%;padding-right:0;}
+.lst td:last-child{padding-right:0;}
+/* Not law: the row is greyed and rule-marked so the status is visible before
+   the status column is read. It is not a grade — it is the same not-law
+   treatment the composite's status line uses. */
+.lst tr.notlaw td,.lst tr.notlaw th{color:var(--ink-3);background:rgba(55,55,55,.022);}
+.lst tr.notlaw .lst-law{position:relative;}
+.lst tr.notlaw .lst-law::before{content:"";position:absolute;left:-10px;top:12px;
+  bottom:12px;width:2px;background:var(--m-usage);}
+
+/* ---------- cite this page ----------
+   A quiet meta-list row that costs one line until it is opened. Same type and
+   ink as the rest of .meta; the payloads sit on the panel fill so they read as
+   things to copy rather than as prose. Pinned by build/test_cite.test.js. */
+.citeblk{margin-top:2px;}
+.cite-t{cursor:pointer;list-style:none;font-size:12.5px;color:var(--ink-2);
+  border-bottom:1px solid #CFC8AE;display:inline-block;}
+.cite-t::-webkit-details-marker{display:none;}
+.cite-t:hover{color:var(--blue-ink);border-bottom-color:var(--blue-d);}
+.cite-body{margin-top:10px;}
+.cite-line{font-size:11.5px;line-height:1.55;color:var(--ink-2);
+  background:var(--panel);border:1px solid var(--rule-2);padding:8px 9px;
+  word-break:break-word;}
+.cite-bib{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10.5px;
+  line-height:1.5;color:var(--ink-2);background:var(--panel);
+  border:1px solid var(--rule-2);padding:8px 9px;margin-top:8px;
+  white-space:pre-wrap;word-break:break-word;}
+.citecopy{margin-top:6px;font-family:'Sohne',-apple-system,sans-serif;font-size:9.5px;
+  font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:var(--blue-ink);
+  background:none;border:none;padding:0;cursor:pointer;}
+.citecopy:hover{color:var(--ink);}
+.citecopy:focus-visible{outline:2px solid var(--blue-d);outline-offset:2px;}

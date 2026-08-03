@@ -141,3 +141,31 @@ a.chip.eff:focus-visible{outline:2px solid var(--blue-d);outline-offset:2px;}
    document's own status line rather than another line of the standfirst. */
 .mast .subdek.notalaw{margin-top:10px;padding-left:10px;
   border-left:2px solid var(--rule);color:var(--ink-2);}
+
+/* ==========================================================================
+   SECTION INDEX (2026-08-03) — the table of contents above AN ACT.
+   Ruling 11 killed the standalone comparison board, so this is styled to read
+   as apparatus, not as a headline: the design system's smallest type, hairline
+   rules, chips at their existing size, and no fill of its own. Nothing here
+   introduces a colour or a size that site.css does not already define.
+   ========================================================================== */
+.secindex{max-width:620px;margin:0 0 30px;}
+.secindex .sec-label{margin-bottom:8px;}
+.sxi{width:100%;border-collapse:collapse;table-layout:auto;}
+/* The caption states what the columns are; it is read aloud by screen readers
+   and hidden visually, because on screen the columns are self-evident and a
+   second line of prose here would make the index look like a section. */
+.sxi-cap{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);
+  clip-path:inset(50%);white-space:nowrap;}
+.sxi td{border-top:1px solid var(--rule-2);padding:6px 10px 6px 0;
+  vertical-align:baseline;}
+.sxi tr:first-child td{border-top:1px solid var(--rule);}
+.sxi-n{width:34px;font-size:10.5px;font-weight:600;letter-spacing:.11em;
+  color:var(--ink-3);text-align:right;padding-right:14px;}
+.sxi-t{font-size:12.5px;line-height:1.45;letter-spacing:.005em;}
+.sxi-h,.sxi-e{width:1%;white-space:nowrap;text-align:right;padding-right:0;}
+.sxi-h{padding-right:8px;}
+.sxi a{color:var(--ink-2);text-decoration:none;border-bottom:1px solid transparent;}
+.sxi-n a{color:inherit;}
+.sxi a:hover{color:var(--ink);border-bottom-color:#CFC8AE;}
+.sxi a:focus-visible{outline:2px solid var(--blue-d);outline-offset:2px;}

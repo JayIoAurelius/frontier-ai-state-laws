@@ -76,6 +76,16 @@
   /* ---------- the split becomes one column ---------- */
   .split{grid-template-columns:1fr;}
   .left{padding:24px 18px 40px;}
+  /* Section index (2026-08-03): four columns do not survive 320px, so each row
+     becomes two lines — the obligation, then its two chips under it. The number
+     stays in its own narrow column so the list still scans as numbered. */
+  .secindex{max-width:none;margin-bottom:24px;}
+  .sxi tr{display:grid;grid-template-columns:30px 1fr;
+    border-top:1px solid var(--rule-2);}
+  .sxi tr:first-child{border-top:1px solid var(--rule);}
+  .sxi td{border-top:none;padding:5px 0;}
+  .sxi-n{grid-row:1 / span 2;padding-right:10px;}
+  .sxi-h,.sxi-e{width:auto;text-align:left;display:inline-block;padding:0 8px 6px 0;}
   .bill-head{padding:0 0 18px;text-align:left;}
   .assembled{margin-left:0;max-width:none;}
   .strip{padding:22px 18px 32px;}
@@ -178,6 +188,27 @@
      left:100%. On a phone that is off-screen and drags a horizontal scrollbar
      onto every page, so the tag drops below the map instead. */
   .mapwrap{margin-top:10px;}
+  /* The caption wraps to two or three lines on a phone; it must stay attached to
+     the map and above the MA tag, which is now also in normal flow. */
+  .mapcap{margin-top:10px;font-size:11px;max-width:none;}
+
+  /* ---------- landscape table stacks ----------
+     Five columns of statutory detail cannot shrink to 390px, and a sideways
+     scroll hides columns 3-5 entirely. Each row becomes a card and each cell
+     grows the column label it lost, from the same data-col attribute the
+     desktop header row prints. */
+  .lscape{max-width:none;}
+  .lst,.lst tbody,.lst tr,.lst th,.lst td{display:block;width:auto;}
+  .lst thead{position:absolute;width:1px;height:1px;overflow:hidden;
+    clip:rect(0 0 0 0);clip-path:inset(50%);}
+  .lst tr{border-top:1px solid var(--rule);padding:14px 0 4px;}
+  .lst th,.lst td{border-top:none;padding:0 0 10px;}
+  .lst td::before{content:attr(data-col);display:block;margin-bottom:3px;
+    font-size:9px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;
+    color:var(--ink-3);}
+  .lst-law{width:auto;font-size:15px;padding-bottom:12px;}
+  .lst tr.notlaw{margin:0 -18px;padding:14px 18px 4px;}
+  .lst tr.notlaw .lst-law::before{display:none;}
   .matag{position:static;margin:14px 0 0;left:auto;top:auto;white-space:normal;}
   .lnote{max-width:none;}
 }
