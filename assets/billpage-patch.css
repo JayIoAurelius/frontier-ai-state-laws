@@ -230,7 +230,13 @@ h1.bill{display:block;}
    the row-level cite link printed over the drop's own per-item cites. Open rows
    hide the row link — every expanded item carries its cite — and the drop takes
    the full row width so nothing shares its column. */
-.summary .sum-row:has(.sum-x[open])>.sum-l{visibility:hidden;}
+.summary .sum-row:has(.sum-x[open])>.sum-l,
+.summary .sum-row:has(.sum-x[open])>.sum-ls{visibility:hidden;}
+/* Jay, 2026-08-04 17:54 ET: a grouped row printed one cite plus "+2 more" and
+   sent all of it to the first provision, so "the 2 more are impossible to
+   open". It now prints one link per provision, stacked in the same column at
+   the same size, each landing on its own row. */
+.sum-ls{display:flex;flex-direction:column;align-items:flex-end;gap:4px;}
 .sum-list{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:3px 24px;}
 .sum-list a{color:var(--ink-2);text-decoration:none;}
 .sum-list a:hover{color:var(--blue-ink);}

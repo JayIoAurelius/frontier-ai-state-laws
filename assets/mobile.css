@@ -70,6 +70,9 @@
   .sum-x>summary.sum-line>div:first-child{flex:none;}
   .summary .sum-t,.summary .sum-row.hi .sum-t{font-size:15px;}
   .sum-l{text-align:left;white-space:normal;}
+  /* the row is one column here, so a grouped row's link stack starts at the
+     same left edge as its heading */
+  .sum-ls{align-items:flex-start;}
   .sum-drop{margin-left:0;max-width:none;}
   .sum-list{grid-template-columns:1fr;}
 
