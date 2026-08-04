@@ -539,19 +539,16 @@
     for (i = 0; i < p.length; i++) g[p[i].type] = p[i].value;
     return g;
   }
-  function relative(iso, now) {
+  function dated(iso) {
     try {
       var t = Date.parse(typeof iso === "string" ? iso : "");
-      if (isNaN(t) || Math.abs(now - t) >= 864e5) return null;
-      var d = new Date(t);
-      var a = etParts(d, { year: "numeric", month: "2-digit", day: "2-digit",
-        hour: "numeric", minute: "2-digit", hour12: true });
-      var b = etParts(now, { year: "numeric", month: "2-digit", day: "2-digit" });
-      var same = a.year === b.year && a.month === b.month && a.day === b.day;
-      var word = same ? "today" : (t < now ? "yesterday" : null);
-      if (!word || !a.hour || !a.minute || !a.dayPeriod) return null;
-      return word + ", " + a.hour + ":" + a.minute + " "
-        + a.dayPeriod.toLowerCase() + " ET";
+      if (isNaN(t)) return null;
+      var a = etParts(new Date(t), { year: "numeric", month: "long",
+        day: "numeric", hour: "numeric", minute: "2-digit", hour12: true });
+      if (!a.day || !a.month || !a.year || !a.hour || !a.minute || !a.dayPeriod)
+        return null;
+      return a.day + " " + a.month + " " + a.year + ", " + a.hour + ":"
+        + a.minute + " " + a.dayPeriod.toLowerCase() + " ET";
     } catch (e) { return null; }
   }
   fetch("/verified.json", { cache: "no-store" })
@@ -562,7 +559,7 @@
       if (d) {
         var stamps = document.querySelectorAll("[data-verified-stamp]");
         var head = document.querySelectorAll("dd[data-verified-stamp], dd [data-verified-stamp]");
-        var rel = relative(j.generated_at, new Date());
+        var rel = dated(j.generated_at);
         for (var i = 0; i < stamps.length; i++)
           stamps[i].textContent =
             rel && [].indexOf.call(head, stamps[i]) >= 0 ? rel : d;
