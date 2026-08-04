@@ -106,17 +106,23 @@ h1.bill{display:block;}
 .split.bill .sec.sel .openat{color:var(--blue-ink);}
 
 /* ==========================================================================
-   THE SOURCE CARD (desktop only) — Jay, 2026-08-01:
+   THE SOURCE CARD, BILL-PAGE HALF — Jay, 2026-08-01:
    "a static thing that does not scroll ... less than half of the page in width
    ... clearly like a box that fills up with leg text as needed ... font size
    smaller too. remove the delta section."
 
+   The card itself — its fill, edge, radius and type — is assets/card.css, the
+   one place it is styled for both page kinds (Jay, 2026-08-04 16:07 ET). What
+   is left here is what this page does NOT share with the composite: the split
+   ratio, the column override, the card's own padding, its sticky wrapper, and
+   the spacing of the continuation link on a card that ends where its excerpt
+   ends.
+
    The right side stops being a full-height scrolling column. site.css line
    119-120 (`.right{height:100vh;overflow-y:auto}`) is FROZEN and is overridden
    here, never edited: the column becomes plain page ground and the open panel
-   becomes a bounded box — panel fill, hairline rule, the 2px radius the chips
-   already use — that ends where its text ends. .panelwrap keeps the sticky, so
-   the card rides along while the reader scrolls the spine.
+   becomes a bounded box that ends where its text ends. .panelwrap keeps the
+   sticky, so the card rides along while the reader scrolls the spine.
 
    Inside the min-width query, so mobile.css keeps the <900px bottom sheet
    exactly as approved. The sheet KEEPS its internal scroll: 55vh is not enough
@@ -134,27 +140,16 @@ h1.bill{display:block;}
      cards still end where their text ends, with no scrollbar. */
   .split.bill .panelwrap{top:26px;max-height:calc(100vh - 52px);overflow-y:auto;
     overscroll-behavior:contain;}
-  .split.bill .panel{background:var(--panel);border:1px solid var(--rule);
-    border-radius:2px;padding:22px 24px 24px;}
+  .split.bill .panel{padding:22px 24px 24px;}
 
-  /* Two steps smaller inside the card (statute 14.5px -> 12px, metadata to
-     match). Same metrics as the composite card: one card, two pages. */
-  .split.bill .p-eyebrow{font-size:8.5px;letter-spacing:.14em;}
-  .split.bill .p-head{margin-bottom:10px;}
-  .split.bill .p-title{font-size:16px;margin-bottom:5px;}
-  .split.bill .p-cite{font-size:10.5px;}
-  .split.bill .p-rule{margin:13px 0;}
-  .split.bill .src{font-size:12px;line-height:1.7;max-width:none;}
-  .split.bill .p-more{font-size:10.5px;margin-top:12px;padding-top:10px;}
+  /* The bill page's spine sets a max-width on its reading column; the card's
+     excerpt is not that column and takes the width of the box it sits in. */
+  .split.bill .src{max-width:none;}
+  /* Nothing follows the continuation link on a bill-page card, so it can sit a
+     little further from the excerpt than the composite's, which has a WHY note
+     under it. Size comes from card.css. */
+  .split.bill .p-more{margin-top:12px;padding-top:10px;}
 }
-
-/* The continuation affordance under a trimmed excerpt: where the card stops,
-   the official text carries on. Styled at every width — the bottom sheet needs
-   it as much as the card does. */
-.p-more{margin-top:14px;padding-top:12px;border-top:1px solid var(--rule);
-  font-size:11.5px;letter-spacing:.02em;}
-.p-more a{color:var(--blue-ink);text-decoration:none;
-  border-bottom:1px solid rgba(30,127,169,.35);padding-bottom:1px;}
 
 /* ---------- "also on the books" strip ---------- */
 .strip .sec-label{max-width:1160px;margin-bottom:2px;}
@@ -328,3 +323,14 @@ a.chip.eff{color:inherit;text-decoration:none;}
 .effsrc:focus-visible{outline:2px solid var(--blue-d);outline-offset:2px;}
 .effsrc-none{border-bottom:1px dotted var(--rule);cursor:help;
   display:inline-block;width:.9em;}
+
+/* The closing full-text pointer takes the site's link treatment. Without this
+   it rendered in the browser's default link blue and visited purple (Jay,
+   2026-08-04 16:52 ET: "this looks so ugly"). Same treatment as .drop's links. */
+.contd p a{color:var(--blue-ink);text-decoration:none;
+  border-bottom:1px solid rgba(30,127,169,.35);padding-bottom:1px;}
+
+/* A status chip stays one box when its text wraps. The 2026-08-04 16:51 chip
+   broke into two bordered fragments at full-width; inline-block wraps the box
+   as a unit instead of splitting the border. */
+.mast .status{display:inline-block;line-height:1.6;}

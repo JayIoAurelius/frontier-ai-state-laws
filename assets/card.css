@@ -1,0 +1,65 @@
+/* ==========================================================================
+   card.css — THE SOURCE CARD, STYLED ONCE.
+
+   Jay, 2026-08-04 16:07 ET: "if we want to keep things up to date we want to
+   reuse as much of the working backend and frontend as possible."
+
+   The right-hand card is the same object on three surfaces — a bill page's
+   split view, the two composite views, and the how-to-read card the composite
+   rail opens on. Its metrics used to be written out twice, in billpage-patch.css
+   and composite-patch.css, under two different scopes (`.split.bill …` and
+   `.right …`) with identical values. billpage-patch.css said so out loud: "Same
+   metrics as the composite card: one card, two pages". That comment was doing a
+   stylesheet's job. This file is the stylesheet.
+
+   SCOPE. Everything here hangs off `.panel`, which is the card's own class on
+   every page that has one, so a page gets the card by rendering the card
+   (build/sourcecard.js) and linking this file. Nothing here is page-specific.
+
+   CASCADE. Loaded after site.css (the frozen design system, never edited) and
+   before the page's own patch file, so a page can still override what it
+   genuinely needs to. What is left in the patch files, and why:
+     · the split ratio and the column overrides — page-level layout, not the card
+     · the card's padding (22/24/24 on a bill page, 20/22/20 on the composite)
+       and its sticky anchor (.panelwrap there, the panel itself here)
+     · .split.bill .src{max-width:none} — a bill-page-only release
+     · the continuation link's spacing, which is tighter on the composite because
+       a WHY note follows it
+     · .right .note — the WHY note and the explainer entries are composite-only
+
+   The card's DESIGN was ruled on 2026-08-01 ("a static thing that does not
+   scroll ... clearly like a box that fills up with leg text as needed ... font
+   size smaller too"): a bounded box in the frozen language — panel fill,
+   hairline border, the 2px radius the chips already use — with the type two
+   steps down from the spine beside it. That ruling now lives in one place.
+   ========================================================================== */
+
+/* The continuation affordance under an excerpt the card could not hold whole:
+   where the card stops, the official text carries on. Styled at every width —
+   the phone bottom sheet needs it as much as the desktop card does. */
+.p-more{margin-top:14px;padding-top:12px;border-top:1px solid var(--rule);
+  font-size:11.5px;letter-spacing:.02em;}
+.p-more a{color:var(--blue-ink);text-decoration:none;
+  border-bottom:1px solid rgba(30,127,169,.35);padding-bottom:1px;}
+
+/* ==========================================================================
+   THE CARD (desktop only). Inside the min-width query so mobile.css keeps the
+   <900px bottom sheet exactly as approved: the sheet KEEPS its internal scroll,
+   because 55vh is nowhere near enough room to sit still, which is the whole
+   reason the desktop card can drop the scrollbar and the sheet cannot.
+   ========================================================================== */
+@media (min-width: 900px){
+  /* A bounded box, not a column. Fill, edge and radius only: padding and the
+     sticky offset differ by page and stay with the page. */
+  .panel{background:var(--panel);border:1px solid var(--rule);border-radius:2px;}
+
+  /* Two steps smaller inside the card (statute 14.5px -> 12px, metadata to
+     match): a card is a reference, not a reading column. */
+  .panel .p-eyebrow{font-size:8.5px;letter-spacing:.14em;}
+  .panel .p-head{margin-bottom:10px;}
+  .panel .p-title{font-size:16px;margin-bottom:5px;}
+  .panel .p-cite{font-size:10.5px;}
+  .panel .p-rule{margin:13px 0;}
+  .panel .src{font-size:12px;line-height:1.7;}
+  .panel .p-more{font-size:10.5px;}
+}
