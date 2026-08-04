@@ -89,6 +89,11 @@
   .bill-head{padding:0 0 18px;text-align:left;}
   .assembled{margin-left:0;max-width:none;}
   .strip{padding:22px 18px 32px;}
+  /* The pipeline ledger stacks like the summary rows: date and branch, then the
+     recorded action, then the link — three lines instead of three columns. */
+  .pipeline{padding:22px 18px 26px;}
+  .pipeline .strip-note{max-width:none;}
+  .pipeline .sum-row{grid-template-columns:1fr;gap:5px;padding:10px 0 9px;}
   .page{padding:24px 18px 40px;}
   .prose{max-width:none;}
 
@@ -169,7 +174,7 @@
     position:sticky;top:0;z-index:2;margin:0 0 6px auto;
     width:34px;height:34px;border-radius:50%;
     background:var(--off);border:1px solid var(--rule);
-    color:var(--ink-2);font-family:'Sohne',-apple-system,sans-serif;
+    color:var(--ink-2);font-family:var(--sans);
     font-size:15px;line-height:1;text-decoration:none;cursor:pointer;
     box-shadow:0 1px 5px rgba(55,50,40,.14);
   }

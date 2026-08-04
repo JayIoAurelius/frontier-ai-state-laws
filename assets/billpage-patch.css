@@ -21,7 +21,7 @@ details.sec[open]>summary.sec-row .openat{color:var(--ink-3);}
 
 /* the provision heading is OURS, not the statute's: Söhne, quiet, above the text
    (BRAND.md — Tiempos is statute and display only, Söhne is everything editorial) */
-.leg .ourhead{font-family:'Sohne',-apple-system,sans-serif;font-size:10.5px;font-weight:600;
+.leg .ourhead{font-family:var(--sans);font-size:10.5px;font-weight:600;
   letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:8px;}
 
 /* dropdown body: the per-provision facts the summary layer compresses away */
@@ -142,6 +142,18 @@ h1.bill{display:block;}
 .strip .sec-label{max-width:1160px;margin-bottom:2px;}
 .strip .sum-row:first-of-type{border-top:none;}
 
+/* ---------- the pipeline ledger (Miles Kodama's reading, 2026-08-04) ----------
+   A dated ledger of the bill's recorded actions, in the summary's own row grid.
+   Nothing new in the type scale: the rows take the compressed .summary sizes and
+   the date cell takes the .sum-facts dt scale below. */
+.pipeline{padding:26px 56px 30px;border-bottom:1px solid var(--rule);}
+.pipeline .sum-row{padding:9px 0 8px;}
+.pipeline .sum-t{font-size:14.5px;line-height:1.38;}
+.pipeline .strip-note{max-width:1160px;}
+.pipe-d{font-size:9px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--ink-3);padding-top:4px;}
+.pipe-d span{display:block;padding-top:2px;}
+
 /* ==========================================================================
    READING UX (Jay, 2026-08-01): "the ui is clunky on the bills page. the high
    level summaries take up so much space and then when i click on where they
@@ -187,7 +199,7 @@ h1.bill{display:block;}
 .sum-x>summary.sum-line::-webkit-details-marker{display:none;}
 .sum-x>summary.sum-line>div:first-child{flex:0 0 168px;}
 /* the only affordance saying there is more under the line */
-.sum-x>summary.sum-line .sum-t::after{content:" ▸";font-family:'Sohne',sans-serif;
+.sum-x>summary.sum-line .sum-t::after{content:" ▸";font-family:var(--sans);
   font-size:8.5px;color:var(--ink-3);vertical-align:1px;}
 .sum-x[open]>summary.sum-line .sum-t::after{content:" ▾";color:var(--blue-ink);}
 .sum-drop{margin:7px 0 3px 188px;padding-top:8px;
@@ -228,7 +240,7 @@ html{scroll-behavior:smooth;}
    it retargets the URL at #summary, which scrolls back AND drops :target off
    the row, so the source panel (and, on a phone, the bottom sheet) closes. */
 .split.bill>.tosum{display:none;position:fixed;left:20px;bottom:20px;z-index:70;
-  font-family:'Sohne',-apple-system,sans-serif;font-size:10px;font-weight:600;
+  font-family:var(--sans);font-size:10px;font-weight:600;
   letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2);text-decoration:none;
   background:var(--off);border:1px solid var(--rule);border-radius:2px;
   padding:8px 12px 7px;box-shadow:0 2px 10px rgba(55,50,40,.16);}
@@ -265,7 +277,7 @@ html{scroll-behavior:smooth;}
 .anchorlink:hover{color:var(--blue-ink);}
 .anchorlink.copied{color:var(--green);visibility:visible;}
 .anchorlink.copied::after{content:"Copied";position:absolute;left:calc(100% + 5px);top:0;
-  font-family:'Sohne',-apple-system,sans-serif;font-size:8.5px;font-weight:600;
+  font-family:var(--sans);font-size:8.5px;font-weight:600;
   letter-spacing:.11em;text-transform:uppercase;color:var(--green);white-space:nowrap;}
 
 /* ---------- the version stamp is a link (change B) ----------

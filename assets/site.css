@@ -3,8 +3,14 @@
    Extracted (not invented) from mockups/mock1e_composite.html (composite),
    mock3e_textspine.html (bill page), mock4b_map.html (map), mock_shared.css.
    PNG ground truth: mock1e.png, mock3e.png, mock4b.png.
-   Typography per Inputs/IFP_Brand/BRAND.md: Tiempos Text = statute + display,
-   Söhne = navigation, labels, chips, anything editorial (never statute text).
+   Typography per Inputs/IFP_Brand/BRAND.md and the Cirrus/IFP webapp GUIDE:
+   the SERIF carries the statute, the display line, and every longer chunk of
+   our own prose (standfirst, summaries, About body, map caption); the SANS
+   carries navigation, chips, eyebrows, labels, table headers and the editorial
+   gloss that sits inside a statute line.  Both stacks live in one token each
+   (--serif / --sans below) because the published site has no licensed fonts:
+   renders in the browser's default face (2026-08-04: six bare 'Sohne' rules
+   were shipping every chip and status flag on the public site in Times).
    Fonts are licensed and gitignored: referenced by relative path out of the
    ========================================================================== */
 
@@ -33,11 +39,19 @@
      114px is the largest reserve that still leaves the approved 850px map at the
      1440px design width. Pinned by build/test_mapcallout.test.js. */
   --matagw:114px;
+  /* Type stacks (GUIDE §ii token sheet). Name-first, and every stack ends in a
+     generic family: the licensed Klim files are LOCAL ONLY, so on the public
+     site 'Tiempos' and 'Sohne' resolve to nothing and the rest of the stack is
+     what a reader actually gets — Iowan Old Style on macOS, Georgia elsewhere.
+     "Tiempos Text" / "Söhne" are the licensed families' real names, free on any
+     machine that has them installed.  Pinned by build/test_serifvoice.test.js. */
+  --serif:'Tiempos',"Tiempos Text","Iowan Old Style",Georgia,serif;
+  --sans:'Sohne',"Söhne",Inter,-apple-system,"Helvetica Neue",Arial,sans-serif;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 html{-webkit-font-smoothing:antialiased;}
 body{max-width:1440px;margin:0 auto;background:var(--off);color:var(--ink);
-  font-family:'Sohne',-apple-system,sans-serif;font-size:14px;}
+  font-family:var(--sans);font-size:14px;}
 
 /* ---------- site chrome / nav (templates/nav.html) ---------- */
 .chrome{display:flex;align-items:center;justify-content:space-between;
@@ -57,16 +71,21 @@ nav a.mute{color:var(--ink-3);}
 .eyebrow{font-size:10.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
   color:var(--blue-ink);margin-bottom:16px;}
 .mast.tight .eyebrow{margin-bottom:14px;}
-h1{font-family:'Tiempos',Georgia,serif;font-weight:700;font-size:40px;line-height:1.1;
+h1{font-family:var(--serif);font-weight:700;font-size:40px;line-height:1.1;
   letter-spacing:-.012em;margin-bottom:16px;}
 h1.bill{font-size:38px;line-height:1.12;margin-bottom:14px;
   display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;}
 h1 .thin{font-weight:400;color:var(--ink-2);}
-.dek{font-size:15px;line-height:1.62;color:var(--ink-2);max-width:660px;font-weight:400;}
+/* The standfirst is OURS, and it is the longest chunk of our prose above the
+   fold on every page — serif, per the GUIDE, at the token sheet's body leading.
+   It stays a step back from the statute's ink so the two voices never merge. */
+.dek{font-family:var(--serif);font-size:16px;line-height:1.6;color:var(--ink-2);
+  max-width:660px;font-weight:400;}
 .dek b{font-weight:500;color:var(--ink);}
-.subdek{font-size:13px;line-height:1.6;color:var(--ink-3);max-width:660px;}
+.subdek{font-family:var(--serif);font-size:14px;line-height:1.6;
+  color:var(--ink-3);max-width:660px;}
 .statusline{margin:-4px 0 14px;}
-.status{font-family:'Sohne';font-size:9.5px;font-weight:600;letter-spacing:.13em;
+.status{font-family:var(--sans);font-size:9.5px;font-weight:600;letter-spacing:.13em;
   text-transform:uppercase;color:var(--green);border:1px solid rgba(63,122,78,.42);
   background:rgba(63,122,78,.10);padding:4px 9px 3px;border-radius:2px;}
 .status.live{color:var(--blue-ink);border-color:rgba(30,127,169,.42);background:rgba(65,196,252,.10);}
@@ -96,16 +115,16 @@ h1 .thin{font-weight:400;color:var(--ink-2);}
 .sum-head{display:flex;justify-content:space-between;align-items:baseline;max-width:1160px;margin-bottom:6px;}
 .sum-head h2{font-size:10.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--ink);}
 .sum-head span{font-size:11.5px;color:var(--ink-3);letter-spacing:.01em;}
-.sum-lede{font-family:'Tiempos',Georgia,serif;font-size:20.5px;line-height:1.45;
+.sum-lede{font-family:var(--serif);font-size:20.5px;line-height:1.45;
   letter-spacing:-.004em;color:var(--ink);max-width:1180px;margin:15px 0 24px;}
 .sum-row{display:grid;grid-template-columns:112px 1fr 152px;gap:0 20px;align-items:baseline;
   max-width:1160px;padding:13px 0 12px;border-top:1px solid var(--rule-2);}
 .sum-row:first-of-type{border-top:1px solid var(--rule);}
 .sum-row.hi + .sum-row{border-top:none;}
 .sum-row.hi .sum-t{font-size:17.5px;}
-.sum-t{font-family:'Tiempos',Georgia,serif;font-size:16.5px;line-height:1.5;color:var(--ink);}
+.sum-t{font-family:var(--serif);font-size:16.5px;line-height:1.5;color:var(--ink);}
 .sum-t i{font-style:italic;color:var(--ink-2);}
-.sum-t .sub{display:block;font-family:'Sohne';font-size:11.5px;line-height:1.5;
+.sum-t .sub{display:block;font-family:var(--sans);font-size:11.5px;line-height:1.5;
   color:var(--ink-3);margin-top:4px;letter-spacing:.005em;}
 .sum-l{text-align:right;font-size:11.5px;letter-spacing:.02em;color:var(--blue-ink);
   text-decoration:none;white-space:nowrap;}
@@ -126,7 +145,7 @@ h1 .thin{font-weight:400;color:var(--ink-2);}
 
 /* ---------- the bill (composite head) ---------- */
 .bill-head{text-align:center;padding:0 40px 22px 150px;}
-.act{font-family:'Tiempos',Georgia,serif;font-size:17px;line-height:1.55;color:var(--ink);}
+.act{font-family:var(--serif);font-size:17px;line-height:1.55;color:var(--ink);}
 .act .sc{font-variant-caps:all-small-caps;letter-spacing:.07em;font-weight:700;}
 .assembled{font-size:11.5px;line-height:1.6;color:var(--ink-3);margin:12px auto 0;max-width:470px;letter-spacing:.005em;}
 .dbl{border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);height:3px;margin-bottom:34px;opacity:.55;}
@@ -140,11 +159,11 @@ h1 .thin{font-weight:400;color:var(--ink-2);}
   color:var(--ink-3);white-space:nowrap;}
 .rail .chip{margin-top:8px;}
 .rail .chip.eff{margin-top:5px;}
-.leg{font-family:'Tiempos',Georgia,serif;font-size:15.5px;line-height:1.74;color:var(--ink);max-width:598px;}
+.leg{font-family:var(--serif);font-size:15.5px;line-height:1.74;color:var(--ink);max-width:598px;}
 .split.bill .leg{max-width:620px;}
 .leg .rin{font-weight:700;}
 /* editorial gloss on a defined term — Sohne, never statute text (ruling 12) */
-.gloss{font-family:'Sohne',-apple-system,sans-serif;font-size:11.5px;line-height:1;
+.gloss{font-family:var(--sans);font-size:11.5px;line-height:1;
   color:#9A937F;letter-spacing:.004em;font-weight:400;}
 .gloss.tight{white-space:nowrap;}
 .contd{display:grid;grid-template-columns:var(--railw) 1fr;gap:var(--railgap);margin-top:26px;
@@ -166,7 +185,7 @@ h1 .thin{font-weight:400;color:var(--ink-2);}
    "no state had it first", which the site cannot check and therefore carries on
    an external citation (ruling 15). Same shape, different colour, so the two
    never scan as one register. */
-.chip{display:inline-block;font-family:'Sohne';font-size:9.5px;font-weight:600;
+.chip{display:inline-block;font-family:var(--sans);font-size:9.5px;font-weight:600;
   letter-spacing:.1em;text-transform:uppercase;padding:2.5px 7px 2px;border-radius:2px;
   border:1px solid;line-height:1.2;}
 .chip.ca,.chip.tag-baseline{color:var(--ca);border-color:rgba(38,88,185,.42);}
@@ -205,7 +224,7 @@ h1 .thin{font-weight:400;color:var(--ink-2);}
   color:#8E77AB;margin-top:8px;white-space:nowrap;}
 .meaning{grid-column:2;max-width:620px;margin-top:16px;padding-top:13px;
   border-top:1px solid rgba(138,86,181,.24);
-  font-family:'Sohne';font-size:12.5px;line-height:1.62;color:var(--ink-3);}
+  font-family:var(--sans);font-size:12.5px;line-height:1.62;color:var(--ink-3);}
 
 /* ---------- register B: SELECTION STATE (blue) ----------
    Which row the right-hand panel is currently showing, and the identical
@@ -224,13 +243,13 @@ h1 .thin{font-weight:400;color:var(--ink-2);}
 /* ---------- source panel (right half of the split) ---------- */
 .p-head{display:flex;align-items:center;gap:10px;margin-bottom:13px;}
 .p-eyebrow{font-size:9.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--blue-ink);}
-.p-title{font-family:'Tiempos',Georgia,serif;font-size:20px;font-weight:700;
+.p-title{font-family:var(--serif);font-size:20px;font-weight:700;
   line-height:1.25;letter-spacing:-.005em;margin-bottom:7px;}
 .p-cite{font-size:12px;color:var(--ink-2);letter-spacing:.005em;}
 .p-cite .dot{color:#C6BFA6;padding:0 5px;}
 .p-cite a{color:var(--ink-2);text-decoration:none;border-bottom:1px solid #CFC8AE;}
 .p-rule{height:1px;background:var(--rule);margin:20px 0;}
-.src{font-family:'Tiempos',Georgia,serif;font-size:14.5px;line-height:1.76;color:#7A7364;}
+.src{font-family:var(--serif);font-size:14.5px;line-height:1.76;color:#7A7364;}
 .src .hl{color:var(--ink);}
 .note{margin-top:26px;padding-top:18px;border-top:1px solid var(--rule);}
 .note h3{font-size:9.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
@@ -269,9 +288,12 @@ svg.usmap a:hover .st.full{fill:var(--m-on);}
 .tip .go{font-size:9.5px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;
   color:var(--blue-ink);margin-top:8px;}
 /* Crop-safe caption: sits under the SVG and inside .mapwrap so a screenshot of
-   the map carries the claim's scope and its date (build/test_mapcrop.test.js). */
+   the map carries the claim's scope and its date (build/test_mapcrop.test.js).
+   It is a sentence of OURS about the map, not a label on it, so it reads in the
+   serif (2026-08-04); the .005em tracking it used to carry was a correction for
+   Söhne at caption size and is wrong for a serif, so it goes. */
 .mapcap{margin:12px 0 0;padding-top:9px;border-top:1px solid var(--rule-2);
-  font-size:11.5px;line-height:1.5;letter-spacing:.005em;color:var(--ink-2);}
+  font-family:var(--serif);font-size:12.5px;line-height:1.55;color:var(--ink-2);}
 /* A DEFINITE 96px width, not nowrap: the published site runs on fallback fonts
    font wider than Sohne walks straight over the legend's rule however much room
    the column reserves. It has to be `width`, not `max-width` — at left:100% the
@@ -309,18 +331,18 @@ svg.usmap a:hover .st.full{fill:var(--m-on);}
 /* ---------- prose (About) — Tiempos body on off-white, per BRAND.md ---------- */
 .page{padding:34px 56px 60px;}
 .prose{max-width:660px;}
-.prose p{font-family:'Tiempos',Georgia,serif;font-size:15.5px;line-height:1.74;
+.prose p{font-family:var(--serif);font-size:15.5px;line-height:1.74;
   color:var(--ink);margin-bottom:16px;}
 .prose p:last-child{margin-bottom:0;}
-.prose p.small{font-family:'Sohne';font-size:12.5px;line-height:1.65;color:var(--ink-3);}
+.prose p.small{font-family:var(--sans);font-size:12.5px;line-height:1.65;color:var(--ink-3);}
 .prose ul{list-style:none;margin:0 0 18px;}
-.prose li{font-family:'Tiempos',Georgia,serif;font-size:15.5px;line-height:1.7;
+.prose li{font-family:var(--serif);font-size:15.5px;line-height:1.7;
   color:var(--ink);padding-left:18px;position:relative;margin-bottom:9px;}
 .prose li::before{content:"·";position:absolute;left:4px;color:var(--ink-3);}
 .prose a{color:var(--ink);text-decoration:none;border-bottom:1px solid #CFC8AE;padding-bottom:1px;}
 .prose a:hover{border-bottom-color:var(--blue-d);}
 .prose code{font-family:ui-monospace,Menlo,monospace;font-size:.86em;color:var(--ink-2);}
-.prose h3{font-family:'Sohne';font-size:10.5px;font-weight:600;letter-spacing:.16em;
+.prose h3{font-family:var(--sans);font-size:10.5px;font-weight:600;letter-spacing:.16em;
   text-transform:uppercase;color:var(--ink);margin:26px 0 10px;}
 .block{margin-bottom:38px;}
 .block:last-child{margin-bottom:0;}
@@ -347,14 +369,14 @@ svg.usmap a:hover .st.full{fill:var(--m-on);}
   color:var(--ink-3);}
 .lst td{font-size:12px;line-height:1.55;color:var(--ink-2);letter-spacing:.004em;}
 .lst td b{font-weight:600;color:var(--ink);}
-.lst-law{width:19%;font-family:'Tiempos',Georgia,serif;font-size:14px;
+.lst-law{width:19%;font-family:var(--serif);font-size:14px;
   line-height:1.4;font-weight:400;color:var(--ink);}
 .lst-law .chip{margin-bottom:6px;}
 /* The delta sentence, under the law name (the inversion, 2026-08-03): the
    community's own one-line format for what a bill adds. Back to the body sans
    at caption size, so it reads as a claim about the law rather than as part of
    the law's title, and so the serif name still leads the scan. */
-.lst-delta{margin-top:7px;font-family:'Sohne',-apple-system,sans-serif;
+.lst-delta{margin-top:7px;font-family:var(--sans);
   font-size:11.5px;line-height:1.5;font-weight:400;color:var(--ink-2);
   letter-spacing:.004em;}
 /* Compact list — the landscape cells' bullet idiom (Jay, 2026-08-03). Nothing
@@ -399,7 +421,7 @@ svg.usmap a:hover .st.full{fill:var(--m-on);}
   line-height:1.5;color:var(--ink-2);background:var(--panel);
   border:1px solid var(--rule-2);padding:8px 9px;margin-top:8px;
   white-space:pre-wrap;word-break:break-word;}
-.citecopy{margin-top:6px;font-family:'Sohne',-apple-system,sans-serif;font-size:9.5px;
+.citecopy{margin-top:6px;font-family:var(--sans);font-size:9.5px;
   font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:var(--blue-ink);
   background:none;border:none;padding:0;cursor:pointer;}
 .citecopy:hover{color:var(--ink);}

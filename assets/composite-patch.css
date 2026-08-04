@@ -103,7 +103,7 @@
 .seclink{grid-column:1;margin-top:12px;}
 .sec .seclink{visibility:hidden;}
 .sec.sel .seclink,.sec[data-n]:hover .seclink,.sec .copylink:focus-visible{visibility:visible;}
-.copylink{font-family:'Sohne',-apple-system,sans-serif;font-size:9px;font-weight:600;
+.copylink{font-family:var(--sans);font-size:9px;font-weight:600;
   letter-spacing:.11em;text-transform:uppercase;color:var(--ink-3);text-decoration:none;
   border-bottom:1px solid var(--rule);padding-bottom:2px;cursor:pointer;white-space:nowrap;}
 .copylink:hover{color:var(--blue-ink);border-bottom-color:rgba(30,127,169,.35);}
@@ -115,7 +115,7 @@
 .anchorlink:hover{color:var(--blue-ink);}
 .anchorlink.copied{color:var(--green);}
 .anchorlink.copied::after{content:"Copied";position:absolute;left:calc(100% + 5px);top:-1px;
-  font-family:'Sohne',-apple-system,sans-serif;font-size:8.5px;font-weight:600;
+  font-family:var(--sans);font-size:8.5px;font-weight:600;
   letter-spacing:.11em;text-transform:uppercase;color:var(--green);white-space:nowrap;}
 
 /* ---------- one-line notes (change C) ----------
