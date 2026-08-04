@@ -166,22 +166,35 @@ a.chip.eff:focus-visible{outline:2px solid var(--blue-d);outline-offset:2px;}
 .sxi-h,.sxi-e{width:1%;white-space:nowrap;text-align:right;padding-right:0;}
 .sxi-h{padding-right:8px;}
 .sxi a{color:var(--ink-2);text-decoration:none;border-bottom:1px solid transparent;}
-.sxi-n a{color:inherit;}
 .sxi a:hover{color:var(--ink);border-bottom-color:#CFC8AE;}
 .sxi a:focus-visible{outline:2px solid var(--blue-d);outline-offset:2px;}
+
+/* ---------- the whole row jumps (Jay, 2026-08-04 08:42 ET) ----------
+   "the whole row must be clickable to jump to that section, not just the
+   literal title text". A STRETCHED LINK, not a click handler on a <tr>: the row
+   is the containing block and the title anchor's ::after covers it, so the hit
+   area is the row while the anchor stays the one real, focusable, right-clickable
+   link. Keyboard behaviour is unchanged and the row is now ONE tab stop, not two
+   (the section number was a second anchor to the same place; it is plain text
+   now). Hover and cursor are the spine's own row treatment, not a new language. */
+.sxi tbody tr{position:relative;cursor:pointer;}
+.sxi tbody tr:hover{background:rgba(55,55,55,.026);}
+.sxi-jump::after{content:"";position:absolute;inset:0;}
 
 /* ==========================================================================
    THE DEFAULT CARD (2026-08-04) — "How to read this page".
    Before any section is clicked the rail carries the page's own instructions
    instead of Sec. 1 (composite_howto.js). PURPOSE, copy implication 3: the
    verification affordance has to be discoverable or flow C never happens.
-   It is the same bounded box — `.right > .panel` above already dresses it —
-   so all this adds is prose sizing, since the card's other text is statute
-   and takes .src.
+
+   IT DECLARES NO TYPE OF ITS OWN (rewritten 08-40 after Jay's live read: "super
+   ugly please fix this font and spacing"). The first cut gave the card a private
+   scale, which looked passable in the licensed fonts and became body prose in a
+   rail panel once publish.sh stripped the @font-face and the fallback stacks
+   took over. Each entry is now a .note block — what the WHY note on every source
+   card already is — so size, leading, label register and the hairline that
+   separates entries all come from .note / .right .note above. The only rule left
+   is structural: the lede sits directly under the card's own .p-rule, so it must
+   not draw a second one.
    ========================================================================== */
-.panel.howto p{font-size:13px;line-height:1.62;color:var(--ink-2);margin:0 0 11px;}
-.panel.howto p:last-child{margin-bottom:0;}
-.panel.howto b{font-weight:600;color:var(--ink);}
-@media (min-width: 900px){
-  .right > .panel.howto p{font-size:11.5px;line-height:1.64;margin-bottom:9px;}
-}
+.panel.howto .note:first-of-type{margin-top:0;padding-top:0;border-top:none;}
