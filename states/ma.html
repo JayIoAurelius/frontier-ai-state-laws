@@ -40,8 +40,8 @@
 <div class="chrome">
   <div class="wordmark">State&nbsp;Laws Affecting Frontier&nbsp;US AI&nbsp;Companies</div>
   <nav>
-    <a class="" href="../index.html">Composite Law</a>
-    <a class="on" href="../map.html">State Bills</a>
+    <a class="on" href="../index.html">State Bills</a>
+    <a class="" href="../composite.html">Composite Law</a>
     <a class="" href="../about.html">About</a>
   </nav>
 </div>
@@ -619,8 +619,7 @@
       ev.stopPropagation();
       var url = a.getAttribute("data-copy-url");
       if (!url) {
-        url = location.href.split("#")[0].replace(/index\.html$/, "")
-          + "#" + a.getAttribute("data-anchor");
+        url = location.href.split("#")[0] + "#" + a.getAttribute("data-anchor");
       }
       navigator.clipboard.writeText(url).then(function () {
         if (a.dataset.busy) return;
