@@ -16,12 +16,12 @@
    The card is out of flow: opening it never moves the page. */
 .byline{position:relative;display:inline-block;margin-top:16px;}
 .byline-t{font-family:var(--sans);font-size:11.5px;letter-spacing:.01em;
-  color:var(--ink-3);background:none;border:0;border-bottom:1px dotted #CFC8AE;
+  color:var(--ink-3);background:none;border:0;border-bottom:1px dotted #C8C8C8;
   padding:0 0 1px;cursor:pointer;}
 .byline:hover .byline-t,.byline:focus-within .byline-t{color:var(--ink-2);}
 .byline-card{position:absolute;left:0;top:calc(100% + 8px);z-index:20;width:320px;
   max-width:calc(100vw - 40px);background:var(--off);border:1px solid var(--rule);
-  border-radius:2px;box-shadow:0 3px 12px rgba(55,50,40,.10);padding:14px 15px 13px;
+  border-radius:2px;box-shadow:0 3px 12px rgba(55,55,55,.10);padding:14px 15px 13px;
   visibility:hidden;opacity:0;transition:opacity .12s ease;}
 .byline:not(.byline-js):hover .byline-card,
 .byline:not(.byline-js):focus-within .byline-card{visibility:visible;opacity:1;}
@@ -32,7 +32,7 @@
 .byline-ways{font-size:11.5px;line-height:1.5;margin-top:9px;}
 .byline-ways a{color:var(--blue-ink);text-decoration:none;
   border-bottom:1px solid rgba(30,127,169,.35);}
-.byline-ways .sep{color:#C6BFA6;padding:0 5px;}
+.byline-ways .sep{color:#BEBEBE;padding:0 5px;}
 .byline-lab{display:block;font-size:9.5px;font-weight:600;letter-spacing:.14em;
   text-transform:uppercase;color:var(--ink-3);margin:13px 0 6px;}
 .byline-card textarea{display:block;width:100%;font-family:var(--sans);

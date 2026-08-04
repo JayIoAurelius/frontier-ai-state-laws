@@ -243,7 +243,7 @@ html{scroll-behavior:smooth;}
   font-family:var(--sans);font-size:10px;font-weight:600;
   letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2);text-decoration:none;
   background:var(--off);border:1px solid var(--rule);border-radius:2px;
-  padding:8px 12px 7px;box-shadow:0 2px 10px rgba(55,50,40,.16);}
+  padding:8px 12px 7px;box-shadow:0 2px 10px rgba(55,55,55,.16);}
 .split.bill>.tosum:hover{color:var(--ink);border-color:var(--blue-d);}
 .split.bill>.tosum:focus-visible{outline:2px solid var(--blue-d);outline-offset:2px;}
 .split.bill:has(.sec:target)>.tosum{display:inline-block;}
@@ -263,13 +263,13 @@ html{scroll-behavior:smooth;}
    .anchorlink is the § beside our plain-language heading: the way to grab a
    link to THIS page. It never swaps its glyph (the heading would reflow mid-
    read), so its confirmation is an absolute ::after flag. */
-.drop .dlink .dot{color:#C6BFA6;padding:0 6px;}
+.drop .dlink .dot{color:#BEBEBE;padding:0 6px;}
 .copylink{cursor:pointer;white-space:nowrap;color:var(--blue-ink);text-decoration:none;
   border-bottom:1px solid rgba(30,127,169,.35);padding-bottom:1px;}
 .copylink.copied{color:var(--green);border-bottom-color:rgba(63,122,78,.42);}
 .copylink:focus-visible,.anchorlink:focus-visible{outline:2px solid var(--blue-d);
   outline-offset:2px;}
-.anchorlink{position:relative;margin-left:5px;color:#C6BFA6;text-decoration:none;
+.anchorlink{position:relative;margin-left:5px;color:#BEBEBE;text-decoration:none;
   font-size:11px;font-weight:400;cursor:pointer;}
 .ourhead .anchorlink{visibility:hidden;}
 .sec:hover .ourhead .anchorlink,.sec:target .ourhead .anchorlink,

@@ -110,7 +110,7 @@
 .copylink.copied{color:var(--green);border-bottom-color:rgba(63,122,78,.42);}
 .copylink:focus-visible,.anchorlink:focus-visible{outline:2px solid var(--blue-d);
   outline-offset:2px;}
-.anchorlink{position:relative;margin-left:5px;color:#C6BFA6;text-decoration:none;
+.anchorlink{position:relative;margin-left:5px;color:#BEBEBE;text-decoration:none;
   font-size:11px;cursor:pointer;}
 .anchorlink:hover{color:var(--blue-ink);}
 .anchorlink.copied{color:var(--green);}
@@ -166,7 +166,7 @@ a.chip.eff:focus-visible{outline:2px solid var(--blue-d);outline-offset:2px;}
 .sxi-h,.sxi-e{width:1%;white-space:nowrap;text-align:right;padding-right:0;}
 .sxi-h{padding-right:8px;}
 .sxi a{color:var(--ink-2);text-decoration:none;border-bottom:1px solid transparent;}
-.sxi a:hover{color:var(--ink);border-bottom-color:#CFC8AE;}
+.sxi a:hover{color:var(--ink);border-bottom-color:#C8C8C8;}
 .sxi a:focus-visible{outline:2px solid var(--blue-d);outline-offset:2px;}
 
 /* ---------- the whole row jumps (Jay, 2026-08-04 08:42 ET) ----------

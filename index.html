@@ -68,8 +68,18 @@
       <svg class="usmap" viewBox="0 0 1000 589" xmlns="http://www.w3.org/2000/svg"
            role="img" aria-label="Map of the United States colored by enacted frontier AI law">
         <defs>
+          <!-- The MOVING hatch. Its two hexes are the only colour literals on this
+               page, because a <pattern> in <defs> is the one place the stylesheet's
+               tokens cannot reach a fill. They are NOT free values: the backing rect
+               is --m-none and the rule is --m-full, copied by hand, so the hatch
+               reads as "no statute yet, but blue is coming". Both were re-derived
+               under Jay's ruling 2026-08-04 12:04 ET (cream out, IFP light in): the
+               rect was #EDE8D2, the warm no-statute fill, and is now #E8E8E8, its
+               luminance-matched neutral. build/test_paperwhite.test.js asserts these
+               two literals still equal --m-none and --m-full in site.css, so the
+               pattern can never drift off the map's own palette again. -->
           <pattern id="hatch" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-            <rect width="5" height="5" fill="#EDE8D2"/>
+            <rect width="5" height="5" fill="#E8E8E8"/>
             <line x1="0" y1="0" x2="0" y2="5" stroke="#3F6BAE" stroke-width="1.6" opacity=".62"/>
           </pattern>
         </defs>
