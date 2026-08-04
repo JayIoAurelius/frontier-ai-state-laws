@@ -31,7 +31,7 @@
   color:var(--ink-2);margin-top:4px;}
 .byline-ways{font-size:11.5px;line-height:1.5;margin-top:9px;}
 .byline-ways a{color:var(--blue-ink);text-decoration:none;
-  border-bottom:1px solid rgba(30,127,169,.35);}
+  border-bottom:1px solid rgba(46,93,60,.40);}
 .byline-ways .sep{color:#BEBEBE;padding:0 5px;}
 .byline-lab{display:block;font-size:9.5px;font-weight:600;letter-spacing:.14em;
   text-transform:uppercase;color:var(--ink-3);margin:13px 0 6px;}
@@ -42,10 +42,26 @@
 #fb-hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0;}
 .byline-send{margin-top:8px;font-family:var(--sans);font-size:9.5px;
   font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:var(--blue-ink);
-  background:transparent;border:1px solid rgba(30,127,169,.42);border-radius:2px;
+  background:transparent;border:1px solid rgba(46,93,60,.45);border-radius:2px;
   padding:5px 11px 4px;cursor:pointer;}
-.byline-send:hover{background:rgba(65,196,252,.10);}
+.byline-send:hover{background:rgba(46,93,60,.08);}
 .byline-send[disabled]{color:var(--ink-3);border-color:var(--rule);cursor:default;}
 .byline-status{font-size:11.5px;line-height:1.5;color:var(--ink-3);margin-top:8px;}
 .byline-status:empty{display:none;}
 .byline-status a{color:var(--blue-ink);}
+
+/* ---------- the maker's mark (Jay, 2026-08-04 16:32 / 17:06 ET) ----------
+   One cactus, drawn once in build/byline.js, used twice on every page: inline
+   at the byline and as the colophon in the bottom-right corner. It lives beside
+   the byline rather than in site.css for the same reason the byline does — this
+   is new vocabulary, not extracted mockup vocabulary, and site.css is frozen.
+   Line art at the site's own hairline weight, one colour, no fill, so it reads
+   as a printer's mark and not as an icon set. --mark is green: at .62 a grey
+   colophon is nearly invisible on white and reads as a stray glyph, and a
+   decorative mark is not a link, so it may share the link hue. */
+.cactus-i{width:16px;height:16px;vertical-align:-3.5px;margin-left:8px;
+  color:var(--mark);opacity:.9;}
+.colophon{display:flex;justify-content:flex-end;align-items:center;
+  padding:0 56px 44px;margin-top:6px;}
+.colophon .cactus-c{width:26px;height:26px;color:var(--mark);opacity:.62;}
+@media (max-width:899px){.colophon{padding:0 18px 30px;}}

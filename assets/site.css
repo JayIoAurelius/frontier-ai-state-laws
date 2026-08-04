@@ -34,11 +34,35 @@
    1.345:1 on white, --ink-2 7.086 -> 7.114, --ink-3 3.665 -> 3.740. Nothing got
    quieter; the hierarchy is the one Jay already approved, hue-corrected.
    The cool tokens (blues, --il, --ny, --green) never referenced the paper and
-   are untouched. Pinned by build/test_paperwhite.test.js. */
+   are untouched. Pinned by build/test_paperwhite.test.js.
+
+   ---------- GREEN STRUCTURAL (Jay ruling 2026-08-04 16:49-17:06 ET) ----------
+   Approved from mockups/green_2026-08-04/B_front.html + B_ma.html. Three moves,
+   all of them values in place, none of them a selector:
+
+   1. THE --blue-* FAMILY IS THE LINK-AND-AFFORDANCE FAMILY, AND IT IS GREEN.
+      The names stay — the same call --off got when the cream went white, so no
+      rule outside this block had to move — but every one of them now holds a
+      green. --blue-ink #2E5D3C is the primary: links, the eyebrow, the nav
+      underline, every word you can act on. It reads 7.64:1 on the paper against
+      the 4.50:1 of the #1E7FA9 it replaces, and sits between --ink-2 (7.11) and
+      --ink (11.90): ink-adjacent, statute book, not mint. --blue-d and --blue
+      are the secondary #3F7A4E, which is the palette's own --green, already
+      carrying "in force".
+      The point of the move is what it does to BLUE: --ca #2658B9 is untouched,
+      so blue on this site now means California and nothing else.
+   2. THE PANEL FILL IS THE PAPER. --panel #F4F4F4 -> #FFFFFF. The source card
+      was a tint AND a hairline box (card.css); it is a hairline box now.
+   3. THE MAP IS ENGRAVED, NOT FILLED. --m-none #E8E8E8 -> #F2F2F2 (1.12:1 on
+      the paper) with a real #D0D0D0 state stroke below replacing the white one.
+      Every pairwise separation improves: enacted 4.37 -> 4.78, partial
+      1.69 -> 1.85, different-scope 1.55 -> 1.70.
+   Pinned, with every ratio recomputed rather than quoted, by
+   build/test_greenpalette.test.js. */
 :root{
-  --off:#FFFFFF; --panel:#F4F4F4; --ink:#373737;
+  --off:#FFFFFF; --panel:#FFFFFF; --ink:#373737;
   --ink-2:#585858; --ink-3:#848484; --rule:#DEDEDE; --rule-2:#EAEAEA;
-  --blue:#41C4FC; --blue-d:#35ABDD; --blue-ink:#1E7FA9;
+  --blue:#3F7A4E; --blue-d:#3F7A4E; --blue-ink:#2E5D3C;
   --ca:#2658B9; --ny:#B52964; --il:#8A56B5; --ct:#4A4A4A; --ma:#3F6BAE; --green:#3F7A4E;
   /* --gold is DERIVED, not invented (Jay's chip ruling, 2026-08-03): it was the
      palette's own warm axis — the hue of the old warm --ink-3 #8B8474 and
@@ -53,7 +77,12 @@
      It now reads as a chosen accent (brand law allows rich black plus one other
      colour) rather than as the warm family's brightest member. */
   --gold:#8F6B1E;
-  --m-full:#3F6BAE; --m-on:#2E5B9E; --m-partial:#9DB6D9; --m-usage:#BCBCBC; --m-none:#E8E8E8;
+  /* The maker's mark (Jay, 2026-08-04 17:06 ET). Green, not the ink grey the
+     variant shipped with: at 62% opacity a grey colophon reads as a stray glyph
+     rather than a mark. A decorative mark is not a link, so reusing the link
+     hue on it is an argued exception, not an accident. */
+  --mark:#2E5D3C;
+  --m-full:#3F6BAE; --m-on:#2E5B9E; --m-partial:#9DB6D9; --m-usage:#BCBCBC; --m-none:#F2F2F2;
   --railw:128px; --railgap:22px;              /* bill pages override to 132/24 */
   /* Room the map column keeps clear on each side for the Massachusetts callout,
      which hangs OUTSIDE .mapwrap at left:100% and so is invisible to the layout
@@ -112,7 +141,7 @@ h1 .thin{font-weight:400;color:var(--ink-2);}
 .status{font-family:var(--sans);font-size:9.5px;font-weight:600;letter-spacing:.13em;
   text-transform:uppercase;color:var(--green);border:1px solid rgba(63,122,78,.42);
   background:rgba(63,122,78,.10);padding:4px 9px 3px;border-radius:2px;}
-.status.live{color:var(--blue-ink);border-color:rgba(30,127,169,.42);background:rgba(65,196,252,.10);}
+.status.live{color:var(--blue-ink);border-color:rgba(46,93,60,.42);background:rgba(46,93,60,.08);}
 .entries{margin-top:20px;padding-top:14px;border-top:1px solid var(--rule-2);max-width:660px;}
 .entries dt{font-size:9.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
   color:var(--ink-3);margin-bottom:8px;}
@@ -152,7 +181,7 @@ h1 .thin{font-weight:400;color:var(--ink-2);}
   color:var(--ink-3);margin-top:4px;letter-spacing:.005em;}
 .sum-l{text-align:right;font-size:11.5px;letter-spacing:.02em;color:var(--blue-ink);
   text-decoration:none;white-space:nowrap;}
-.sum-l u{text-decoration:none;border-bottom:1px solid rgba(30,127,169,.35);padding-bottom:1px;}
+.sum-l u{text-decoration:none;border-bottom:1px solid rgba(46,93,60,.40);padding-bottom:1px;}
 /* "also on the books" strip (ruling 17): quieter than a summary block, same rows */
 .strip{padding:26px 56px 40px;}
 .strip .sum-row{padding:11px 0 10px;}
@@ -250,10 +279,15 @@ h1 .thin{font-weight:400;color:var(--ink-2);}
   border-top:1px solid rgba(138,86,181,.24);
   font-family:var(--sans);font-size:12.5px;line-height:1.62;color:var(--ink-3);}
 
-/* ---------- register B: SELECTION STATE (blue) ----------
+/* ---------- register B: SELECTION STATE (green since 2026-08-04) ----------
    Which row the right-hand panel is currently showing, and the identical
-   words inside it. Never used to say a provision is new. */
-.sec.sel{background:rgba(65,196,252,.085);}
+   words inside it. Never used to say a provision is new.
+   The washes are lighter than the blue ones they replace (.085 -> .06 for the
+   row, .26 -> .14 for the highlight) because #2E5D3C is a dark green where
+   #41C4FC was a light blue: at the old alphas the same tint reads twice as
+   heavy. Body ink is 10.84:1 over the row wash and 9.58:1 under the
+   highlight, both recomputed in build/test_greenpalette.test.js G4. */
+.sec.sel{background:rgba(46,93,60,.06);}
 .sec.sel::before{content:"";position:absolute;left:-20px;top:0;bottom:0;width:2px;background:var(--blue-d);}
 .sec.sel .chip.il{color:#fff;background:var(--il);border-color:var(--il);}
 .sec.sel .chip.vs,.sec.sel .chip.tag-tightens{color:#fff;background:var(--ca);border-color:var(--ca);}
@@ -262,7 +296,7 @@ h1 .thin{font-weight:400;color:var(--ink-2);}
 .sec.hov .secno{color:var(--ink-2);}
 .openat{font-size:9px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;
   color:var(--blue-ink);margin-top:9px;white-space:nowrap;}
-.hl{background:rgba(65,196,252,.26);box-shadow:0 1px 0 var(--blue-d);padding-bottom:.5px;}
+.hl{background:rgba(46,93,60,.14);box-shadow:0 1px 0 var(--blue-d);padding-bottom:.5px;}
 
 /* ---------- source panel (right half of the split) ---------- */
 .p-head{display:flex;align-items:center;gap:10px;margin-bottom:13px;}
@@ -302,13 +336,19 @@ svg.usmap{display:block;width:100%;height:auto;overflow:visible;}
      diff.scope--m-usage   #BCBCBC   1.90 on paper, 2.82 against enacted. It was
                            #C3BBA6, a warm beige that the legend called "gray";
                            on white it is finally the gray it always claimed.
-     no statute--m-none    #E8E8E8   1.23 on paper — deliberately near-background,
-                           separated from it by the white state strokes below.
+     no statute--m-none    #F2F2F2   1.12 on paper — deliberately near-background,
+                           and since 2026-08-04 drawn rather than filled.
    Every one of those numbers moved by at most +0.074 against its cream value, so
    the map a reader learned last week still reads the same this week.
-   The state strokes are the paper itself (--off), which is what keeps 51 shapes
-   legible when most of them carry the near-background fill. */
-.st{stroke:var(--off);stroke-width:1.1;stroke-linejoin:round;fill:var(--m-none);}
+   THE STATE STROKES WERE THE PAPER; they are a real #D0D0D0 line now (green
+   ruling, 2026-08-04). That is the trade: the no-statute fill steps closer to
+   the paper (1.23 -> 1.12) so the map stops being a grey mass, and an engraved
+   outline takes over the job of keeping 51 shapes apart. The stroke reads
+   1.38:1 against the new fill and 1.54:1 against the paper, and every pairwise
+   separation improved rather than degraded — enacted 4.37 -> 4.78, partial
+   1.69 -> 1.85, different-scope 1.55 -> 1.70. Pinned by
+   build/test_greenpalette.test.js G6. */
+.st{stroke:#D0D0D0;stroke-width:1;stroke-linejoin:round;fill:var(--m-none);}
 .st.full{fill:var(--m-full);}
 .st.partial{fill:var(--m-partial);}
 .st.usage{fill:var(--m-usage);}
@@ -353,10 +393,15 @@ svg.usmap a:hover .st.full{fill:var(--m-on);}
 .lrow{display:grid;grid-template-columns:14px 1fr;gap:11px;align-items:start;
   padding:9px 0;border-top:1px solid var(--rule-2);}
 .lrow:first-of-type{border-top:none;padding-top:0;}
-.sw{width:14px;height:14px;border-radius:2px;margin-top:2px;background:var(--m-none);}
-.sw.full{background:var(--m-full);}
-.sw.partial{background:var(--m-partial);}
-.sw.usage{background:var(--m-usage);}
+/* The bare .sw is the no-statute swatch, so it carries the map's own edge
+   (green ruling, 2026-08-04): a 1.12:1 fill with no stroke is a blank square in
+   a legend. The three solid fills clear the border again — on the map they are
+   fills, not outlines. */
+.sw{width:14px;height:14px;border-radius:2px;margin-top:2px;background:var(--m-none);
+  border:1px solid #D0D0D0;}
+.sw.full{background:var(--m-full);border-color:transparent;}
+.sw.partial{background:var(--m-partial);border-color:transparent;}
+.sw.usage{background:var(--m-usage);border-color:transparent;}
 .sw.moving{background:var(--m-none);border:1px dashed var(--m-full);
   background-image:repeating-linear-gradient(45deg,rgba(63,107,174,.55) 0 1.5px,transparent 1.5px 4.5px);}
 .lrow .n{font-size:12.5px;color:var(--ink);line-height:1.35;letter-spacing:.005em;}
@@ -431,7 +476,7 @@ svg.usmap a:hover .st.full{fill:var(--m-on);}
 .cl li:last-child{margin-bottom:0;}
 .cl li::before{content:"·";position:absolute;left:2px;color:var(--ink-3);}
 .lst-law a{color:var(--ink);text-decoration:none;
-  border-bottom:1px solid rgba(30,127,169,.35);}
+  border-bottom:1px solid rgba(46,93,60,.40);}
 .lst-law a:hover{color:var(--blue-ink);}
 .lst thead th:nth-child(2),.lst thead th:nth-child(3){width:20%;}
 .lst thead th:nth-child(4){width:23%;}

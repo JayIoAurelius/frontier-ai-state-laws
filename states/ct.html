@@ -2,6 +2,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Connecticut Public Act No. 26-15: An Act Concerning Online Safety</title>
 <meta name="description" content="SB 53's whistleblower chapter only, with the penalty cut from $1,000,000 to $1,000 per violation.">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="alternate icon" href="../favicon.ico" sizes="32x32">
 <link rel="stylesheet" href="../assets/site.css">
 <link rel="stylesheet" href="../assets/card.css">
 <link rel="stylesheet" href="../assets/billpage-patch.css">
@@ -47,10 +49,10 @@
     <div class="subdek">A plain-language summary laid over the statute; the margin marks where Connecticut departs from the
       California baseline.</div>
     <div class="byline" id="fb-byline">
-  <button class="byline-t" id="fb-open" type="button" aria-expanded="false">maintained by Jay Kim &middot; corrections welcome</button>
+  <button class="byline-t" id="fb-open" type="button" aria-expanded="false">maintained by Jay Kim &middot; corrections welcome</button><svg class="cactus-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9.4 21.6V4.6a2.6 2.6 0 0 1 5.2 0V21.6"/><path d="M9.4 18.2H7a4.8 4.8 0 0 1-4.8-4.8V9a2 2 0 0 1 4 0v4.4a.8.8 0 0 0 .8.8h1.8"/><path d="M14.6 15.6H17a4.8 4.8 0 0 0 4.8-4.8V7a2 2 0 0 0-4 0v3.8a.8.8 0 0 1-.8.8h-2.4"/><path d="M5.6 21.6h12.8"/></svg>
   <div class="byline-card">
     <div class="byline-who">Jay Kim</div>
-    <p class="byline-ways"><a href="https://github.com/JayIoAurelius/frontier-ai-state-laws/issues">File a GitHub issue</a><span class="sep">&middot;</span><a href="mailto:jay.ifp.automation@gmail.com">jay.ifp.automation@gmail.com</a></p>
+    <p class="byline-ways"><a href="https://github.com/JayIoAurelius/frontier-ai-state-laws/issues">File a GitHub issue</a><span class="sep">&middot;</span><a href="mailto:jay.ifp.automation@gmail.com">jay.ifp.automation@gmail.com</a><span class="sep">&middot;</span><a href="/corrections.html">What this site got wrong</a></p>
     <label class="byline-lab" for="fb-text">Or send a note from this page</label>
     <textarea id="fb-text" rows="3" placeholder="What is wrong, and where?"></textarea>
     <input id="fb-hp" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
@@ -311,6 +313,7 @@
      :target CSS and stay that way; the row-click helper only writes a row id
      into location.hash. With scripting off, every control is still an anchor
      to its own provision row. -->
+<div class="colophon"><svg class="cactus-c" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9.4 21.6V4.6a2.6 2.6 0 0 1 5.2 0V21.6"/><path d="M9.4 18.2H7a4.8 4.8 0 0 1-4.8-4.8V9a2 2 0 0 1 4 0v4.4a.8.8 0 0 0 .8.8h1.8"/><path d="M14.6 15.6H17a4.8 4.8 0 0 0 4.8-4.8V7a2 2 0 0 0-4 0v3.8a.8.8 0 0 1-.8.8h-2.4"/><path d="M5.6 21.6h12.8"/></svg></div>
 <script id="copylink">
 (function () {
   if (!navigator.clipboard) return;
@@ -407,11 +410,33 @@
 (function () {
   var MONTHS = ["January", "February", "March", "April", "May", "June", "July",
     "August", "September", "October", "November", "December"];
+  var ZONE = "America/New_York";
   function longDate(iso) {
     var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso || "");
     if (!m) return null;
     var mo = MONTHS[Number(m[2]) - 1];
     return mo ? Number(m[3]) + " " + mo + " " + m[1] : null;
+  }
+  function etParts(d, opts) {
+    opts.timeZone = ZONE;
+    var p = new Intl.DateTimeFormat("en-US", opts).formatToParts(d), g = {}, i;
+    for (i = 0; i < p.length; i++) g[p[i].type] = p[i].value;
+    return g;
+  }
+  function relative(iso, now) {
+    try {
+      var t = Date.parse(typeof iso === "string" ? iso : "");
+      if (isNaN(t) || Math.abs(now - t) >= 864e5) return null;
+      var d = new Date(t);
+      var a = etParts(d, { year: "numeric", month: "2-digit", day: "2-digit",
+        hour: "numeric", minute: "2-digit", hour12: true });
+      var b = etParts(now, { year: "numeric", month: "2-digit", day: "2-digit" });
+      var same = a.year === b.year && a.month === b.month && a.day === b.day;
+      var word = same ? "today" : (t < now ? "yesterday" : null);
+      if (!word || !a.hour || !a.minute || !a.dayPeriod) return null;
+      return word + ", " + a.hour + ":" + a.minute + " "
+        + a.dayPeriod.toLowerCase() + " ET";
+    } catch (e) { return null; }
   }
   fetch("/verified.json", { cache: "no-store" })
     .then(function (r) { return r.ok ? r.json() : null; })
@@ -420,7 +445,11 @@
       var d = longDate(j.last_verified);
       if (d) {
         var stamps = document.querySelectorAll("[data-verified-stamp]");
-        for (var i = 0; i < stamps.length; i++) stamps[i].textContent = d;
+        var head = document.querySelectorAll("dd[data-verified-stamp], dd [data-verified-stamp]");
+        var rel = relative(j.generated_at, new Date());
+        for (var i = 0; i < stamps.length; i++)
+          stamps[i].textContent =
+            rel && [].indexOf.call(head, stamps[i]) >= 0 ? rel : d;
       }
       if (j.ma_status) {
         var chips = document.querySelectorAll("[data-ma-status]");

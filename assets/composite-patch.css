@@ -11,7 +11,7 @@
 .sec[data-n]:focus-visible{outline:2px solid var(--blue-d);outline-offset:2px;}
 .sec[data-n]:hover{background:rgba(55,55,55,.026);}
 .sec[data-n]:hover .secno{color:var(--ink-2);}
-.sec.sel[data-n]:hover{background:rgba(65,196,252,.085);}
+.sec.sel[data-n]:hover{background:rgba(46,93,60,.06);}
 
 /* "Source →" is the affordance label: it belongs to the row you are on. */
 .sec .openat{visibility:hidden;}
@@ -100,7 +100,7 @@
 .copylink{font-family:var(--sans);font-size:9px;font-weight:600;
   letter-spacing:.11em;text-transform:uppercase;color:var(--ink-3);text-decoration:none;
   border-bottom:1px solid var(--rule);padding-bottom:2px;cursor:pointer;white-space:nowrap;}
-.copylink:hover{color:var(--blue-ink);border-bottom-color:rgba(30,127,169,.35);}
+.copylink:hover{color:var(--blue-ink);border-bottom-color:rgba(46,93,60,.40);}
 .copylink.copied{color:var(--green);border-bottom-color:rgba(63,122,78,.42);}
 .copylink:focus-visible,.anchorlink:focus-visible{outline:2px solid var(--blue-d);
   outline-offset:2px;}
@@ -192,3 +192,15 @@ a.chip.eff:focus-visible{outline:2px solid var(--blue-d);outline-offset:2px;}
    not draw a second one.
    ========================================================================== */
 .panel.howto .note:first-of-type{margin-top:0;padding-top:0;border-top:none;}
+
+/* The dek's inline link (the in-force page points at the enacted view) takes
+   the site's link treatment; the linkstyle gate caught it shipping in
+   browser-default blue (found 2026-08-04, lane L7). */
+.dek a{color:var(--blue-ink);text-decoration:none;
+  border-bottom:1px solid rgba(46,93,60,.40);padding-bottom:1px;}
+
+/* The two First. markers in the key-obligations lists are anchors onto their
+   enacted-first receipts (Jay, 2026-08-04: First means first enacted); they
+   take the site link treatment rather than browser default. */
+.cl a{color:var(--blue-ink);text-decoration:none;
+  border-bottom:1px solid rgba(46,93,60,.40);padding-bottom:1px;}

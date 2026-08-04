@@ -43,7 +43,7 @@ details.sec[open]>summary.sec-row .openat{color:var(--ink-3);}
 .drop .facts{margin-top:0;padding-top:0;border-top:none;}
 .drop .dlink{margin-top:14px;font-size:11.5px;letter-spacing:.02em;}
 .drop .dlink a,.drop .facts a{color:var(--blue-ink);text-decoration:none;
-  border-bottom:1px solid rgba(30,127,169,.35);padding-bottom:1px;}
+  border-bottom:1px solid rgba(46,93,60,.40);padding-bottom:1px;}
 
 /* ---------- tag chip as the panel control ---------- */
 a.chip{text-decoration:none;cursor:pointer;}
@@ -58,8 +58,10 @@ a.chip:hover{border-color:var(--blue-d);}
 .panel.default{display:block;}
 .split.bill:has(.sec:target) .panel.default{display:none;}
 
-/* selection state (register B, blue): the targeted row, styled like .sec.sel */
-.split.bill .sec:target{background:rgba(65,196,252,.085);}
+/* selection state (register B, green since 2026-08-04): the targeted row,
+   styled like .sec.sel — same wash, same alpha, or the two page kinds would
+   disagree about what "the row you are on" looks like */
+.split.bill .sec:target{background:rgba(46,93,60,.06);}
 .split.bill .sec:target::before{content:"";position:absolute;left:-20px;top:0;bottom:0;
   width:2px;background:var(--blue-d);}
 .split.bill .sec:target .chip.vs,.split.bill .sec:target .chip.tag-tightens{
@@ -232,7 +234,7 @@ h1.bill{display:block;}
 .sum-list{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:3px 24px;}
 .sum-list a{color:var(--ink-2);text-decoration:none;}
 .sum-list a:hover{color:var(--blue-ink);}
-.sum-list .c{color:var(--blue-ink);border-bottom:1px solid rgba(30,127,169,.35);
+.sum-list .c{color:var(--blue-ink);border-bottom:1px solid rgba(46,93,60,.40);
   margin-left:7px;font-size:11px;letter-spacing:.02em;white-space:nowrap;}
 
 /* ---------- 2. arrival ----------
@@ -244,8 +246,8 @@ html{scroll-behavior:smooth;}
 .split.bill .sec{scroll-margin-top:96px;scroll-margin-bottom:32px;}
 
 @keyframes sec-landed{
-  0%,20%{background:rgba(65,196,252,.34);}
-  100%{background:rgba(65,196,252,.085);}
+  0%,20%{background:rgba(46,93,60,.24);}
+  100%{background:rgba(46,93,60,.06);}
 }
 @keyframes sec-landed-new{
   0%,20%{background:rgba(138,86,181,.30);}
@@ -284,7 +286,7 @@ html{scroll-behavior:smooth;}
    read), so its confirmation is an absolute ::after flag. */
 .drop .dlink .dot{color:#BEBEBE;padding:0 6px;}
 .copylink{cursor:pointer;white-space:nowrap;color:var(--blue-ink);text-decoration:none;
-  border-bottom:1px solid rgba(30,127,169,.35);padding-bottom:1px;}
+  border-bottom:1px solid rgba(46,93,60,.40);padding-bottom:1px;}
 .copylink.copied{color:var(--green);border-bottom-color:rgba(63,122,78,.42);}
 .copylink:focus-visible,.anchorlink:focus-visible{outline:2px solid var(--blue-d);
   outline-offset:2px;}
@@ -306,10 +308,10 @@ html{scroll-behavior:smooth;}
    spine label read exactly as before until the reader goes looking. */
 .mast .meta dd a{color:inherit;text-decoration:none;
   border-bottom:1px solid var(--rule);padding-bottom:1px;}
-.mast .meta dd a:hover{color:var(--blue-ink);border-bottom-color:rgba(30,127,169,.35);}
+.mast .meta dd a:hover{color:var(--blue-ink);border-bottom-color:rgba(46,93,60,.40);}
 .sec-label a{color:inherit;text-decoration:none;
   border-bottom:1px solid var(--rule);padding-bottom:1px;}
-.sec-label a:hover{color:var(--blue-ink);border-bottom-color:rgba(30,127,169,.35);}
+.sec-label a:hover{color:var(--blue-ink);border-bottom-color:rgba(46,93,60,.40);}
 .mast .meta dd a:focus-visible,.sec-label a:focus-visible{
   outline:2px solid var(--blue-d);outline-offset:2px;}
 
@@ -319,7 +321,7 @@ html{scroll-behavior:smooth;}
    tooltip on an empty span and links nowhere. */
 a.chip.eff{color:inherit;text-decoration:none;}
 .effsrc{color:var(--blue-ink);text-decoration:none;font-size:.92em;
-  border-bottom:1px solid rgba(30,127,169,.3);padding-bottom:1px;white-space:nowrap;}
+  border-bottom:1px solid rgba(46,93,60,.40);padding-bottom:1px;white-space:nowrap;}
 .effsrc:focus-visible{outline:2px solid var(--blue-d);outline-offset:2px;}
 .effsrc-none{border-bottom:1px dotted var(--rule);cursor:help;
   display:inline-block;width:.9em;}
@@ -328,7 +330,7 @@ a.chip.eff{color:inherit;text-decoration:none;}
    it rendered in the browser's default link blue and visited purple (Jay,
    2026-08-04 16:52 ET: "this looks so ugly"). Same treatment as .drop's links. */
 .contd p a{color:var(--blue-ink);text-decoration:none;
-  border-bottom:1px solid rgba(30,127,169,.35);padding-bottom:1px;}
+  border-bottom:1px solid rgba(46,93,60,.40);padding-bottom:1px;}
 
 /* A status chip stays one box when its text wraps. The 2026-08-04 16:51 chip
    broke into two bordered fragments at full-width; inline-block wraps the box
