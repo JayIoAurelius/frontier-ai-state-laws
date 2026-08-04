@@ -4,16 +4,29 @@
 
    Everything below exists because the frozen system describes a static mockup
    (mock3e_textspine.html) and the built page has two behaviours the mockup only
-   depicted: every provision row is a dropdown (ruling 2) and the tag chip opens
-   the source panel on the right (rulings 2, 4). Both are done with native HTML
-   and CSS — <details>/<summary> and :target/:has() — so the pages carry no
-   JavaScript. Visual metrics are inherited, not restated.
+   depicted: every provision row is a dropdown (ruling 2) and clicking a row
+   opens its source panel on the right (rulings 2, 4). Both are native HTML and
+   CSS: <details>/<summary> and :target/:has(). The pages do carry a few small
+   inline scripts (copy link, feedback, verified stamp, cite, row click), and
+   none of them decides which panel is open: the row-click helper writes a row
+   id into location.hash and the :target rules below do the rest. Visual metrics
+   are inherited, not restated.
    ========================================================================== */
 
-/* ---------- rows as dropdowns ----------
+/* ---------- rows as dropdowns, and the whole row as the control ----------
    .sec is a grid in site.css; on a <details> that grid has to move onto the
-   <summary>, which is the part that stays visible when the row is closed. */
-details.sec{display:block;}
+   <summary>, which is the part that stays visible when the row is closed.
+
+   Jay, 2026-08-04 15:49 ET: "make the whole row switch the right card". The
+   affordance is the house one, the same the composite section index uses for a
+   clickable row: a pointer, plus the hover wash site.css already parks on
+   .sec.hov. The wash never overwrites either colour register, so the purple
+   editorial band and the blue selection keep their own fill. */
+details.sec{display:block;cursor:pointer;}
+.split.bill .sec:not(.newhi):not(.sel):not(:target):hover{background:rgba(55,55,55,.026);}
+/* once the load-time row has let go of the selection (rule further down), it
+   hovers like any other row */
+.split.bill:has(.sec:target) .sec.sel:not(:target):hover{background:rgba(55,55,55,.026);}
 details.sec>summary.sec-row{display:grid;grid-template-columns:var(--railw) 1fr;
   gap:var(--railgap);cursor:pointer;list-style:none;}
 details.sec>summary.sec-row::-webkit-details-marker{display:none;}
@@ -164,7 +177,8 @@ h1.bill{display:block;}
    level summaries take up so much space and then when i click on where they
    came from they shoot me down to the bottom of the page to the bill text."
 
-   Two fixes, both CSS only — these pages carry no JavaScript (test_mobile M6).
+   Two fixes, both pure CSS. No script implements either one: the only thing a
+   script does to the reading UX is set location.hash (test_mobile M6).
    ========================================================================== */
 
 /* ---------- 1. summary density ----------

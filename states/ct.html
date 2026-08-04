@@ -305,10 +305,12 @@
   the scope that keeps them out of the comparison. Each links to its official text.</div>
 </div>
 
-<!-- The ONE script these pages carry: the "Copy link" enhancement (change A).
-     Everything that makes the page work — panel switching, the mobile bottom
-     sheet, the back-link — is :target CSS and stays that way. With scripting
-     off, each control is still an anchor to its own provision row. -->
+<!-- The small scripts these pages carry: copy link, feedback, the verified
+     stamp, cite this page, and the row click. None of them decides what the
+     page shows. Panel switching, the mobile bottom sheet and the back-link are
+     :target CSS and stay that way; the row-click helper only writes a row id
+     into location.hash. With scripting off, every control is still an anchor
+     to its own provision row. -->
 <script id="copylink">
 (function () {
   if (!navigator.clipboard) return;
@@ -460,6 +462,18 @@
         b.textContent = "Copied";
         setTimeout(function () { b.textContent = was; delete b.dataset.busy; }, 1600);
       });
+    });
+  });
+})();
+</script>
+<script id="rowclick">
+(function () {
+  // lawmap:row-selects-card
+  var rows = document.querySelectorAll(".split.bill .sec[id]");
+  Array.prototype.forEach.call(rows, function (row) {
+    row.addEventListener("click", function (ev) {
+      if (ev.target.closest("a")) return;
+      location.hash = "#" + row.id;
     });
   });
 })();
