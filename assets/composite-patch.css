@@ -169,3 +169,19 @@ a.chip.eff:focus-visible{outline:2px solid var(--blue-d);outline-offset:2px;}
 .sxi-n a{color:inherit;}
 .sxi a:hover{color:var(--ink);border-bottom-color:#CFC8AE;}
 .sxi a:focus-visible{outline:2px solid var(--blue-d);outline-offset:2px;}
+
+/* ==========================================================================
+   THE DEFAULT CARD (2026-08-04) — "How to read this page".
+   Before any section is clicked the rail carries the page's own instructions
+   instead of Sec. 1 (composite_howto.js). PURPOSE, copy implication 3: the
+   verification affordance has to be discoverable or flow C never happens.
+   It is the same bounded box — `.right > .panel` above already dresses it —
+   so all this adds is prose sizing, since the card's other text is statute
+   and takes .src.
+   ========================================================================== */
+.panel.howto p{font-size:13px;line-height:1.62;color:var(--ink-2);margin:0 0 11px;}
+.panel.howto p:last-child{margin-bottom:0;}
+.panel.howto b{font-weight:600;color:var(--ink);}
+@media (min-width: 900px){
+  .right > .panel.howto p{font-size:11.5px;line-height:1.64;margin-bottom:9px;}
+}
