@@ -302,39 +302,6 @@
         <td data-col="Status and timeline"><b>Enacted</b>; effective 1 January 2027. Framework and audit duties begin 1 January 2028.</td>
       </tr>
 
-      <!-- Connecticut. covers: ct-thresholds-frontier-developer ·
-           harms: ct-thresholds-covered-employee (Public Act 26-15 reaches the
-           harms only through who it protects) ·
-           obligations: ct-whistleblower-contract-and-retaliation-ban,
-           ct-whistleblower-anonymous-internal-channel,
-           ct-whistleblower-quarterly-escalation,
-           ct-whistleblower-notice-of-rights, ct-enforcement-civil-penalty ·
-           status: ct.json bill.effective_date -->
-      <tr>
-        <th scope="row" class="lst-law" data-col="Law"><span class="chip ct">CT</span>
-          <a href="states/ct.html">Public Act 26-15 (SB 5) &mdash; An Act Concerning Online Safety</a>
-          <div class="lst-delta">SB 53's whistleblower chapter only, with the penalty cut from $1,000,000 to $1,000 per violation.</div></th>
-        <td data-col="Who it covers"><ul class="cl">
-          <li><b>Frontier developer:</b> does business in the state and uses computing power greater than ten to the twenty-sixth power (10^26) operations.</li>
-          <li><b>Large frontier developer:</b> that, plus annual gross revenues above $500,000,000.</li>
-        </ul></td>
-        <td data-col="Covered harms"><ul class="cl">
-          <li>Named through the <b>covered employee</b> the act protects &mdash; a report about any of:</li>
-          <li>unauthorized access to, or modification or exfiltration of, model weights causing death, bodily injury or property loss;</li>
-          <li>harm from the materialization of any catastrophic risk;</li>
-          <li>any loss of control over a foundation model resulting in death or bodily injury;</li>
-          <li>use of a deceptive technique by a model against its own developer.</li>
-        </ul></td>
-        <td data-col="Key obligations"><ul class="cl">
-          <li>Whistleblower chapter only.</li>
-          <li>No rule, policy or contract may authorize retaliation for a safety report.</li>
-          <li>Anonymous internal reporting channel, with updates.</li>
-          <li>Reports escalated to officers and directors at least quarterly.</li>
-          <li>Posted or annual notice of rights.</li>
-        </ul></td>
-        <td data-col="Status and timeline"><b>Enacted</b>; frontier-developer provisions <b>in force</b> 1 October 2026. The anonymous internal channel is due 1 January 2027.</td>
-      </tr>
-
       <!-- Massachusetts. NOT LAW — the row keeps the not-law treatment.
            covers: ma-thresholds-compute-revenue ·
            harms: ma-catastrophic-risk-definition ·
@@ -364,6 +331,31 @@
           <li>critical safety incidents to the Attorney General in 15 days.</li>
         </ul></td>
         <td data-col="Status and timeline"><b>Not law.</b> House non-concurred 30 July 2026; conference committees appointed in both branches. Chapter 93M would take effect 1 July 2027 if enacted.</td>
+      </tr>
+
+      <!-- Connecticut. COMPACT ROW, LAST — Jay's ruling 2026-08-04 08:46 ET:
+           Public Act 26-15 took "more space than it ought to have given how
+           useless it is… make it smaller like it ought to be. and maybe put it
+           at the very bottom below MA." It is SB 53's whistleblower chapter and
+           nothing else, so the four detail columns collapse into one line in the
+           table's existing .lst-delta idiom (no new type sizes) and the row sits
+           below Massachusetts. Nothing is deleted: the per-column detail — the
+           two covered tiers, the covered-employee route to the harms, the four
+           whistleblower duties — is on states/ct.html, which the row links.
+           Shape pinned by test_landscape LT9 and test_lstbullets LB9.
+           covers: ct-thresholds-frontier-developer ·
+           harms: ct-thresholds-covered-employee (Public Act 26-15 reaches the
+           harms only through who it protects) ·
+           obligations: ct-whistleblower-contract-and-retaliation-ban,
+           ct-whistleblower-anonymous-internal-channel,
+           ct-whistleblower-quarterly-escalation,
+           ct-whistleblower-notice-of-rights, ct-enforcement-civil-penalty ·
+           status: ct.json bill.effective_date -->
+      <tr>
+        <th scope="row" class="lst-law" data-col="Law"><span class="chip ct">CT</span>
+          <a href="states/ct.html">Public Act 26-15 (SB 5) &mdash; An Act Concerning Online Safety</a>
+          <div class="lst-delta">SB 53's whistleblower chapter only, with the penalty cut from $1,000,000 to $1,000 per violation.</div></th>
+        <td class="lst-delta" colspan="4" data-col="Whistleblower chapter only">No retaliation for a safety report; an anonymous internal channel; reports escalated to officers and directors at least quarterly; notice of rights. <b>Enacted</b>; <b>in force</b> 1 October 2026; internal channel due 1 January 2027.</td>
       </tr>
 
     </tbody>
