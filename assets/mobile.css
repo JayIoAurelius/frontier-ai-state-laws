@@ -186,8 +186,11 @@
   /* ---------- map ----------
      mock4b hangs the Massachusetts tag off the right edge of the SVG at
      left:100%. On a phone that is off-screen and drags a horizontal scrollbar
-     onto every page, so the tag drops below the map instead. */
-  .mapwrap{margin-top:10px;}
+     onto every page, so the tag drops below the map instead.
+     The desktop reserve (--matagw, site.css) exists only because the tag is
+     absolutely positioned outside the map's box; here it is a flow element
+     under the map, so the reserve would narrow the map for nothing. */
+  .mapwrap{margin-top:10px;--matagw:0px;}
   /* The caption wraps to two or three lines on a phone; it must stay attached to
      the map and above the MA tag, which is now also in normal flow. */
   .mapcap{margin-top:10px;font-size:11px;max-width:none;}
@@ -215,6 +218,7 @@
   .lst-law{width:auto;font-size:15px;padding-bottom:12px;}
   .lst tr.notlaw{margin:0 -18px;padding:14px 18px 4px;}
   .lst tr.notlaw .lst-law::before{display:none;}
-  .matag{position:static;margin:14px 0 0;left:auto;top:auto;white-space:normal;}
+  .matag{position:static;margin:14px 0 0;left:auto;top:auto;white-space:normal;
+    width:auto;}
   .lnote{max-width:none;}
 }
