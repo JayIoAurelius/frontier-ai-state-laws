@@ -206,6 +206,12 @@
   .lst td::before{content:attr(data-col);display:block;margin-bottom:3px;
     font-size:9px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;
     color:var(--ink-3);}
+  /* The bulleted cells (Jay, 2026-08-03) are the row's ONLY structure here: the
+     column header is a label stacked above each cell rather than a column
+     beside it, so nothing else separates one obligation from the next. They get
+     a little more air than in the desktop table, where the column rules do part
+     of that work. */
+  .lst .cl li{margin-bottom:6px;}
   .lst-law{width:auto;font-size:15px;padding-bottom:12px;}
   .lst tr.notlaw{margin:0 -18px;padding:14px 18px 4px;}
   .lst tr.notlaw .lst-law::before{display:none;}

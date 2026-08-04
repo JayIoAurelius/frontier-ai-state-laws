@@ -177,7 +177,19 @@
        never our gloss of it: where a state's module carries the definition as a
        quoted provision the cell names its limbs, and where it carries it only
        through the glosses on its duties (Illinois) or through the covered-
-       employee definition (Connecticut) the cell says that much and no more. -->
+       employee definition (Connecticut) the cell says that much and no more.
+
+       BULLETED, not prose (Jay, 2026-08-03 ~22:39 ET, clarified ~22:44): the
+       three content columns are compact lists, several bullets per cell. The
+       harms list opens with the threshold bullet and gives one bullet per limb
+       of that state's own definition; obligations give one bullet per distinct
+       obligation; covers gives one bullet per covered tier. The words are
+       unchanged — the bullets are the same sentences, cut at the semicolons the
+       statutes already put there, so per-state fidelity is intact and
+       test_landscape.test.js still holds every figure and term against the
+       state's own module. The table is allowed to grow taller; re-condensing a
+       cell to save height reverses the ruling, and
+       build/test_lstbullets.test.js fails on it. -->
   <div class="lscape">
   <table class="lst">
     <thead>
@@ -202,9 +214,24 @@
         <th scope="row" class="lst-law" data-col="Law"><span class="chip ca">CA</span>
           <a href="states/ca.html">SB 53 &mdash; Transparency in Frontier Artificial Intelligence Act</a>
           <div class="lst-delta">California SB 53 is the baseline every other state is measured against.</div></th>
-        <td data-col="Who it covers"><b>Frontier developer:</b> trains a model above 10^26 integer or floating-point operations. <b>Large frontier developer:</b> that, plus annual gross revenues above $500,000,000 with affiliates.</td>
-        <td data-col="Covered harms"><b>Catastrophic risk</b> &mdash; more than 50 deaths or serious injuries, or more than $1,000,000,000 in property damage, from a single incident of: expert-level assistance in creating or releasing a chemical, biological, radiological or nuclear weapon; conduct with no meaningful human oversight that is a cyberattack or would be the crime of murder, assault, extortion or theft; or a model evading the control of its developer or user.</td>
-        <td data-col="Key obligations">Publish a frontier AI framework. Transparency report at every deployment. Critical safety incident reported to Cal OES in 15 days, 24 hours where risk of death or serious injury is imminent. Quarterly internal-use catastrophic-risk summaries. Whistleblower protection.</td>
+        <td data-col="Who it covers"><ul class="cl">
+          <li><b>Frontier developer:</b> trains a model above 10^26 integer or floating-point operations.</li>
+          <li><b>Large frontier developer:</b> that, plus annual gross revenues above $500,000,000 with affiliates.</li>
+        </ul></td>
+        <td data-col="Covered harms"><ul class="cl">
+          <li><b>Catastrophic risk</b> &mdash; more than 50 deaths or serious injuries, or more than $1,000,000,000 in property damage, from a single incident of:</li>
+          <li>expert-level assistance in creating or releasing a chemical, biological, radiological or nuclear weapon;</li>
+          <li>conduct with no meaningful human oversight that is a cyberattack, or would be the crime of murder, assault, extortion or theft;</li>
+          <li>a model evading the control of its developer or user.</li>
+        </ul></td>
+        <td data-col="Key obligations"><ul class="cl">
+          <li>Publish a frontier AI framework.</li>
+          <li>Transparency report at every deployment.</li>
+          <li>Critical safety incident reported to Cal OES in 15 days.</li>
+          <li>24 hours where risk of death or serious injury is imminent.</li>
+          <li>Quarterly internal-use catastrophic-risk summaries.</li>
+          <li>Whistleblower protection.</li>
+        </ul></td>
         <td data-col="Status and timeline">In force since 1 January 2026.</td>
       </tr>
 
@@ -218,9 +245,24 @@
         <th scope="row" class="lst-law" data-col="Law"><span class="chip ny">NY</span>
           <a href="states/ny.html">RAISE Act, as amended by S8828 &mdash; Gen. Bus. Law art. 44-B</a>
           <div class="lst-delta">An SB 53 copy, plus a DFS registration regime, plus a 72-hour incident clock, minus whistleblower protections.</div></th>
-        <td data-col="Who it covers"><b>Frontier model:</b> trained above 10^26 integer or floating-point operations. <b>Large frontier developer:</b> a frontier developer whose group revenues exceeded $500,000,000 in the preceding calendar year.</td>
-        <td data-col="Covered harms"><b>Catastrophic risk</b> &mdash; more than fifty deaths or serious injuries, or more than one billion dollars ($1,000,000,000) in property damage, from a single incident of: expert-level assistance in creating or releasing a chemical, biological, radiological or nuclear weapon; conduct with no meaningful human oversight that is a cyberattack or would be the crime of murder, assault, extortion or theft; or a model evading the control of its developer or user.</td>
-        <td data-col="Key obligations">Publish a frontier AI framework. Transparency report at deployment. Critical safety incident reported to the office in 72 hours. Quarterly internal-use catastrophic-risk summaries. Register a disclosure statement with DFS before developing or deploying, and pay assessments that fund the regulator.</td>
+        <td data-col="Who it covers"><ul class="cl">
+          <li><b>Frontier model:</b> trained above 10^26 integer or floating-point operations.</li>
+          <li><b>Large frontier developer:</b> a frontier developer whose group revenues exceeded $500,000,000 in the preceding calendar year.</li>
+        </ul></td>
+        <td data-col="Covered harms"><ul class="cl">
+          <li><b>Catastrophic risk</b> &mdash; more than fifty deaths or serious injuries, or more than one billion dollars ($1,000,000,000) in property damage, from a single incident of:</li>
+          <li>expert-level assistance in creating or releasing a chemical, biological, radiological or nuclear weapon;</li>
+          <li>conduct with no meaningful human oversight that is a cyberattack, or would be the crime of murder, assault, extortion or theft;</li>
+          <li>a model evading the control of its developer or user.</li>
+        </ul></td>
+        <td data-col="Key obligations"><ul class="cl">
+          <li>Publish a frontier AI framework.</li>
+          <li>Transparency report at deployment.</li>
+          <li>Critical safety incident reported to the office in 72 hours.</li>
+          <li>Quarterly internal-use catastrophic-risk summaries.</li>
+          <li>Register a disclosure statement with DFS before developing or deploying.</li>
+          <li>Pay assessments that fund the regulator.</li>
+        </ul></td>
         <td data-col="Status and timeline">Enacted; effective 1 January 2027.</td>
       </tr>
 
@@ -237,9 +279,26 @@
         <th scope="row" class="lst-law" data-col="Law"><span class="chip il">IL</span>
           <a href="states/il.html">Public Act 104-0538 (SB 315) &mdash; Artificial Intelligence Safety Measures Act</a>
           <div class="lst-delta">An SB 53 copy, plus first-in-the-nation annual independent audits, plus a 72-hour incident clock.</div></th>
-        <td data-col="Who it covers"><b>Frontier developer:</b> trains a model above 10^26 integer or floating-point operations. <b>Large frontier developer:</b> that, plus group revenues above $500,000,000 in the preceding calendar year.</td>
-        <td data-col="Covered harms"><b>Catastrophic risk</b> &mdash; 50+ deaths or serious injuries, or $1B+ in property damage, in a single incident. A reportable <b>critical safety incident</b> is weight theft causing death or injury, realized catastrophic risk, loss of control causing death or injury, or a model deceiving its developer to subvert controls.</td>
-        <td data-col="Key obligations">Publish a frontier AI framework. Machine-readable transparency summaries. Critical safety incident reported to the Agency and the Attorney General in 72 hours. Annual independent third-party audit, with a public summary in 30 days. Registration before a frontier model is developed, deployed or operated.</td>
+        <td data-col="Who it covers"><ul class="cl">
+          <li><b>Frontier developer:</b> trains a model above 10^26 integer or floating-point operations.</li>
+          <li><b>Large frontier developer:</b> that, plus group revenues above $500,000,000 in the preceding calendar year.</li>
+        </ul></td>
+        <td data-col="Covered harms"><ul class="cl">
+          <li><b>Catastrophic risk</b> &mdash; 50+ deaths or serious injuries, or $1B+ in property damage, in a single incident.</li>
+          <li>A reportable <b>critical safety incident</b> is any of:</li>
+          <li>weight theft causing death or injury;</li>
+          <li>realized catastrophic risk;</li>
+          <li>loss of control causing death or injury;</li>
+          <li>a model deceiving its developer to subvert controls.</li>
+        </ul></td>
+        <td data-col="Key obligations"><ul class="cl">
+          <li>Publish a frontier AI framework.</li>
+          <li>Machine-readable transparency summaries.</li>
+          <li>Critical safety incident reported to the Agency and the Attorney General in 72 hours.</li>
+          <li>Annual independent third-party audit.</li>
+          <li>Public audit summary within 30 days.</li>
+          <li>Registration before a frontier model is developed, deployed or operated.</li>
+        </ul></td>
         <td data-col="Status and timeline">Enacted; effective 1 January 2027. Framework and audit duties begin 1 January 2028.</td>
       </tr>
 
@@ -255,9 +314,24 @@
         <th scope="row" class="lst-law" data-col="Law"><span class="chip ct">CT</span>
           <a href="states/ct.html">Public Act 26-15 (SB 5) &mdash; An Act Concerning Online Safety</a>
           <div class="lst-delta">SB 53's whistleblower chapter only, with the penalty cut from $1,000,000 to $1,000 per violation.</div></th>
-        <td data-col="Who it covers"><b>Frontier developer:</b> does business in the state and uses computing power greater than ten to the twenty-sixth power (10^26) operations. <b>Large frontier developer:</b> that, plus annual gross revenues above $500,000,000.</td>
-        <td data-col="Covered harms">Named through the <b>covered employee</b> the act protects: unauthorized access to, or modification or exfiltration of, model weights causing death, bodily injury or property loss; harm from the materialization of any catastrophic risk; any loss of control over a foundation model resulting in death or bodily injury; and use of a deceptive technique by a model against its own developer.</td>
-        <td data-col="Key obligations">Whistleblower chapter only. No rule, policy or contract may authorize retaliation for a safety report. Anonymous internal reporting channel, with updates. Reports escalated to officers and directors at least quarterly. Posted or annual notice of rights.</td>
+        <td data-col="Who it covers"><ul class="cl">
+          <li><b>Frontier developer:</b> does business in the state and uses computing power greater than ten to the twenty-sixth power (10^26) operations.</li>
+          <li><b>Large frontier developer:</b> that, plus annual gross revenues above $500,000,000.</li>
+        </ul></td>
+        <td data-col="Covered harms"><ul class="cl">
+          <li>Named through the <b>covered employee</b> the act protects &mdash; a report about any of:</li>
+          <li>unauthorized access to, or modification or exfiltration of, model weights causing death, bodily injury or property loss;</li>
+          <li>harm from the materialization of any catastrophic risk;</li>
+          <li>any loss of control over a foundation model resulting in death or bodily injury;</li>
+          <li>use of a deceptive technique by a model against its own developer.</li>
+        </ul></td>
+        <td data-col="Key obligations"><ul class="cl">
+          <li>Whistleblower chapter only.</li>
+          <li>No rule, policy or contract may authorize retaliation for a safety report.</li>
+          <li>Anonymous internal reporting channel, with updates.</li>
+          <li>Reports escalated to officers and directors at least quarterly.</li>
+          <li>Posted or annual notice of rights.</li>
+        </ul></td>
         <td data-col="Status and timeline">Enacted; frontier-developer provisions in force 1 October 2026. The anonymous internal channel is due 1 January 2027.</td>
       </tr>
 
@@ -272,9 +346,23 @@
         <th scope="row" class="lst-law" data-col="Law"><span class="chip ma">MA</span>
           <a href="states/ma.html">S.3228 &mdash; Senate-engrossed frontier AI text (proposed G.L. c. 93M)</a>
           <div class="lst-delta">An SB 53 copy, plus a standing 180-day risk report, plus annual audits, plus independent model evaluations every 120 days &mdash; not law yet, in conference.</div></th>
-        <td data-col="Who it covers"><b>Frontier model:</b> trained above 10^26 integer or floating-point operations. <b>Large frontier developer:</b> a frontier developer with group revenues greater than $500,000,000.</td>
-        <td data-col="Covered harms"><b>Catastrophic risk</b> &mdash; not less than 50 deaths or serious injuries, or not less than $1,000,000,000 in property damage, from a single incident of: expert-level assistance in creating or releasing a chemical, biological, radiological or nuclear weapon; conduct with no meaningful human oversight that is a cyberattack or would be the crime of murder, assault, extortion or theft; or a model that evades the control of its developer or user.</td>
-        <td data-col="Key obligations">Would require: a frontier AI framework on eleven topics; a standing residual-risk report every 180 days; an annual third-party audit; independent evaluation of the models themselves at least every 120 days; critical safety incidents to the Attorney General in 15 days.</td>
+        <td data-col="Who it covers"><ul class="cl">
+          <li><b>Frontier model:</b> trained above 10^26 integer or floating-point operations.</li>
+          <li><b>Large frontier developer:</b> a frontier developer with group revenues greater than $500,000,000.</li>
+        </ul></td>
+        <td data-col="Covered harms"><ul class="cl">
+          <li><b>Catastrophic risk</b> &mdash; not less than 50 deaths or serious injuries, or not less than $1,000,000,000 in property damage, from a single incident of:</li>
+          <li>expert-level assistance in creating or releasing a chemical, biological, radiological or nuclear weapon;</li>
+          <li>conduct with no meaningful human oversight that is a cyberattack, or would be the crime of murder, assault, extortion or theft;</li>
+          <li>a model that evades the control of its developer or user.</li>
+        </ul></td>
+        <td data-col="Key obligations"><ul class="cl">
+          <li><b>Would require:</b> a frontier AI framework on eleven topics;</li>
+          <li>a standing residual-risk report every 180 days;</li>
+          <li>an annual third-party audit;</li>
+          <li>independent evaluation of the models themselves at least every 120 days;</li>
+          <li>critical safety incidents to the Attorney General in 15 days.</li>
+        </ul></td>
         <td data-col="Status and timeline"><b>Not law.</b> House non-concurred 30 July 2026; conference committees appointed in both branches. Chapter 93M would take effect 1 July 2027 if enacted.</td>
       </tr>
 

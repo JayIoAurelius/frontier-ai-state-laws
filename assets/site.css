@@ -16,6 +16,13 @@
   --ink-2:#5C574C; --ink-3:#8B8474; --rule:#E4DFC8; --rule-2:#EFEBD8;
   --blue:#41C4FC; --blue-d:#35ABDD; --blue-ink:#1E7FA9;
   --ca:#2658B9; --ny:#B52964; --il:#8A56B5; --ct:#4A4A4A; --ma:#3F6BAE; --green:#3F7A4E;
+  /* --gold is DERIVED, not invented (Jay's chip ruling, 2026-08-03): it is the
+     palette's own warm axis — the hue of --ink-3 #8B8474 and --m-usage #C3BBA6,
+     both hue ~41-43 — taken to accent strength. Saturation 65% sits between
+     --ny (63) and --ca (66); lightness 34 between --green (36) and --ny (44).
+     White on it is 4.90:1, clearing WCAG AA for the 9.5px chip text, which the
+     lighter ambers do not. Used for one thing: the FIRST IN THE NATION chip. */
+  --gold:#8F6B1E;
   --m-full:#3F6BAE; --m-on:#2E5B9E; --m-partial:#9DB6D9; --m-usage:#C3BBA6; --m-none:#EDE8D2;
   --railw:128px; --railgap:22px;              /* bill pages override to 132/24 */
 }
@@ -138,13 +145,19 @@ h1 .thin{font-weight:400;color:var(--ink-2);}
 .contd p{font-size:12.5px;line-height:1.65;color:var(--ink-3);max-width:610px;}
 
 /* ---------- chips ----------
-   Tag hierarchy (BUILD_SPEC §3): solid purple NEW — NO CA ANALOGUE  >
+   Tag hierarchy (BUILD_SPEC §3): solid purple NO CA ANALOGUE  >
    outline blue TIGHTENS CA  >  gray MATCHES.  Provision `tag` -> class:
      NEW_NO_CA_ANALOGUE -> .chip.newf   (alias .chip.tag-new)
      TIGHTENS_CA        -> .chip.vs     (alias .chip.tag-tightens)
      MATCHES            -> .chip.same   (alias .chip.tag-matches)
      BASELINE           -> .chip.ca     (alias .chip.tag-baseline)
-   .chip.new is the quieter outline-purple NEW used outside the promoted band. */
+   .chip.new is the quieter outline-purple NEW used outside the promoted band.
+   OUTSIDE the hierarchy, because it is a different KIND of claim (Jay,
+   2026-08-03): .chip.fin, the gold FIRST IN THE NATION solid. The purple chips
+   say "no counterpart in SB 53", a comparison this site makes; the gold one says
+   "no state had it first", which the site cannot check and therefore carries on
+   an external citation (ruling 15). Same shape, different colour, so the two
+   never scan as one register. */
 .chip{display:inline-block;font-family:'Sohne';font-size:9.5px;font-weight:600;
   letter-spacing:.1em;text-transform:uppercase;padding:2.5px 7px 2px;border-radius:2px;
   border:1px solid;line-height:1.2;}
@@ -157,13 +170,14 @@ h1 .thin{font-weight:400;color:var(--ink-2);}
 .chip.eff{font-weight:500;letter-spacing:.085em;color:#9C9584;border-color:#D9D2BA;background:transparent;}
 .chip.eff.live{color:var(--green);border-color:rgba(63,122,78,.34);}
 /* tag chips wrap to two lines inside the rail, so they carry their own metrics */
-.chip.vs,.chip.same,.chip.new,.chip.newf,.chip.scope,
+.chip.vs,.chip.same,.chip.new,.chip.newf,.chip.fin,.chip.scope,
 .chip.tag-tightens,.chip.tag-matches,.chip.tag-new{
   padding:3px 7px 2.5px;line-height:1.5;max-width:132px;text-align:center;}
 .chip.vs,.chip.tag-tightens{color:var(--ca);border-color:rgba(38,88,185,.42);}
 .chip.same,.chip.tag-matches,.chip.scope{color:#9C9584;border-color:#C3BCA6;}
 .chip.new{color:var(--il);border-color:rgba(138,86,181,.45);background:rgba(138,86,181,.09);}
 .chip.newf,.chip.tag-new{color:#fff;background:var(--il);border-color:var(--il);}
+.chip.fin{color:#fff;background:var(--gold);border-color:var(--gold);}
 /* An ABSENCE row: what an amended act removed. Struck-through label, no fill,
    muted ink — it must not read as a duty in the way every other chip does. */
 .chip.repealed{color:var(--ink-3);border-color:#C3BCA6;background:transparent;
@@ -330,6 +344,16 @@ svg.usmap a:hover .st.full{fill:var(--m-on);}
 .lst-delta{margin-top:7px;font-family:'Sohne',-apple-system,sans-serif;
   font-size:11.5px;line-height:1.5;font-weight:400;color:var(--ink-2);
   letter-spacing:.004em;}
+/* Compact list — the landscape cells' bullet idiom (Jay, 2026-08-03). Nothing
+   new: the same middot marker and muted marker ink .prose li already uses,
+   re-hung at the table's own type scale (12px/1.55, inherited from .lst td) and
+   at a tighter indent, because a 20%-wide column cannot spend 18px on a hang.
+   Declared unscoped so a future cell elsewhere can reuse it rather than invent
+   a second bullet; it is styled from the ink tokens, not from the table. */
+.cl{list-style:none;}
+.cl li{position:relative;padding-left:11px;margin-bottom:4px;}
+.cl li:last-child{margin-bottom:0;}
+.cl li::before{content:"·";position:absolute;left:2px;color:var(--ink-3);}
 .lst-law a{color:var(--ink);text-decoration:none;
   border-bottom:1px solid rgba(30,127,169,.35);}
 .lst-law a:hover{color:var(--blue-ink);}
