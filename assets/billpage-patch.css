@@ -115,7 +115,12 @@ h1.bill{display:block;}
   .split.bill{grid-template-columns:9fr 5fr;}
   .split.bill .right{position:static;height:auto;align-self:stretch;overflow:visible;
     background:none;border-left:none;padding:34px 44px 60px 30px;}
-  .split.bill .panelwrap{top:26px;}
+  /* Jay, 2026-08-04 12:32: a card taller than the window "just cuts off at the
+     bottom" — the 08-01 no-scroll ruling assumed the text fits. Cap the sticky
+     card at the viewport and scroll INSIDE it only when it overflows; short
+     cards still end where their text ends, with no scrollbar. */
+  .split.bill .panelwrap{top:26px;max-height:calc(100vh - 52px);overflow-y:auto;
+    overscroll-behavior:contain;}
   .split.bill .panel{background:var(--panel);border:1px solid var(--rule);
     border-radius:2px;padding:22px 24px 24px;}
 
@@ -210,6 +215,11 @@ h1.bill{display:block;}
 .sum-facts dt{font-size:9px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;
   color:var(--ink-3);padding-top:2px;}
 .sum-facts dd{color:var(--ink-2);}
+/* Jay, 2026-08-04 12:44 ("this is so broken"): with the baseline group expanded,
+   the row-level cite link printed over the drop's own per-item cites. Open rows
+   hide the row link — every expanded item carries its cite — and the drop takes
+   the full row width so nothing shares its column. */
+.summary .sum-row:has(.sum-x[open])>.sum-l{visibility:hidden;}
 .sum-list{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:3px 24px;}
 .sum-list a{color:var(--ink-2);text-decoration:none;}
 .sum-list a:hover{color:var(--blue-ink);}

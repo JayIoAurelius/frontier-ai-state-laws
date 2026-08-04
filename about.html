@@ -1,6 +1,6 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>About &mdash; State Laws Affecting Frontier US AI Companies</title>
+<title>About: State Laws Affecting Frontier US AI Companies</title>
 <meta name="description" content="What the combined state frontier law is and is not, where every quotation comes from, and how the quote verifier works.">
 <link rel="stylesheet" href="assets/site.css">
 <link rel="stylesheet" href="assets/byline.css">
@@ -25,7 +25,6 @@
   <button class="byline-t" id="fb-open" type="button" aria-expanded="false">maintained by Jay Kim &middot; corrections welcome</button>
   <div class="byline-card">
     <div class="byline-who">Jay Kim</div>
-    <p class="byline-creed">An unsourced claim is a bug.</p>
     <p class="byline-ways"><a href="https://github.com/JayIoAurelius/frontier-ai-state-laws/issues">File a GitHub issue</a><span class="sep">&middot;</span><a href="mailto:jay.ifp.automation@gmail.com">jay.ifp.automation@gmail.com</a></p>
     <label class="byline-lab" for="fb-text">Or send a note from this page</label>
     <textarea id="fb-text" rows="3" placeholder="What is wrong, and where?"></textarea>
@@ -64,9 +63,9 @@
       <div class="sec-label"><h2>What the composite is</h2>
         <span>Front page &middot; The Combined State Frontier Law</span></div>
       <div class="prose">
-        <p>The site has two artifacts. One is the state bills, each read as its delta from the laws before it; the other is the composite: for each obligation that state frontier AI law imposes &mdash; publish a frontier AI framework, report critical safety incidents, protect whistleblowers, and so on &mdash; it reproduces the <em>strictest enacted version</em> of that obligation, verbatim, in the words of the state that enacted it. Sections are ordered as a bill is ordered, each section carries the chip of the state whose words those are, and each carries its own effective date, because the strictest version of one duty may not be in force on the same day as the strictest version of the next.</p>
+        <p>The site has two artifacts. One is the state bills, each read as its delta from the laws before it; the other is the composite: for each obligation that state frontier AI law imposes (publish a frontier AI framework, report critical safety incidents, protect whistleblowers, and so on), it reproduces the <em>strictest enacted version</em> of that obligation, verbatim, in the words of the state that enacted it. Sections are ordered as a bill is ordered, each section carries the chip of the state whose words those are, and each carries its own effective date, because the strictest version of one duty may not be in force on the same day as the strictest version of the next.</p>
         <p>The composite has two views: the <a href="composite.html">enacted view</a> (every obligation, whatever its effective date) and the <a href="in-force.html">in force today view</a> (only what already binds).</p>
-        <p>Defined terms are glossed in brackets in our own typeface &mdash; <span class="gloss">[like this]</span>. The bracketed text is ours; everything outside the brackets is the statute&rsquo;s.</p>
+        <p>Defined terms are glossed in brackets in our own typeface: <span class="gloss">[like this]</span>. The bracketed text is ours; everything outside the brackets is the statute&rsquo;s.</p>
       </div>
     </div>
 
@@ -76,7 +75,7 @@
         <ul>
           <li><b>It is not a law.</b> No legislature has passed the combined text and no state is bound by it.</li>
           <li><b>It is not a ranking of states.</b> Sections are selected obligation by obligation. Holding a section means a state&rsquo;s text is the strictest on that one duty, not that the state is strictest overall.</li>
-          <li><b>It is not a complete AI-law tracker.</b> Statutes about AI use &mdash; consumer disclosure, automated decisions, government procurement &mdash; are out of scope. Where they exist, they are listed on the <a href="index.html">state bills page</a> and linked to their official text, but they are not part of the composite.</li>
+          <li><b>It is not a complete AI-law tracker.</b> Statutes about AI use (consumer disclosure, automated decisions, government procurement) are out of scope. Where they exist, they are listed on the <a href="index.html">state bills page</a> and linked to their official text, but they are not part of the composite.</li>
           <li><b>It is not legal advice</b>, and it is not a substitute for reading the enacted text, which is linked from every quotation.</li>
         </ul>
       </div>
@@ -85,18 +84,18 @@
     <div class="block" id="method">
       <div class="sec-label"><h2>Method</h2><span>How a provision gets onto the page</span></div>
       <div class="prose">
-        <p>Every provision starts as a span copied out of an archived official text, together with the file it came from, its section cite, its effective date, and the URL of the official page. It is tagged against one baseline &mdash; California SB 53 &mdash; as matching California, tightening California on a parameter California also regulates, or having no California analogue at all. A provision tagged as having no California analogue must still carry the nearest California text, so that the claim can be checked rather than taken on trust.</p>
+        <p>Every provision starts as a span copied out of an archived official text, together with the file it came from, its section cite, its effective date, and the URL of the official page. It is tagged against one baseline (California SB 53) as matching California, tightening California on a parameter California also regulates, or having no California analogue at all. A provision tagged as having no California analogue must still carry the nearest California text, so that the claim can be checked rather than taken on trust.</p>
         <p>Category names are not ours to invent. The obligation categories that structure the composite follow the vocabulary the field already uses, and where the underlying reading of a statute rests on someone else&rsquo;s work, that work is cited on the row rather than absorbed.</p>
         <p>Two things on this site are ours rather than the statutes&rsquo;: the map&rsquo;s legend buckets and the &ldquo;also on the books&rdquo; scope labels are editorial groupings written here to make the picture skimmable, not a taxonomy any legislature enacted or any tracker publishes.</p>
         <p class="small">Comparative language is deliberately flat: the site is not in the business of grading states against each other.</p>
-        <p class="small">Annotations are drafted with AI assistance. The verifier checks quotations, not annotations: the quoted text is the record, annotations are a reading aid, and a misleading annotation is a bug &mdash; report it.</p>
+        <p class="small">Annotations are drafted with AI assistance. The verifier checks quotations, not annotations: the quoted text is the record, annotations are a reading aid, and a misleading annotation is a bug; report it.</p>
       </div>
     </div>
 
     <div class="block" id="gate">
       <div class="sec-label"><h2>The verifier gate</h2><span>Why the quotations can be trusted</span></div>
       <div class="prose">
-        <p>Nothing reaches a page on the strength of anyone&rsquo;s memory &mdash; human or machine. Before the site is built, a verifier loads every quotation, opens the archived source file that the quotation names, and requires a whitespace-normalized string match. A single miss names the failing provision and stops the build.</p>
+        <p>Nothing reaches a page on the strength of anyone&rsquo;s memory, human or machine. Before the site is built, a verifier loads every quotation, opens the archived source file that the quotation names, and requires a whitespace-normalized string match. A single miss names the failing provision and stops the build.</p>
         <p>The same match does double duty. Source links carry a text fragment (<code>#:~:text=</code>) built from a short, distinctive span of the quotation, so a click lands on the highlighted words on the official page rather than at the top of a long statute; the fragment is validated against the source by the same string match that proved the quotation. Browsers without fragment support fall back to the plain official page. After the HTML is generated, the verifier runs again over the rendered pages, so that a template cannot quietly mangle a quotation on its way out.</p>
         <p class="small">This exists because it was needed: during drafting, a fabricated &ldquo;verbatim&rdquo; lead-in survived two rounds of human review. Mechanical checking is the defense this site relies on.</p>
       </div>
@@ -115,7 +114,7 @@
 
       <div class="sum-row">
         <div><span class="chip ny">NY</span></div>
-        <div class="sum-t">S8828, Chapter 96 of the Laws of 2026 &mdash; the text that repealed and replaced Article 44-B
+        <div class="sum-t">S8828, Chapter 96 of the Laws of 2026: the text that repealed and replaced Article 44-B
           <span class="sub">retrieved 2026-08-01T18:11Z</span></div>
         <a class="sum-l" href="https://nyassembly.gov/leg/?default_fld=&amp;leg_video=&amp;bn=S08828&amp;term=2025&amp;Text=Y"><u>nyassembly.gov</u> &#8599;</a>
       </div>
@@ -136,13 +135,13 @@
 
       <div class="sum-row">
         <div><span class="chip ma">MA</span></div>
-        <div class="sum-t">S.3228, Senate-engrossed text &mdash; a pending bill, not law
+        <div class="sum-t">S.3228, Senate-engrossed text: a pending bill, not law
           <span class="sub">retrieved 2026-08-01T18:09Z</span></div>
         <a class="sum-l" href="https://malegislature.gov/Bills/194/S3228/Senate/Bill/Text"><u>malegislature.gov</u> &#8599;</a>
       </div>
 
       <div class="prose" style="margin-top:20px">
-        <p class="small">Each archived file carries the source URL and the UTC retrieval time in its header. Quotations are matched against these files, not against the live web, so a page that changes upstream cannot silently change what this site says it says &mdash; it shows up as a re-archiving decision instead. Statuses on the Massachusetts page follow the bill history published on malegislature.gov: the House non-concurred in the Senate amendment on 30 July 2026 and committees of conference were appointed in both branches.</p>
+        <p class="small">Each archived file carries the source URL and the UTC retrieval time in its header. Quotations are matched against these files, not against the live web, so a page that changes upstream cannot silently change what this site says it says; it shows up as a re-archiving decision instead. Statuses on the Massachusetts page follow the bill history published on malegislature.gov: the House non-concurred in the Senate amendment on 30 July 2026 and committees of conference were appointed in both branches.</p>
       </div>
     </div>
 
@@ -151,7 +150,7 @@
       <div class="prose">
         <p>The obligation categories adapt pillar language from the <a href="https://encodeai.org/wp-content/uploads/2025/09/SB-53-Coalition-Letter-9_24_2025.pdf">SB 53 coalition letter to Gov. Newsom</a> (Encode AI and 22 other signatory organizations, 24 September 2025), and the framing of what these laws still leave uncovered follows the <a href="https://secureaiproject.org/about">Secure AI Project&rsquo;s statement of policy priorities</a>. Neither organization is responsible for how the vocabulary is used here.</p>
         <p>The annotated-statute format owes a debt to <a href="https://sb53.info/">sb53.info</a>, Miles Kodama&rsquo;s annotated SB 53 (written while at GovAI). All quotations on this site are drawn directly from official statute texts. The state outlines are from <a href="https://simplemaps.com/resources/svg-license">simplemaps.com</a>, free for commercial use.</p>
-        <p><b>Corrections are welcome, and an unsourced claim is a bug.</b> If a quotation does not match the enacted text, if a section is attributed to the wrong state, or if a law has moved since 1 August 2026, that is a defect and it will be fixed. Maintainer: Jay Kim, in a personal capacity. File corrections as <a href="https://github.com/JayIoAurelius/frontier-ai-state-laws/issues">GitHub issues</a> or by email to <a href="mailto:jay.ifp.automation@gmail.com">jay.ifp.automation@gmail.com</a>.</p>
+        <p><b>Corrections are welcome.</b> If a quotation does not match the enacted text, if a section is attributed to the wrong state, or if a law has moved since 1 August 2026, that is a defect and it will be fixed. Maintainer: Jay Kim, in a personal capacity. File corrections as <a href="https://github.com/JayIoAurelius/frontier-ai-state-laws/issues">GitHub issues</a> or by email to <a href="mailto:jay.ifp.automation@gmail.com">jay.ifp.automation@gmail.com</a>.</p>
         <p class="small">Corrections that changed a page, and every republication of the site, are listed on the <a href="changelog.html">changelog</a>.</p>
       </div>
     </div>
