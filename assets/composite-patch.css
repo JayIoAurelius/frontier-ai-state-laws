@@ -82,6 +82,14 @@
 /* site.css sized .entries for a single dt/dd pair; a second pair needs the
    gap the first one gets from .entries' own padding-top. */
 .entries dd + dt{margin-top:15px;}
+/* Moved to the meta rail (Jay, 2026-08-05 15:00 ET): the row keeps the entries
+   treatment — flex with the sep spaced, the current view in the page's own ink,
+   the other view a quiet link — restated under .meta because site.css scopes
+   all of it to .entries and site.css is frozen. */
+.meta .row{display:flex;flex-wrap:wrap;align-items:baseline;gap:0 4px;}
+.meta .row a{color:var(--ink-2);text-decoration:none;border-bottom:1px solid #C8C8C8;}
+.meta .row .sep{color:#BEBEBE;padding:0 4px;}
+.meta .here{color:var(--ink);font-weight:500;}
 
 /* ---------- copy controls (change A) ----------
    Two quiet affordances, both anchors so they work with scripting off.
