@@ -201,12 +201,6 @@ a.chip.eff:focus-visible{outline:2px solid var(--blue-d);outline-offset:2px;}
    ========================================================================== */
 .panel.howto .note:first-of-type{margin-top:0;padding-top:0;border-top:none;}
 
-/* The dek's inline link (the in-force page points at the enacted view) takes
-   the site's link treatment; the linkstyle gate caught it shipping in
-   browser-default blue (found 2026-08-04, lane L7). */
-.dek a{color:var(--blue-ink);text-decoration:none;
-  border-bottom:1px solid rgba(46,93,60,.40);padding-bottom:1px;}
-
 /* The two First. markers in the key-obligations lists are anchors onto their
    enacted-first receipts (Jay, 2026-08-04: First means first enacted); they
    take the site link treatment rather than browser default. */
