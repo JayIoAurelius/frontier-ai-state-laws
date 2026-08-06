@@ -17,12 +17,49 @@
      Hand-authored (BUILD_SPEC section 2): nothing regenerates it, so its cells
      are pinned against v2/data/provisions/*.json by build/test_landscape.test.js
      and its identity by build/test_frontpage.test.js.
+
+     RESTYLED 2026-08-05 into the printed-law-review idiom, from the approved
+     mockups/antislop_2026-08-05/lawreview_index.html under v2/RESTYLE_SPEC.md
+     ruling 11. What the restyle moved, and nothing else:
+       · the "State bills" eyebrow is retired (the only visible string the
+         restyle was allowed to drop — ruling 1 freezes the rest, and
+         test_frontpage FP8 holds every remaining word to a captured inventory);
+       · the masthead is centred between a double rule and a thin green rule,
+         with the "Last verified" ledger below it as its own rule-bound strip;
+       · the map, its legend and the landscape table sit in ONE 62rem .plate
+         breakout out of the .leaf measure (ruling 10's single breakout);
+       · the map's "Color follows…" line is demoted from a section caption to a
+         quiet caption under the map, above the enacted-statutes note (Jay's
+         edit to the mockup, 2026-08-05) — both still inside .mapwrap, because
+         .mapwrap is the crop a reader screenshots (see the caption comment);
+       · the legend rows gain dotted leaders; the strip gains the short notes
+         rule that marks footnote apparatus.
+     THE BUTTERICK CORRECTIONS (spec addendum A1-A7, 2026-08-05 16:45) touch
+     this page only through its stylesheets, because it carries no typography of
+     its own — no <style> block, no style attribute, which is what
+     build/test_frontpage_type.test.js FT5 holds it to. The corrected rules are
+     in v2/RESTYLE_L3_CSS_REQUEST.css: real capitals instead of synthesized
+     small caps in the masthead (A1), ragged narrow columns and unbreakable
+     statutory cites beside the justified subtitles (A2), hairline rules that
+     sit above their headings and tabular figures in the date columns (A6). The
+     one thing the page itself owes them is `lang="en"` on the <html> element:
+     without it a browser has no dictionary and hyphens:auto does nothing.
+     A7 is why no character in the statutes' text moved: FP8 proves it.
+     NAMES: the mockup's outer measure column is .page, which site.css already
+     spends on a dead padding rule, so it is .leaf here; .plate is the mockup's
+     own name. The rules for .leaf, .plate, .rule-dbl, .lead-dots, .notes-rule
+     and .mapcap.mapsub belong in assets/site.css, which is L1's file — see the
+     L3 report. Every other class on this page is the vocabulary the live
+     stylesheets and the other lanes' tests already speak.
+
      Adapted from mockups/mock4b_map.html; state outlines from lawmap/us_raw.svg
      (simplemaps.com, free for commercial use, attribution appreciated — credited
      on about.html). Colors are assigned mechanically from data/states.json
      `status`; the Massachusetts hatch is the one documented override, since
-     states.json carries no pending-bill status. No JavaScript: states with a
-     bill page are real <a> links, everything else is inert. -->
+     states.json carries no pending-bill status. The map palette literals are
+     untouched by the restyle (ruling 4: the map stays blue-family). No
+     JavaScript in the map itself: states with a bill page are real <a> links,
+     everything else is inert. -->
 </head><body>
 
 <div class="chrome">
@@ -34,13 +71,15 @@
   </nav>
 </div>
 
+<div class="leaf">
+
 <div class="mast">
-  <div>
-    <div class="eyebrow">State bills</div>
-    <h1>Frontier AI law, state by state</h1>
-    <div class="dek">This site carries every enacted state frontier-AI law, whole and in the statutes' own words, and is checked against the official texts every day.</div>
+  <div class="rule-dbl"></div>
+  <h1>Frontier AI law, state by state</h1>
+  <div class="rule-dbl thin"></div>
+  <div class="dek">This site carries every enacted state frontier-AI law, whole and in the statutes' own words, and is checked against the official texts every day.</div>
   <div class="byline" id="fb-byline">
-  <button class="byline-t" id="fb-open" type="button" aria-expanded="false">maintained by Jay Kim &middot; corrections welcome</button><svg class="cactus-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9.4 21.6V4.6a2.6 2.6 0 0 1 5.2 0V21.6"/><path d="M9.4 18.2H7a4.8 4.8 0 0 1-4.8-4.8V9a2 2 0 0 1 4 0v4.4a.8.8 0 0 0 .8.8h1.8"/><path d="M14.6 15.6H17a4.8 4.8 0 0 0 4.8-4.8V7a2 2 0 0 0-4 0v3.8a.8.8 0 0 1-.8.8h-2.4"/><path d="M5.6 21.6h12.8"/></svg>
+  <button class="byline-t" id="fb-open" type="button">maintained by Jay Kim &middot; corrections welcome</button><svg class="cactus-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9.4 21.6V4.6a2.6 2.6 0 0 1 5.2 0V21.6"/><path d="M9.4 18.2H7a4.8 4.8 0 0 1-4.8-4.8V9a2 2 0 0 1 4 0v4.4a.8.8 0 0 0 .8.8h1.8"/><path d="M14.6 15.6H17a4.8 4.8 0 0 0 4.8-4.8V7a2 2 0 0 0-4 0v3.8a.8.8 0 0 1-.8.8h-2.4"/><path d="M5.6 21.6h12.8"/></svg>
   <div class="byline-card">
     <div class="byline-who">Jay Kim</div>
     <p class="byline-ways"><a href="mailto:jay.ifp.automation@gmail.com">jay.ifp.automation@gmail.com</a><span class="sep">&middot;</span><a href="/corrections.html">What this site got wrong</a></p>
@@ -51,18 +90,17 @@
     <p class="byline-status" id="fb-status" role="status" aria-live="polite"></p>
   </div>
 </div>
-  </div>
-  <dl class="meta">
-    <dt>Last verified</dt><dd data-verified-stamp>1 August 2026</dd>
-  </dl>
 </div>
 
-<div class="board">
-  <div>
-    <div class="sec-label">
-      <h2>The map</h2>
-      <span>Color follows what is on the books, not how strict it is &middot; enacted text only, as of <span data-verified-stamp>1 August 2026</span></span>
-    </div>
+<dl class="meta">
+  <dt>Last verified</dt><dd data-verified-stamp>1 August 2026</dd>
+</dl>
+
+<div class="plate">
+  <div class="sec-label">
+    <h2>The map</h2>
+  </div>
+  <div class="mapframe">
     <div class="mapwrap">
       <svg class="usmap" viewBox="0 0 1000 589" xmlns="http://www.w3.org/2000/svg"
            role="img" aria-label="Map of the United States colored by enacted frontier AI law">
@@ -138,34 +176,39 @@
 <g><title>Alaska</title><path class="st none" id="AK" d="m 101.28276,542.95341 -0.48532,0.19412 0.38826,0.0971 0.0971,-0.29119 z m 3.59134,0.58238 0,0 0,0.0971 0,-0.0971 z m -1.74714,-1.65008 0,0.29119 0.19413,-0.0971 -0.19413,-0.19413 z m -0.87357,-0.48531 0,-0.0971 0,0 0,0.0971 z m 1.8442,0.97063 0,-0.19413 -0.0971,0.0971 0.0971,0.0971 z m -0.19413,-0.19413 0,-0.0971 -0.19412,0 0.19412,0.0971 z m -75.709229,-63.77047 -0.09706,0.67945 0.194126,1.94126 -0.09706,-2.62071 z m -0.485315,-2.6207 0.09706,0.87357 0.09706,-0.29119 -0.194126,-0.58238 z m 76.194544,65.22642 0.0971,-0.58238 -0.38825,0.19412 0.29118,0.38826 z m 11.0652,4.75609 -0.0971,-0.0971 0.19412,0.38825 -0.0971,-0.29119 z m -7.18267,-3.39721 -1.06769,-0.97063 0,2.32951 1.06769,-1.35888 z m 2.42658,2.13539 -0.0971,-0.67944 -1.65007,-0.0971 1.74714,0.77651 z m 5.82378,1.35888 -0.0971,0.19413 0.19413,0 -0.0971,-0.19413 z m 0.38826,0.0971 -0.19413,0 0.38825,0.0971 -0.19412,-0.0971 z m 1.16475,0.38826 -0.0971,0 -0.0971,0 0.19412,0 z m -85.70673,-65.8088 0.388252,0.0971 0.29119,-0.0971 -0.679442,0 z m 83.57135,64.44991 -0.77651,-0.0971 0.29119,0.29119 0.48532,-0.19413 z m -88.812759,-72.02083 -1.358883,-0.58238 -0.09706,0.29119 1.455947,0.29119 z m 91.239329,72.21496 -0.19412,-0.0971 0,0.0971 0.19412,0 z m 5.92085,1.16476 -3.78546,0.29119 -0.87357,0.38825 4.65903,-0.67944 z m -104.05166,-88.61863 -1.067695,0 0.194127,0.29119 0.873568,-0.29119 z m 115.7963,93.08353 0,-0.38825 -0.19412,0 0.19412,0.38825 z m 5.04728,0.0971 0.19413,-0.19412 -0.19413,-0.19413 0,0.38825 z m 3.78547,1.0677 0.19412,-0.0971 -0.0971,0 -0.0971,0.0971 z m -3.10602,-1.74714 -0.0971,-0.38825 -0.19412,0 0.29119,0.38825 z m 6.50322,1.45595 -0.0971,0.0971 0.0971,0 0,-0.0971 z m -127.443872,-98.90732 -1.455946,0.19413 1.844199,1.65007 -0.388253,-1.8442 z m 122.299532,97.45137 0.19413,-0.58238 -0.0971,0 -0.0971,0.58238 z m 16.40367,-1.45594 0.0971,-0.19413 -0.19413,-0.0971 0.0971,0.29119 z m -2.42658,-0.87357 -3.39721,3.00895 2.42658,-0.19412 2.81483,-2.23245 -1.8442,-0.58238 z m 6.11498,1.06769 -0.67945,-0.19412 0.48532,0.38825 0.19413,-0.19413 z m 1.35888,0.0971 -1.0677,-0.29118 -0.19412,0.0971 1.26182,0.19412 z m -3.6884,-1.35888 -1.06769,0 1.8442,0.48532 -0.77651,-0.48532 z m 4.4649,0.97063 -0.0971,-0.19412 -0.38825,0.0971 0.48531,0.0971 z m -2.91189,-1.16476 -0.38825,-0.19412 0,1.06769 0.38825,-0.87357 z m 12.42408,2.42658 -0.0971,-0.0971 -0.19413,0 0.29119,0.0971 z m 0.19413,-0.0971 0,-0.0971 -0.19413,-0.0971 0.19413,0.19413 z m -1.65008,-0.58238 0.19413,0.38825 0,-0.0971 -0.19413,-0.29119 z m 0.87357,0 -0.87357,-0.29119 1.0677,0.77651 -0.19413,-0.48532 z m 1.26182,-0.97063 0,0 0,0.0971 0,-0.0971 z m 11.55051,1.45595 -0.19412,-0.38826 -0.0971,0 0.29119,0.38826 z m 104.43992,-6.50323 -0.19413,-0.19413 0.0971,0.19413 0.0971,0 z m -117.6405,3.00895 0,-0.0971 -0.0971,0.0971 0.0971,0 z m 120.45533,-4.75609 0.29119,0.38825 0.19413,0 -0.48532,-0.38825 z m -106.08999,7.27974 -0.0971,0.0971 0,0.29119 0.0971,-0.38825 z m -12.03583,-1.74714 0.19413,-0.77651 -0.0971,0 -0.0971,0.77651 z m 123.75548,-7.76505 -0.87357,0.48532 0.77651,0.38825 0.0971,-0.87357 z m -122.00834,7.27973 -0.0971,-0.19412 0.0971,0.19412 0,0 z m -7.27973,-2.13539 -2.42658,0.48532 -2.13539,2.81483 4.56197,-3.30015 z m 17.37429,3.6884 -0.58237,0.48532 0.58237,-0.0971 0,-0.38826 z m 111.91378,-9.31806 -0.19412,-0.38825 -0.0971,0.19413 0.29119,0.19412 z m -121.23184,6.79442 -0.67944,-0.0971 0.67944,0.67944 0,-0.58238 z m 114.82568,-5.5326 -0.19413,0.19413 0.19413,0.67944 0,-0.87357 z m -113.27267,5.43554 -0.29118,0.0971 0.38825,0.29119 -0.0971,-0.38825 z m 7.18268,2.03832 -0.29119,0 -0.19413,-0.19412 0.48532,0.19412 z m -7.95918,-2.03832 -0.48532,-0.29119 0.19413,0.29119 0.29119,0 z m 6.50323,1.06769 -0.87357,0.29119 -0.58238,1.55301 1.45595,-1.8442 z m 105.41055,-6.79441 0,0.67944 0.38825,-0.48532 -0.38825,-0.19412 z m -116.864,3.68839 0.77651,-0.19412 -0.0971,0 -0.67944,0.19412 z m -0.97063,-0.58238 -0.19413,-0.19412 0,0.0971 0.19413,0.0971 z m 117.83463,-3.78546 -0.19413,-0.0971 -0.0971,0.29119 0.29119,-0.19413 z m -106.47825,5.82379 -0.19412,-0.0971 -0.19413,0.29119 0.38825,-0.19413 z m 105.50762,-5.62966 0.0971,-0.48532 -0.19413,-0.0971 0.0971,0.58238 z m -0.77651,-0.48532 -0.29119,0.38826 0.48532,0.0971 -0.19413,-0.48532 z m -100.65445,4.7561 -0.19413,-0.19413 -0.0971,0 0.29119,0.19413 z m 100.36326,-6.50323 0.77651,0.29119 0.29119,-0.38826 -1.0677,0.0971 z m 1.16476,-0.67944 -0.29119,0.19412 0.48532,0.29119 -0.19413,-0.48531 z m -2.23245,0.58237 -0.19413,-0.38825 -0.19413,0.19413 0.38826,0.19412 z m 9.70631,-3.59133 -1.26182,3.59133 1.26182,-0.7765 0,-2.81483 z m -115.0198,7.47386 -0.0971,0 0,0 0.0971,0 z m 106.47824,-6.11498 -0.87356,0.87357 0.19412,0.97063 0.67944,-1.8442 z m -90.36576,7.76505 0,-0.38825 -0.0971,0.19413 0.0971,0.19412 z m 89.29807,-8.73568 2.81483,4.27078 6.3091,3.97959 -1.45594,-3.39721 -6.01792,-5.14435 -1.65007,0.29119 z m -93.18059,7.18267 -0.0971,-0.29119 -0.19412,0.0971 0.29119,0.19412 z m 96.48074,-8.83274 -0.38826,1.45595 0.67945,-0.48532 -0.29119,-0.97063 z m 2.03832,0 -0.0971,0.97063 0.87357,0.29119 -0.77651,-1.26182 z m -95.41305,7.57092 -0.48531,-0.0971 -0.48532,0.19413 0.97063,-0.0971 z m 9.99751,0.77651 -0.38826,0.67944 0.19413,-0.58238 0.19413,-0.0971 z m 1.45594,0.0971 -0.87357,0.0971 0.48532,0.58238 0.38825,-0.67944 z m -58.82025,-12.42408 0.97063,0.48532 -0.19412,-0.19413 -0.77651,-0.29119 z m 38.53406,9.60925 0.0971,-0.0971 -0.0971,0.0971 0,0 z m 0.29119,-0.0971 0.0971,0 0,-0.0971 -0.0971,0.0971 z m 100.36327,-7.47386 0.48531,1.8442 0.97063,-0.58238 -1.45594,-1.26182 z m -97.74257,6.40616 0.0971,-0.0971 0,0 -0.0971,0.0971 z m 93.56885,-5.62966 0.48532,4.4649 0.97063,-0.97063 -1.45595,-3.49427 z m 0.48532,-1.45595 2.23245,3.10602 -0.29119,-2.03832 -1.94126,-1.0677 z m -6.89148,0.77651 -0.58238,1.8442 0.7765,-1.26182 -0.19412,-0.58238 z m -77.6505,4.75609 -0.0971,-0.0971 0.0971,0.0971 0,0 z m 9.221,0.19413 -0.19413,-0.29119 0.19413,0.38825 0,-0.0971 z m 68.62362,-6.40617 3.88253,6.40617 -0.58238,-4.36784 -3.30015,-2.03833 z m -63.18809,3.39721 -0.29119,0.29119 0.48532,0.19413 -0.19413,-0.48532 z m -1.26182,0.19413 0.0971,-0.29119 -0.38825,0 0.29119,0.29119 z m -0.97063,0 -2.52364,1.65007 -3.10602,4.07665 1.55301,1.65008 7.18267,-5.33848 -3.10602,-2.03832 z m 61.24683,-6.3091 -0.67944,-0.38826 0,0.58238 0.67944,-0.19412 z m -61.82921,5.14434 0.0971,0.38825 0.67945,0.38826 -0.77651,-0.77651 z m 63.67341,-6.98854 -1.94126,0.97063 1.84419,0.58238 0.0971,-1.55301 z m -1.26182,0 -0.19413,-0.19413 -0.0971,0.19413 0.29119,0 z m 5.92085,-1.55301 -0.77651,-0.29119 -0.19412,0.58238 0.97063,-0.29119 z m -4.17372,0.67944 -0.67944,-0.0971 0,0.19413 0.67944,-0.0971 z m 2.13539,-0.77651 3.97959,5.82379 -1.06769,-5.33847 -2.9119,-0.48532 z m -64.06166,6.30911 -2.32951,1.74713 1.06769,1.16476 3.10602,-2.32952 -1.8442,-0.58237 z m -26.40117,-3.6884 -0.0971,-0.0971 0,0.0971 0.0971,0 z m -1.06769,-0.48532 -0.0971,-0.48531 0,0.19412 0.0971,0.29119 z m 29.79838,1.26182 -0.19413,0.0971 0,0.0971 0.19413,-0.19413 z m -0.97063,-0.19412 -0.0971,0 -0.19412,0.29119 0.29119,-0.29119 z m 2.32951,-0.77651 -0.29119,-0.19413 0,0.0971 0.29119,0.0971 z m 0.77651,-0.0971 -0.29119,-0.19413 0,0.0971 0.29119,0.0971 z m -1.26182,-0.29119 -0.38826,0 0,0.0971 0.38826,-0.0971 z m 19.31556,-1.94126 0.0971,-0.29119 -0.19413,0.19412 0.0971,0.0971 z m 5.92085,-3.10602 1.16475,-1.45595 -0.38825,0.29119 -0.7765,1.16476 z m -11.8417,-0.19413 0.38825,-0.29119 0.0971,-0.38825 -0.48531,0.67944 z m 0,-1.06769 -0.38826,0.29118 0.67945,-0.19412 -0.29119,-0.0971 z m -15.91836,0 -0.0971,-0.38826 -0.0971,0 0.19412,0.38826 z m 15.5301,-0.0971 -0.38825,0.38825 -0.19412,0.38826 0.58237,-0.77651 z m 10.67695,-1.16476 0.0971,0 0.0971,0 -0.19412,0 z m 0.48531,0 -0.19412,-0.0971 0,0.0971 0.19412,0 z m -1.16475,-0.0971 0.0971,0.0971 0,-0.0971 -0.0971,0 z m -7.95918,0.58238 0.38825,-0.38825 -0.48531,0.38825 0.0971,0 z m 5.92085,-1.16476 0,0 0,0 0,0 z m -4.75609,0.29119 -2.32952,3.78546 3.00896,-3.49427 -0.67944,-0.29119 z m -3.00896,0.48532 -0.29119,-0.38825 -0.0971,0.19412 0.38825,0.19413 z m 7.3768,-0.87357 -0.19413,-0.0971 0.0971,0.0971 0.0971,0 z m 2.52364,0.19413 0,-0.67945 -0.19413,0.29119 0.19413,0.38826 z m -71.24433,-7.47386 -4.65903,-0.19413 3.20308,3.39721 1.45595,-3.20308 z m 66.29411,6.89148 0.19413,0.67944 0.48531,-0.77651 -0.67944,0.0971 z m -3.88253,-0.0971 -0.29119,2.13539 0.48532,-1.35888 -0.19413,-0.77651 z m -84.25078,-16.11247 0.0971,-0.38826 0,0 -0.0971,0.38826 z m 83.28015,14.75359 0.0971,0.29119 0.19412,-0.0971 -0.29119,-0.19413 z m -0.48531,0.38825 -0.19413,-0.58238 -0.29119,0.19413 0.48532,0.38825 z m 4.56196,-1.16475 0,-0.38826 -0.29119,0.19413 0.29119,0.19413 z m -4.36784,-0.58238 0,0.97063 0.29119,-0.67944 -0.29119,-0.29119 z m -7.37679,-1.16476 0,-0.29119 0,0 0,0.29119 z m -50.66695,-12.03583 0.19412,-0.58238 -0.0971,0.0971 -0.0971,0.48531 z m 0.29119,-0.97063 -0.0971,-0.0971 -0.0971,0.0971 0.19413,0 z m 4.27077,-2.32951 0,-0.0971 0,0 0,0.0971 z m 0,-0.38826 -0.0971,-0.19412 0,0 0.0971,0.19412 z m 1.74714,-2.52364 0,0 -0.0971,0 0.0971,0 z m 0.58238,0.19413 -0.38825,-0.19413 0,0.0971 0.38825,0.0971 z m -0.58238,-0.38825 0,-0.19413 -0.19413,0.19413 0.19413,0 z m -15.5301,-4.56197 -0.19412,-0.48532 -0.0971,-0.29118 0.29119,0.7765 z m 1.45595,-1.74714 0.0971,0 0.0971,0.0971 -0.19412,-0.0971 z m -2.62071,-0.48531 -0.7765,-0.97063 0.58238,0.7765 0.19412,0.19413 z m -1.55301,-1.55301 -0.19412,0 0.29119,0.0971 -0.0971,-0.0971 z m 0.19413,-1.0677 0,0 0,0 0,0 z m -0.19413,-0.0971 0,0 0.19413,0.0971 -0.19413,-0.0971 z m 25.72173,7.66799 -1.06769,0.0971 0.58238,0.29119 0.48531,-0.38825 z m -26.78942,-9.41513 -0.77651,2.9119 2.42658,0.38825 3.20309,3.30015 1.94126,-0.87357 -6.79442,-5.72673 z m 16.98605,1.16476 0,-0.19412 0,0.0971 0,0.0971 z m -4.85316,-10.28869 -0.19413,-0.0971 0.0971,0.0971 0.0971,0 z m 2.81483,0.97063 0.29119,-0.0971 -0.0971,0 -0.19413,0.0971 z m 1.94126,-0.58238 0.29119,0 0.87357,-0.38825 -1.16476,0.38825 z m 3.49428,-1.06769 0.19412,-0.19413 -0.29119,0.19413 0.0971,0 z m 0.48531,-0.0971 0.58238,-0.29119 -0.48532,0.0971 -0.0971,0.19413 z m 1.45595,-0.58238 -0.48532,0.0971 0,0.0971 0.48532,-0.19412 z m 0.58238,-0.0971 0,0 0,0 0,0 z m 61.73214,-17.47136 -0.38825,-0.29119 -0.67944,-0.29119 1.06769,0.58238 z m -50.86107,-2.13539 0.87356,-1.16475 -0.48531,0.38825 -0.38825,0.7765 z m 1.16475,-1.35888 0.38826,-0.58238 -0.19413,0.19413 -0.19413,0.38825 z m 0.58238,-0.7765 0.67944,-0.58238 -0.38825,0.19412 -0.29119,0.38826 z m 30.57488,0.19412 0.48532,0.48532 0.29119,0 -0.77651,-0.48532 z m -15.62716,-6.40616 -3.97959,3.30014 -2.42657,-0.67944 -5.62966,3.20308 -1.0677,-0.67944 -6.40616,7.18267 -6.50323,1.45595 0.58237,3.49427 2.9119,3.97959 5.43553,5.24141 -0.87356,2.03832 4.07665,1.74714 -2.13539,0.38825 -2.62071,-2.03832 1.35889,3.00895 -1.74714,1.0677 -5.5326,-5.04728 -4.36784,0.7765 -7.47386,2.81483 3.39721,3.78546 -0.48531,2.32952 2.23245,2.71776 7.37679,2.9119 5.33848,-2.71777 0.87356,2.03833 -1.45594,6.11497 -4.46491,0 -5.2414,2.32952 -0.29119,-1.65008 -2.71777,1.0677 -1.26182,2.81483 -4.46491,3.39721 0,4.95022 1.74714,0.7765 -1.35888,4.17372 5.82378,5.04728 3.6884,-1.55301 -0.7765,6.21204 1.06769,1.35888 4.46491,0.97063 1.65007,1.8442 3.88252,0.29119 1.8442,1.94127 3.97959,-1.16476 -1.8442,2.52364 -1.45595,5.14434 -11.8417,7.66799 -1.55301,1.55301 -2.23245,-0.87357 -3.59133,0.87357 -5.14435,3.39721 8.05624,-2.32952 1.16476,1.74714 10.38575,-3.39721 0.29119,1.35889 4.07665,-4.07666 8.54156,-5.92085 0.67944,0.38826 7.47386,-5.92085 -1.94126,-2.32952 2.52364,-4.17371 6.60029,-7.86212 5.04728,-0.97063 1.55301,1.0677 -6.11497,1.74713 -1.65008,6.50323 0.19413,3.49428 2.13539,-0.19413 10.28869,-6.21204 0.7765,-2.32952 -0.87356,-3.59133 3.10601,0.7765 2.23246,-1.45594 6.40616,3.88252 -0.48531,1.0677 14.55946,1.8442 3.39721,-1.0677 0.97064,1.45595 12.6182,6.01791 2.13539,-1.26182 0.19413,-7.27973 1.65007,3.30014 8.1533,5.92085 0.67944,2.42658 7.08561,3.97959 1.8442,5.14434 1.74714,-3.97958 3.59133,6.98854 2.42658,-3.97959 -1.94126,-4.95022 -7.47386,-0.7765 -11.45345,-10.96813 -6.21204,-4.56197 -4.75609,4.65903 -2.81483,0 -6.50323,-4.27078 -6.40617,-0.29119 -9.12393,-57.55843 -1.55301,-2.71776 -3.6884,-2.23246 -5.5326,1.0677 -4.27078,-0.87357 -5.43553,-2.13539 -5.72673,0.38825 -1.45594,-2.71776 -4.56197,-0.67945 -0.7765,-1.65007 -2.03833,2.32952 -0.58238,-4.36784 z"/></g>
         <path class="lead" d="M 969 139 L 1006 141"/>
       </svg>
-      <!-- CROP-SAFE CAPTION (2026-08-03). Inside .mapwrap on purpose: a reader
-           who screenshots the map crops away every word on the page except what
-           is in this block, and the resulting image must not teach "these states
-           have no AI regulation at all". So the caption carries the scope of the
-           claim and its date, and the date is the hydrated data-verified-stamp —
-           a hand-typed one would go stale inside every screenshot ever taken.
-           Pinned by build/test_mapcrop.test.js. -->
+      <!-- CROP-SAFE CAPTIONS (2026-08-03; the first one demoted here
+           2026-08-05). Inside .mapwrap on purpose: a reader who screenshots the
+           map crops away every word on the page except what is in this block,
+           and the resulting image must not teach "these states have no AI
+           regulation at all". So the captions carry the scope of the claim and
+           its date, and the date is the hydrated data-verified-stamp — a
+           hand-typed one would go stale inside every screenshot ever taken.
+           The .mapsub line is the sentence that used to sit beside the section
+           head; Jay demoted it to a caption under the map (2026-08-05) and it
+           reads above the note, so the reader learns what the colour means
+           before being told which states carry a statute. The second caption is
+           pinned, words and shape, by build/test_mapcrop.test.js, which reads
+           the first `class="mapcap"` on the page — hence the compound class
+           on the demoted line, which is a caption of a different rank. -->
+      <div class="mapcap mapsub">Color follows what is on the books, not how strict it is &middot; enacted text only, as of <span data-verified-stamp>1 August 2026</span></div>
       <div class="mapcap">Enacted frontier-AI statutes: California &middot; New York &middot; Illinois, and Connecticut in part. No other state has one; other AI laws may apply. Status as of <span data-verified-stamp>1 August 2026</span>.</div>
       <div class="matag"><a href="states/ma.html">Mass. S.3228</a><em data-ma-status>In conference</em></div>
     </div>
   </div>
 
+  <!-- The legend is the plate's key, set as a printed table of contents: label,
+       dotted leader, the states it names. .n / .w keep their element types
+       because test_mapcrop reads the no-statute row's label out of
+       `<div class="n">`; the leader is a new empty span between them. -->
   <div class="legend">
     <h3>What the colors mean</h3>
-    <div class="lrow"><span class="sw full"></span>
-      <div><div class="n">Frontier AI law enacted</div><div class="w">California &middot; New York &middot; Illinois</div></div></div>
-    <div class="lrow"><span class="sw partial"></span>
-      <div><div class="n">Partial: some frontier duties</div><div class="w">Connecticut</div></div></div>
-    <div class="lrow"><span class="sw moving"></span>
-      <div><div class="n">Bill moving</div><div class="w">Massachusetts: S.3228, in conference</div></div></div>
-    <div class="lrow"><span class="sw usage"></span>
-      <div><div class="n">AI law, different scope</div><div class="w">Colorado &middot; Texas &middot; Utah</div></div></div>
-    <div class="lrow"><span class="sw"></span>
-      <div><div class="n">No frontier-AI statute; other AI laws may apply</div><div class="w">Everything else</div></div></div>
+    <div class="lrow"><span class="sw full"></span><div class="n">Frontier AI law enacted</div><span class="lead-dots"></span><div class="w">California &middot; New York &middot; Illinois</div></div>
+    <div class="lrow"><span class="sw partial"></span><div class="n">Partial: some frontier duties</div><span class="lead-dots"></span><div class="w">Connecticut</div></div>
+    <div class="lrow"><span class="sw moving"></span><div class="n">Bill moving</div><span class="lead-dots"></span><div class="w">Massachusetts: S.3228, in conference</div></div>
+    <div class="lrow"><span class="sw usage"></span><div class="n">AI law, different scope</div><span class="lead-dots"></span><div class="w">Colorado &middot; Texas &middot; Utah</div></div>
+    <div class="lrow"><span class="sw"></span><div class="n">No frontier-AI statute; other AI laws may apply</div><span class="lead-dots"></span><div class="w">Everything else</div></div>
   </div>
-</div>
 
-<div class="summary">
   <div class="sum-head">
     <h2>Bill pages</h2>
   </div>
@@ -174,7 +217,6 @@
        a pre-inversion https://frontierstatelaw.com/#<section> link with
        JavaScript off lands here with no redirect, so the way on has to be a
        plain anchor. Pinned by build/test_deeplinks.test.js (DL5). -->
-  <p class="xref">Looking for the combined bill? <a href="composite.html">Composite Law</a>.</p>
 
   <!-- LANDSCAPE TABLE (2026-08-03). map.html is hand-authored (BUILD_SPEC
        section 2), so no generator keeps these cells honest — build/
@@ -247,7 +289,7 @@
         <td data-col="Key obligations"><ul class="cl">
           <li>Publish a frontier AI framework. <a href="https://fpf.org/blog/californias-sb-53-the-first-frontier-ai-law-explained/"><b>First.</b></a></li>
           <li>Transparency report at every deployment.</li>
-          <li>Critical safety incident reported to Cal OES in 15 days.</li>
+          <li>Critical safety incident reported to the Office of Emergency Services in 15 days.</li>
           <li>24 hours where risk of death or serious injury is imminent.</li>
           <li>Quarterly internal-use catastrophic-risk summaries.</li>
           <li>Whistleblower protection.</li>
@@ -264,7 +306,7 @@
       <tr>
         <th scope="row" class="lst-law" data-col="Law"><span class="chip ny">NY</span>
           <a href="states/ny.html">RAISE Act, as amended by S8828: Gen. Bus. Law art. 44-B</a>
-          <div class="lst-delta">An SB 53 copy, plus a DFS registration regime, plus a 72-hour incident clock, minus whistleblower protections.</div></th>
+          <div class="lst-delta">An SB 53 copy, plus a registration regime run by the state's financial regulator, plus a 72-hour incident clock, minus whistleblower protections.</div></th>
         <td data-col="Who it covers"><ul class="cl">
           <li><b>Frontier model:</b> trained above 10^26 integer or floating-point operations.</li>
           <li><b>Large frontier developer:</b> a frontier developer that, with its affiliates, had annual gross revenues above $500,000,000 in the preceding calendar year.</li>
@@ -280,7 +322,7 @@
           <li>Transparency report at deployment.</li>
           <li>Critical safety incident reported to the office in 72 hours.</li>
           <li>Quarterly internal-use catastrophic-risk summaries.</li>
-          <li>Register a disclosure statement with DFS before developing or deploying.</li>
+          <li>Register a disclosure statement with the Department of Financial Services before developing or deploying.</li>
           <li>Pay assessments that fund the regulator.</li>
         </ul></td>
         <td data-col="Status and timeline"><b>Enacted</b>; effective 1 January 2027.</td>
@@ -384,6 +426,7 @@
     </tbody>
   </table>
   </div>
+<!-- /plate -->
 </div>
 
 <!-- ALSO ON THE BOOKS, IN A READER'S WORDS (Jay's ruling, 2026-08-04, given as
@@ -398,6 +441,10 @@
      build/test_plainspeak.test.js (P1-P4); the chips render uppercase from
      .chip's text-transform, so the source stays sentence case. -->
 <div class="strip">
+  <!-- The short rule that says "notes": footnote apparatus opens under a rule a
+       third of the measure wide, not under a full one, which is how a printed
+       page distinguishes a note from a section. -->
+  <div class="notes-rule"></div>
   <div class="sum-head">
     <h2>Also on the books</h2>
     <span>These laws regulate using AI, not building it. That is why this site does not track them.</span>
@@ -412,7 +459,7 @@
 
   <div class="sum-row">
     <div><span class="chip scope">AI use, not development</span></div>
-    <div class="sum-t">Texas HB 149: Responsible Artificial Intelligence Governance Act (TRAIGA)
+    <div class="sum-t">Texas HB 149: Responsible Artificial Intelligence Governance Act
       <span class="sub">In force since 1 January 2026. Limits specific uses of AI, sets rules for government use, and lets companies test AI products under lighter rules for three years.</span></div>
     <a class="sum-l" href="https://capitol.texas.gov/BillLookup/History.aspx?LegSess=89R&amp;Bill=HB149"><u>Official text</u> &#8599;</a>
   </div>
@@ -424,6 +471,8 @@
     <a class="sum-l" href="https://le.utah.gov/~2024/bills/static/SB0149.html"><u>Official text</u> &#8599;</a>
   </div>
 </div>
+
+</div><!-- /leaf -->
 
 <script id="deeplink">
 (function () {
@@ -461,29 +510,6 @@
 </script>
 <script id="feedback">
 (function () {
-  var root = document.getElementById("fb-byline");
-  var trig = document.getElementById("fb-open");
-  if (root && trig && root.classList && root.contains) {
-    /* Take the open state off the CSS: .byline-js turns the hover and
-       focus-within rules off, so nothing fights the toggle. */
-    root.classList.add("byline-js");
-    var open = false;
-    var setOpen = function (next) {
-      open = next;
-      if (next) { root.classList.add("is-open"); } else { root.classList.remove("is-open"); }
-      trig.setAttribute("aria-expanded", next ? "true" : "false");
-    };
-    trig.addEventListener("click", function () { setOpen(!open); });
-    document.addEventListener("click", function (e) {
-      // The trigger's own handler has already run; the card is inside root, so
-      // this closes on outside clicks only.
-      if (open && !root.contains(e.target)) { setOpen(false); }
-    });
-    document.addEventListener("keydown", function (e) {
-      if (open && (e.key === "Escape" || e.key === "Esc")) { setOpen(false); trig.focus(); }
-    });
-  }
-
   var box = document.getElementById("fb-text");
   var send = document.getElementById("fb-send");
   var out = document.getElementById("fb-status");

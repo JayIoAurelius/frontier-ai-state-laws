@@ -1,16 +1,45 @@
 /* ==========================================================================
-   LAWMAP v2 — bill-page patch. Scoped to site/states/*.html; loaded AFTER
-   site.css, which stays the frozen design system and is not edited here.
+   LAWMAP v2 — bill-page patch. Scoped to site/states/*.html by the link tag,
+   which is the only page kind that loads it; loaded AFTER site.css (the frozen
+   design system, not edited here) and after card.css (the shared source card).
 
-   Everything below exists because the frozen system describes a static mockup
-   (mock3e_textspine.html) and the built page has two behaviours the mockup only
-   depicted: every provision row is a dropdown (ruling 2) and clicking a row
-   opens its source panel on the right (rulings 2, 4). Both are native HTML and
-   CSS: <details>/<summary> and :target/:has(). The pages do carry a few small
-   inline scripts (copy link, feedback, verified stamp, cite, row click), and
-   none of them decides which panel is open: the row-click helper writes a row
-   id into location.hash and the :target rules below do the rest. Visual metrics
-   are inherited, not restated.
+   Two things live in this file. The first is behaviour the frozen system never
+   described, because it was extracted from a static mockup: every provision row
+   is a dropdown (ruling 2) and clicking a row opens its source panel on the
+   right (rulings 2, 4). Both are native HTML and CSS — <details>/<summary> and
+   :target/:has(). The pages carry five small inline scripts (copy link,
+   feedback, verified stamp, cite, row click) and none of them decides which
+   panel is open: the row-click helper writes a row id into location.hash and
+   the :target rules below do the rest.
+
+   The second is THE LAW-REVIEW RESTYLE of 2026-08-05 (v2/RESTYLE_SPEC.md). Jay
+   judged the site "Claude slop" in a blind A/B; the licensed-font version read
+   WORSE, so the fix is idiom, not typography licensing. The idiom is the printed
+   law review, and the rulings that reach this page are:
+
+     3.  Green is the ONE chrome accent. Never decoration, never data.
+     5.  State colours die in text: every chip becomes a parenthetical small-caps
+         attribution, and the page keeps no per-state accent at all.
+     7.  The source card keeps its interaction and loses its box (see card.css;
+         what is left here is the page's half — the split, the padding, the
+         sticky anchor).
+     9.  The system old-style serif IS the design, with letterspaced small caps
+         for running heads and dt labels. No grotesque display headers.
+     10. Justified body at print measures, ragged in narrow ones.
+     12. Every page gets a working narrow layout.
+
+   The spec's Butterick addendum (16:45, after the lanes had started) corrects
+   three of those in this file: A1 replaces every synthesised small cap with real
+   capitals, A2 makes justification conditional on hyphens + lang and exempts
+   cites, A6 fixes the numbers (body 19-21px, leading 1.2-1.45, ~65-character
+   measures set in px, rules at 1px, tabular figures in number columns).
+
+   WHAT THE RESTYLE REMOVED, so the next reader does not go looking for it: the
+   purple editorial band (site.css still declares .sec.newhi for the composite;
+   this file overrides it), the California-blue chip fill on a targeted row, and
+   four uppercase grotesque micro-labels. The registers that survive are the
+   green selection wash and the promoted row's rules-and-star. Pinned by
+   build/test_rowclick.test.js RC9/RC10.
    ========================================================================== */
 
 /* ---------- rows as dropdowns, and the whole row as the control ----------
@@ -20,34 +49,300 @@
    Jay, 2026-08-04 15:49 ET: "make the whole row switch the right card". The
    affordance is the house one, the same the composite section index uses for a
    clickable row: a pointer, plus the hover wash site.css already parks on
-   .sec.hov. The wash never overwrites either colour register, so the purple
-   editorial band and the blue selection keep their own fill. */
+   .sec.hov, whose literal BUILD_SPEC's shared interaction contract states. The
+   wash stands off the targeted row, which is the one register that still owns a
+   row's background; the promoted row has no fill to protect any more, so it
+   answers the pointer like every other row. */
 details.sec{display:block;cursor:pointer;}
-.split.bill .sec:not(.newhi):not(.sel):not(:target):hover{background:rgba(55,55,55,.026);}
+.split.bill .sec:not(.sel):not(:target):hover{background:rgba(21,24,28,.026);}
 /* once the load-time row has let go of the selection (rule further down), it
    hovers like any other row */
-.split.bill:has(.sec:target) .sec.sel:not(:target):hover{background:rgba(55,55,55,.026);}
+.split.bill:has(.sec:target) .sec.sel:not(:target):hover{background:rgba(21,24,28,.026);}
 details.sec>summary.sec-row{display:grid;grid-template-columns:var(--railw) 1fr;
   gap:var(--railgap);cursor:pointer;list-style:none;}
 details.sec>summary.sec-row::-webkit-details-marker{display:none;}
 details.sec[open]>summary.sec-row .openat{color:var(--ink-3);}
 
-/* the provision heading is OURS, not the statute's: Söhne, quiet, above the text
-   (BRAND.md — Tiempos is statute and display only, Söhne is everything editorial) */
-.leg .ourhead{font-family:var(--sans);font-size:10.5px;font-weight:600;
-  letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:8px;}
+/* ==========================================================================
+   THE PAGE'S OWN VOICE (rulings 5 and 9, corrected by A1).
 
-/* dropdown body: the per-provision facts the summary layer compresses away */
-.drop{grid-column:2;max-width:620px;margin:14px 0 2px var(--railw);
+   Every label on this page used to be Söhne, uppercased, letterspaced and
+   sometimes green. In the law review's culture the same job is done by the
+   old-style serif's letterspaced capitals, and only in the places the idiom
+   uses them: running heads and dt labels.
+
+   BUTTERICK A1 (spec addendum, 2026-08-05 16:45) settles HOW. This block asked
+   for the small-caps variant this afternoon; the stack has no real small caps,
+   so every browser synthesised them by shrinking capitals — the fake Butterick
+   names. The idiom's real device is CAPITALS AT A REDUCED SIZE, tracked
+   0.05-0.12em: one step under the size the fakes had, which read smaller.
+   Capitals are for LABELS; the three slots here that are a cite or a sentence
+   are in the next block, with the reason.
+   ========================================================================== */
+.mast .meta dt,.sum-head h2,.sec-label h2,.openat,.sublab,
+.drop .facts dt,.sum-facts dt,.split.bill>.tosum{
+  font-family:var(--serif);font-weight:400;text-transform:uppercase;
+}
+/* The running heads: the section label over the spine, the summary's head, the
+   strip's. Wider tracking than a dt label, as the mockups set theirs — but
+   inside A1's band, where .2em was not. */
+.sum-head h2,.sec-label h2{font-size:11px;letter-spacing:.11em;}
+.sum-head span,.sec-label span{font-family:var(--serif);font-style:italic;
+  font-size:12px;letter-spacing:0;}
+/* dt labels: the meta ledger, the drawer's fact lists. */
+.mast .meta dt{font-size:10.5px;letter-spacing:.09em;}
+.drop .facts dt,.sum-facts dt{font-size:10px;letter-spacing:.08em;}
+/* The affordance under a provision's cite. "Source →" is a word you can act on,
+   so it keeps the green (ruling 3) — the only green on the row. */
+.openat{font-size:10px;letter-spacing:.09em;}
+.sublab{font-size:10px;letter-spacing:.08em;color:var(--ink-3);}
+
+/* ---------- the three slots capitals would misread (A1's exception) ---------
+   A1 takes the fake small caps off these too; what replaces them is not
+   capitals. The CITE would print subsection (c) as (C), a different subsection
+   (A7's carve-out, one rule over), so it keeps its own case and refuses
+   hyphenation (A2: a citation broken over a line is one you cannot read back).
+   The STATUS line is a sentence. The provision HEADING is ours, not the
+   statute's (BRAND.md kept it out of the statute's face) and is a full clause,
+   so it takes the mockups' own device for the slot: italic, same size and ink,
+   still a line of its own rather than a run-in, because it carries no closing
+   period and the words are frozen (ruling 1). */
+.split.bill .secno,.contd .secno,.mast .status,.leg .ourhead{
+  font-family:var(--serif);font-weight:400;text-transform:none;letter-spacing:0;
+}
+.split.bill .secno,.contd .secno{font-size:12px;
+  hyphens:manual;-webkit-hyphens:manual;}
+.leg .ourhead{font-size:13px;font-style:italic;color:var(--ink-3);
+  margin-bottom:7px;}
+/* A6: a column of figures is tabular, so the column lines up. The meta ledger
+   is dates and version numbers; the pipeline ledger's left cells are a date and
+   a branch.
+   ADDENDUM C2: the date and the branch are the ledger's TAG ZONE — the slot the
+   summary's rows fill with a parenthetical attribution — so they take that
+   zone's scale (.summary .chip, 11px tracked capitals) rather than the drawer's
+   dt scale they borrowed while they were a two-line cell. Still not a scale of
+   their own: it is the same 11px the tag column beside them has always been.
+   The date keeps its own case and no tracking, because a tracked date breaks the
+   tabular column it is set in; the branch is a label and takes both. */
+.mast .meta dd{font-family:var(--serif);font-size:13px;
+  font-variant-numeric:tabular-nums;}
+.pipe-d,.pipe-c{font-family:var(--serif);font-size:11px;
+  font-variant-numeric:tabular-nums;}
+.pipe-d{letter-spacing:0;}
+.pipe-c{text-transform:uppercase;letter-spacing:.08em;}
+.sum-facts dd,.summary .sum-l,.strip .sum-l,.sum-list{
+  font-variant-numeric:tabular-nums;}
+/* The bracket gloss on a defined term (ruling 12 of the build spec) was the last
+   grotesque left inside a statute line: site.css sets .gloss in the sans at
+   11.5px, which reads as a UI annotation pasted into the law. The mockups set
+   the same insertion in the page's own serif, a step down and a tier back, so it
+   reads as an aside in one voice. Only the type moves — the span, its
+   data-verify="gloss" attribute and the quote gate's exclusion are untouched. */
+.leg .gloss,.src .gloss{font-family:var(--serif);font-size:.86em;
+  line-height:inherit;letter-spacing:0;color:var(--ink-3);}
+
+/* ---------- ADDENDUM E: the redline on a comparison row ----------
+   Jay, 2026-08-06 10:04: "this diff is hard to read. shouldn't we underline
+   differences or something?" build/redline.js marks the words the state added to
+   or changed from the California baseline; this is all the dress they get.
+
+   E5 names three things it must NOT be. Not the green link treatment: the ink
+   stays the statute's own (`color:inherit`), because a coloured word inside a
+   quotation reads as a target, and there is nothing to click. Not a solid rule:
+   dotted is the redline convention and it is also the only underline on the page
+   that cannot be confused with the solid one under a link. And no background
+   wash: a highlighted passage claims emphasis, while an underlined one only
+   claims annotation, which is the whole of what this is.
+
+   ADDENDUM G3 (Jay, 2026-08-06 10:55): "i also dont see the redline working."
+   The grey was --rule (#B9BFC6, the hairline value), chosen so the mark would
+   sit a step quieter than a gloss. It sat a step past quiet: a hairline reads as
+   a continuous line at 1px across a whole rule, but a dotted mark is a row of
+   1px dots with paper between them, and at that value the eye loses them at
+   reading distance. The mark is now --ink-3 (#6B737C), the ink a gloss is set
+   in — still below the statute's own --ink-1, still no colour, and now legible.
+   Everything E5 ruled is unchanged: 1px, dotted, no wash, no link dress.
+   text-underline-offset holds the dots off the descenders at 17.5px/1.45, and
+   `skip-ink` lets them break around a 'y' the way a pen would. The span itself
+   is presentation only — it carries no state, no hover, no cursor, and the
+   quote gate reads straight through it. */
+.leg .redline{color:inherit;background:none;
+  text-decoration:underline dotted var(--ink-3) 1px;
+  text-decoration-skip-ink:auto;text-underline-offset:.22em;}
+
+/* ADDENDUM L8 (Jay, 2026-08-06 13:35-13:37): "i think dashed or solid underline
+   is better for addition marks." Two kinds of mark were wearing one dress. A
+   dotted mark means the state CHANGED California's words and the hover shows
+   which words; a mark with nothing to show was saying so in a sentence the
+   reader only reached by hovering it. The marks now carry a vocabulary:
+
+     dotted   changed against California — hover shows the CA phrase
+     dashed   added; California has no analogue for this passage
+
+   Dashed and not solid, because the solid underline is the page's link dress
+   (E5) and a mark is not a destination. Same grey, same 1px, same offset: the
+   colour call was floated (red) and Jay held it, so nothing here spends one. */
+.leg .redline.redline-add{text-decoration-style:dashed;}
+
+/* ---------- ADDENDUM L: the counterpart answers instantly ----------
+   Jay, 2026-08-06 12:28: "i dont see the hover!" Addendum I3 hung the California
+   phrase off the mark in a title attribute, and the browser's own tooltip is the
+   wrong instrument for it: it waits about a second, it arrives in the operating
+   system's dress rather than the page's, and it goes away on the smallest drift
+   of the pointer. L1 draws the tooltip here instead — pure CSS over the data
+   attribute redline.js writes, no script, no new element in the markup.
+
+   THE DRESS. Paper white (--off, ruling 2), the page's own hairline border, the
+   body serif a step down at caption size, the quiet ink a gloss is set in.
+   Square corners, no shadow, no fill, no cursor: L1 asks for something that
+   reads as a printed marginal note and not as a link or a button, and every one
+   of those four is what would betray it.
+
+   THE ANCHOR (L3). A mark sits in JUSTIFIED text and breaks across lines, so a
+   tooltip hung off the mark's own box lands wherever the line-breaking put the
+   fragments — and, on a mark near the right edge of the measure, past the
+   window. The containing block is therefore the TEXT COLUMN (.split.bill .leg
+   is position:relative for this, in its own rule above): `left:0` pins the box
+   to the column's left edge, `max-width:100%` keeps it inside the column, and
+   `top` is left AUTO so the vertical placement is the mark's static position —
+   the line the mark actually ended on, second line or first. The column is
+   inside the viewport at every width, including the 840px floor where the
+   sidenotes stack, so the box cannot clip against the viewport edge.
+
+   THE TIMING. 80ms of fade, no delay: enough that the box does not snap, far
+   inside what reads as instant. The native tooltip it replaces was ~1s.
+
+   Justification and hyphenation are the statute's, not a one-phrase aside's:
+   the box sets itself ragged left and refuses hyphens. pointer-events:none
+   keeps it from eating a click on the row underneath. */
+.leg .redline::after{content:attr(data-cmp);
+  position:absolute;left:0;width:max-content;max-width:100%;
+  margin-top:1.6em;z-index:3;padding:.3rem .5rem;
+  background:var(--off);border:1px solid var(--rule);
+  font-family:var(--serif);font-size:13.5px;line-height:1.35;font-style:normal;
+  color:var(--ink-2);text-align:left;text-decoration:none;
+  hyphens:manual;-webkit-hyphens:manual;overflow-wrap:break-word;
+  opacity:0;visibility:hidden;transition:opacity .08s linear;
+  pointer-events:none;}
+.leg .redline:hover::after{opacity:1;visibility:visible;}
+
+/* Where the device has no hover there is no tooltip to show (L3). The ruling
+   accepts that phones cannot reach it — the side-by-side source card is the
+   touch path and is unchanged — and this guard is what stops a tap from
+   LATCHING :hover on iOS and leaving a box parked over the statute. */
+@media (hover: none){
+  .leg .redline::after{content:none;}
+}
+
+/* ---------- ruling 5: chips retire into parenthetical small caps ----------
+   "(CA)", "(Tightens CA)", "(First in the nation)". The brackets are the
+   stylesheet's and the label is the markup's, which is how ruling 1 holds by
+   construction: no build writes a paren, so the source strings stay verbatim
+   and a text-node diff of the page is empty.
+
+   Every hue goes with the box. The purple NO CA ANALOGUE solid, the gold FIRST
+   IN THE NATION solid (ruling 2 sends the one warm value in the palette to ink)
+   and the California-blue outlines all read as data carried in colour, which is
+   the thing the restyle is for. What distinguishes the claims now is what they
+   say, plus the register of the row they sit on. The REPEALED chip keeps its
+   strike-through: a struck label is a statement about a removed duty, not a
+   colour. */
+.mast .status,.split.bill .chip,.summary .chip,.strip .chip{
+  display:inline;padding:0;border:0;background:none;
+  font-family:var(--serif);font-weight:400;
+  color:var(--ink-2);max-width:none;text-align:left;line-height:inherit;}
+/* A1: the attributions are short labels — "CA", "Tightens CA", "First in the
+   nation" — so they take real capitals a step down from the row's own type,
+   tracked. The masthead's status line is a sentence and is excluded above. */
+.split.bill .chip,.summary .chip,.strip .chip{text-transform:uppercase;
+  font-size:11px;letter-spacing:.08em;}
+.split.bill .chip::before,.summary .chip::before,.strip .chip::before{content:"(";}
+.split.bill .chip::after,.summary .chip::after,.strip .chip::after{content:")";}
+/* The masthead's status line is the ONE chip that stays plain: it is a sentence
+   about the whole bill ("Enacted: effective 1 Jan 2026"), and a parenthesis
+   around a sentence that already carries a colon reads as an aside. It takes the
+   mockups' subdek treatment instead — small caps, letterspaced, no box. */
+.mast .status{color:var(--ink-2);font-size:13px;
+  font-variant-numeric:tabular-nums;}
+.mast .statusline{margin:2px 0 11px;}
+/* A tag chip is still an anchor to its own row (the no-script path), so it
+   still has to read as one. */
+a.chip{text-decoration:none;cursor:pointer;}
+a.chip:hover{color:var(--ink);}
+
+/* ==========================================================================
+   THE MASTHEAD (ruling 9's small-caps culture).
+   The mockups set the title in small caps between a double rule and a thin
+   double rule whose lower line is the green spine. The bill masthead keeps its
+   two-column shape — the meta rail is where Jay's 2026-08-05 rulings moved
+   things TO — so the rules span the title's own column, and the pseudo-elements
+   carry them rather than markup: no build changes, no new strings.
+   ========================================================================== */
+.mast.tight .eyebrow{font-family:var(--serif);font-size:12.5px;font-style:italic;
+  font-weight:400;text-transform:none;color:var(--ink-2);
+  margin-bottom:14px;}
+/* A1: the title in real capitals, reduced from 34px (capitals at a small-caps
+   size read larger) and tracked. A6 takes the leading to 1.2 and the upper rule
+   from 2.5px to a hairline — two hairlines 3px apart still read as the mockups'
+   double rule. The thin double rule stays BELOW the title, against A6's "rules
+   above headings", because it is not a heading rule: it is the masthead's own
+   device, and its lower line is the journal spine of ruling 3. */
+h1.bill{display:block;font-weight:400;font-size:28px;line-height:1.2;
+  text-transform:uppercase;letter-spacing:.05em;margin-bottom:0;}
+h1.bill .thin{letter-spacing:.05em;}
+h1.bill::before{content:"";display:block;height:4px;margin-bottom:16px;
+  border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);}
+h1.bill::after{content:"";display:block;height:3px;margin-top:14px;
+  border-top:1px solid var(--ink);border-bottom:1px solid var(--blue-d);}
+.mast.tight .subdek{margin-top:11px;}
+
+/* ==========================================================================
+   RULING 10: justified at a print measure, ragged where the measure is narrow.
+   A6 and A2 (2026-08-05 16:45) settle the numbers and the conditions.
+
+   THE MEASURE. 620px was a measure of the spine's OLD size: site.css set .leg at
+   15.5px, where 620px runs ~80 characters, and A6's 19px brought the same width to
+   ~65. ADDENDUM B1 (Jay, 2026-08-05 18:18 ET) moves the body again — 17.5px over
+   1.45, because 19.5 over 1.42 read badly on a live pass — so the width moves with
+   it: 592px, which is ~68 characters at 17.5px and is the same 37rem the composite
+   and the front page now read at. The measure stays in px, because a measure in
+   `ch` is a measure of the digit zero.
+
+   THE CONDITION. Every justified column here sets hyphens:auto, and the page's
+   <html lang="en"> (templates/billpage.html) is what makes hyphenation legal:
+   with no language a browser has no dictionary and justification opens the
+   rivers ruling 10 was written against. Cites and links are exempt wherever they
+   sit; the narrow-width block at the foot of this file goes ragged outright.
+   ========================================================================== */
+/* position:relative is ADDENDUM L3's: the redline's hover tooltip is absolutely
+   positioned, and this column is the containing block that keeps it off the
+   viewport edge. It goes into the rule that already owns this selector rather
+   than into a second one — a selector with two rules is a selector two tests can
+   disagree about. */
+.split.bill .leg{max-width:592px;font-size:17.5px;line-height:1.45;
+  text-align:justify;hyphens:auto;-webkit-hyphens:auto;position:relative;}
+.sum-lede{max-width:592px;text-align:justify;hyphens:auto;-webkit-hyphens:auto;}
+.contd p{text-align:justify;hyphens:auto;-webkit-hyphens:auto;}
+.strip-note,.sum-drop{text-align:justify;hyphens:auto;-webkit-hyphens:auto;}
+/* A2's exemption — cites, links and URLs never hyphenate and wrap on a word
+   boundary — goes INTO each rule that already owns its selector (the cite column,
+   the deep links, the version stamps, .secno above) rather than into a list of
+   its own: a second rule for one selector is a rule two tests can disagree
+   about. */
+/* Our prose in the serif wherever it still spoke in the grotesque: the summary
+   row's citation link, the drawer, the closing pointer, the strip's note. */
+.sum-l,.sum-drop,.strip-note,.drop .dlink,.contd p,.meaning,.sum-t .sub{
+  font-family:var(--serif);}
+
+/* ---------- dropdown body: the facts the summary layer compresses away ------
+   A hairline over the drawer, hung off the text column, is the whole frame. */
+.drop{grid-column:2;max-width:592px;margin:14px 0 2px var(--railw);
   padding:14px 0 2px calc(var(--railgap));border-top:1px solid var(--rule-2);}
 .drop .facts{margin-top:0;padding-top:0;border-top:none;}
-.drop .dlink{margin-top:14px;font-size:11.5px;letter-spacing:.02em;}
+.drop .dlink{margin-top:14px;font-size:12.5px;}
 .drop .dlink a,.drop .facts a{color:var(--blue-ink);text-decoration:none;
-  border-bottom:1px solid rgba(46,93,60,.40);padding-bottom:1px;}
-
-/* ---------- tag chip as the panel control ---------- */
-a.chip{text-decoration:none;cursor:pointer;}
-a.chip:hover{border-color:var(--blue-d);}
+  border-bottom:1px solid rgba(46,93,60,.40);padding-bottom:1px;
+  hyphens:manual;-webkit-hyphens:manual;overflow-wrap:break-word;}
 
 /* ---------- the split, and which panel is open ----------
    One panel is visible on load (.panel.default, mock3e's compared row). As soon
@@ -58,36 +353,82 @@ a.chip:hover{border-color:var(--blue-d);}
 .panel.default{display:block;}
 .split.bill:has(.sec:target) .panel.default{display:none;}
 
-/* selection state (register B, green since 2026-08-04): the targeted row,
-   styled like .sec.sel — same wash, same alpha, or the two page kinds would
-   disagree about what "the row you are on" looks like */
-.split.bill .sec:target{background:rgba(46,93,60,.06);}
+/* ---------- register B: SELECTION (green, and the only wash left) ----------
+   Which row the source card is showing. Unchanged by the restyle: green is the
+   one chrome accent, and "which row you are on" is chrome. The targeted row's
+   attribution goes ITALIC rather than changing colour — the mockups mark the
+   current item in italics (.folio a.on, .attrib .live), and ruling 5 leaves
+   colour with nothing to say here. */
+.split.bill .sec:target{background:rgba(46,93,60,.06);
+  animation:sec-landed 1.5s ease-out 1;}
+/* A6 caps a rule at 1px, and this is a rule in the margin: printed matter marks
+   a passage with a hairline change bar. The wash carries the register; the bar
+   says where it starts. */
 .split.bill .sec:target::before{content:"";position:absolute;left:-20px;top:0;bottom:0;
-  width:2px;background:var(--blue-d);}
-.split.bill .sec:target .chip.vs,.split.bill .sec:target .chip.tag-tightens{
-  color:#fff;background:var(--ca);border-color:var(--ca);}
+  width:1px;background:var(--blue-d);}
+.split.bill .sec:target .chip{color:var(--ink);}
 .split.bill .sec:target .secno{color:var(--ink-2);}
 .split.bill .sec:target .openat{color:var(--blue-ink);}
-/* a targeted NEW row keeps its editorial band (register A stays purple) and
-   takes the selection bar only — the two registers never merge into one look */
-.split.bill .sec.newhi:target{background:rgba(138,86,181,.075);}
 /* once the reader picks a row, the load-time selection lets go */
 .split.bill:has(.sec:target) .sec.sel:not(:target){background:none;}
 .split.bill:has(.sec:target) .sec.sel:not(:target)::before{content:none;}
-.split.bill:has(.sec:target) .sec.sel:not(:target) .chip.vs{
-  color:var(--ca);background:none;border-color:rgba(38,88,185,.42);}
+
+/* ---------- register A: the promoted row (ruling 15), now printed ----------
+   site.css fills this row with the Illinois purple at .075 and hangs a 3px
+   purple bar off its left edge. Ruling 5 leaves the page no accent to promote
+   with, so the row is promoted the way printed matter promotes a note: rules
+   above and below, and a star in the margin — the mockups' own star note. */
+.split.bill .sec.newhi{background:none;
+  border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);}
+.sec.newhi::before{content:"*";position:absolute;left:-20px;top:14px;
+  width:auto;height:auto;background:none;
+  font-family:var(--serif);font-size:17px;line-height:1;color:var(--ink);}
+.split.bill .sec.newhi:target{background:rgba(46,93,60,.06);}
+/* ADDENDUM C1 gives EVERY row of this band a hairline, so "rules above and
+   below" stops promoting anything: a rule every row has is the grid, not a
+   register. The promoted row's rules go up to INK, which is how a printed table
+   boxes a note inside a ruled body, and the star moves out of the row into the
+   margin the widened band leaves beside it.
+
+   AND THE STAR IS POSITIONED NOW. It never was: this rule set left and top on a
+   STATIC pseudo-element, which does nothing, and the mark simply happened to
+   land where it looked right — inline at the head of a block row, sitting in the
+   2.2em hanging indent the footnote shape gave it. The spine's own star (three
+   rules up) declares position:absolute; this one was the odd one out, and the
+   defect was invisible until the row became a grid, where a static ::before is
+   not a decoration at all — it is a GRID ITEM, and it took column 1 and pushed
+   the row's first cell onto a second line. Found by measuring the ink in a
+   1440px screenshot (C4 asks for the screenshot; this is what it was for). */
+.summary .sum-row.hi{background:none;
+  border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);}
+.summary .sum-row.hi::before{content:"*";position:absolute;
+  left:-16px;top:15px;width:auto;height:auto;
+  background:none;font-family:var(--serif);font-size:17px;line-height:1;
+  color:var(--ink);}
+/* The band's opening ink rule belongs to the headnote above it. A promoted row
+   that happens to come first (Illinois) would print its own ink rule directly
+   under that one — two hairlines with nothing between them, which is a 2px rule
+   and A6 caps rules at 1px.
+   DESIGN PASS: the neighbour is the group's band head now, and the reasoning
+   only gets stronger. An ink rule 5px under a head reads as the HEAD's rule,
+   which both underlines a heading (Butterick: don't) and spends the promoted
+   row's own register on the wrong element. The promoted row keeps its closing
+   ink rule, its larger type and its margin star. */
+.summary .sum-band + .sum-row.hi{border-top:none;}
+.meaning{border-top-color:var(--rule-2);}
 
 /* ---------- long bill titles ----------
    mock3e sets no display on its bill h1 — the title is ordinary inline flow
    ("Public Act 104-0538 <span class=thin>· AI Safety Measures Act</span>").
    site.css added `display:flex;flex-wrap:wrap`, which makes the thin span one
-   atomic flex item: the real MA and CA titles ("· Transparency in Frontier
-   Artificial Intelligence Act") cannot fit beside the bill number, so the whole
-   span dropped to line 2 with the middot orphaned at its head. Restoring the
-   mock's inline flow lets the title wrap word by word as it does in the PNG. */
-h1.bill{display:block;}
+   atomic flex item: the real MA and CA titles cannot fit beside the bill number,
+   so the whole span dropped to line 2 with the middot orphaned at its head.
+   Restoring the mock's inline flow lets the title wrap word by word — and the
+   masthead rules above are pseudo-element children of this h1, which a flex
+   container would lay out as flex items. (h1.bill's own rule is in the masthead
+   block above.)
 
-/* ---------- long citations ----------
+   ---------- long citations ----------
    mock3e's rail was sized for "Sec. 10(d)". Real cites run to
    "G.L. c. 93M s. 1 (proposed), definition of 'Catastrophic risk'", and the
    frozen `white-space:nowrap` pushed those off both edges of the page. Cites
@@ -96,35 +437,28 @@ h1.bill{display:block;}
 /* .rail is a column flexbox: its children size to content and would otherwise
    spill out of the 132px rail and off the left edge of the page. */
 .split.bill .rail>*{max-width:100%;}
-.summary .sum-l,.strip .sum-l{white-space:normal;overflow-wrap:break-word;}
-
-/* ---------- the promoted NEW band ----------
-   site.css drops the rule between banded rows so one promoted row reads as a
-   single band; where a state has several NEW rows they still need separating. */
-.summary .sum-row.hi + .sum-row.hi{border-top:1px solid rgba(138,86,181,.22);}
-
-/* the "compared →" affordance is quiet until the row is the one being shown */
-.split.bill .openat{color:var(--ink-3);}
-.split.bill .sec.sel .openat{color:var(--blue-ink);}
+.summary .sum-l,.strip .sum-l{white-space:normal;overflow-wrap:break-word;
+  hyphens:manual;-webkit-hyphens:manual;}
 
 /* ==========================================================================
-   THE SOURCE CARD, BILL-PAGE HALF — Jay, 2026-08-01:
-   "a static thing that does not scroll ... less than half of the page in width
-   ... clearly like a box that fills up with leg text as needed ... font size
-   smaller too. remove the delta section."
-
-   The card itself — its fill, edge, radius and type — is assets/card.css, the
-   one place it is styled for both page kinds (Jay, 2026-08-04 16:07 ET). What
-   is left here is what this page does NOT share with the composite: the split
-   ratio, the column override, the card's own padding, its sticky wrapper, and
-   the spacing of the continuation link on a card that ends where its excerpt
-   ends.
+   THE SOURCE CARD, BILL-PAGE HALF. The card's own dress — rules not boxes, and
+   its type — is assets/card.css, the one place it is styled for both page kinds
+   (Jay, 2026-08-04 16:07 ET; restyled 2026-08-05 under ruling 7). What is left
+   here is what this page does NOT share with the composite: the split ratio,
+   the column override, the card's padding, its sticky wrapper, and the spacing
+   of the continuation link on a card that ends where its excerpt ends.
 
    The right side stops being a full-height scrolling column. site.css line
    119-120 (`.right{height:100vh;overflow-y:auto}`) is FROZEN and is overridden
    here, never edited: the column becomes plain page ground and the open panel
-   becomes a bounded box that ends where its text ends. .panelwrap keeps the
-   sticky, so the card rides along while the reader scrolls the spine.
+   becomes a bounded run of text that ends where its text ends. .panelwrap keeps
+   the sticky, so the card rides along while the reader scrolls the spine.
+
+   THE PADDING CHANGED WITH THE BOX (2026-08-05). A card inset 24px inside a
+   border it no longer has is a rule floating in the middle of the column, and
+   the excerpt paid for the inset twice — once to the column, once to the card.
+   The card now sits flush to its column and spends the space above the text
+   instead, under the rule that opens it.
 
    Inside the min-width query, so mobile.css keeps the <900px bottom sheet
    exactly as approved. The sheet KEEPS its internal scroll: 55vh is not enough
@@ -132,17 +466,41 @@ h1.bill{display:block;}
    the sheet cannot.
    ========================================================================== */
 @media (min-width: 900px){
-  /* ~64/36 — the card is comfortably under half the page. */
-  .split.bill{grid-template-columns:9fr 5fr;}
+  /* ~64/36 — the card is comfortably under half the page.
+     ADDENDUM B3 ("bill pages' split gets the same fluidity check"): 9fr/5fr was
+     fluid in the sense that it never overflowed, and unusable in the sense that
+     everything it contained was fixed. At a 900px window the fixed 132px rail, the
+     24px rail gap and the 40+24px column padding left the statute a 358px column —
+     41 characters at B1's 17.5px, half a reading measure — while the card got a
+     306px column it did not need. So three of the four things between
+     the window edge and the first word of statute clamp now, in the order they
+     should give ground: the CARD COLUMN first (it is a reference, not a reading
+     column, and clamps to a 17rem floor), then the column's RIGHT padding, then the
+     rail. At 900px the statute is ~408px (~47 characters), at 1100px ~531px (~61),
+     and from ~1330px up it is at the full 592px measure. Nothing here moves at
+     1440px, where Jay approved it.
+
+     THE TWO FLOORS ARE MEASURED, NOT PICKED. The column's LEFT padding does not
+     clamp at all: site.css hangs .sec 1.2rem (19.2px) into the left gutter so the
+     selection change-bar sits outside the text, so anything under 1.5rem of padding
+     puts the rail's first pixel off the left edge of the window. And the rail's own
+     floor is 120px because the widest cite this site prints — "Cal. Bus. & Prof.
+     Code § 22757.11(h)-(j)", right-aligned in a column that is allowed to
+     break-word — starts breaking mid-word under it ("Cal. Bus. & Prof. Co / de").
+     Both were found by LOOKING at a 900px screenshot, which is why B5 asks for one. */
+  .split.bill{grid-template-columns:minmax(0,1fr) clamp(17rem,34%,26rem);
+    --railw:clamp(120px,11vw,132px);--railgap:clamp(20px,2vw,24px);}
+  .split.bill .left{padding:2.5rem clamp(1rem,2.5vw,2.5rem) 3.5rem 1.5rem;}
   .split.bill .right{position:static;height:auto;align-self:stretch;overflow:visible;
-    background:none;border-left:none;padding:34px 44px 60px 30px;}
+    background:none;border-left:none;
+    padding:34px clamp(18px,3vw,44px) 60px clamp(16px,2.5vw,30px);}
   /* Jay, 2026-08-04 12:32: a card taller than the window "just cuts off at the
      bottom" — the 08-01 no-scroll ruling assumed the text fits. Cap the sticky
      card at the viewport and scroll INSIDE it only when it overflows; short
      cards still end where their text ends, with no scrollbar. */
   .split.bill .panelwrap{top:26px;max-height:calc(100vh - 52px);overflow-y:auto;
     overscroll-behavior:contain;}
-  .split.bill .panel{padding:22px 24px 24px;}
+  .split.bill .panel{padding:16px 0 24px;}
 
   /* The bill page's spine sets a max-width on its reading column; the card's
      excerpt is not that column and takes the width of the box it sits in. */
@@ -160,14 +518,16 @@ h1.bill{display:block;}
 /* ---------- the pipeline ledger (Miles Kodama's reading, 2026-08-04) ----------
    A dated ledger of the bill's recorded actions, in the summary's own row grid.
    Nothing new in the type scale: the rows take the compressed .summary sizes and
-   the date cell takes the .sum-facts dt scale below. */
-.pipeline{padding:26px 56px 30px;border-bottom:1px solid var(--rule);}
-.pipeline .sum-row{padding:9px 0 8px;}
+   the date and branch cells take the tag zone's 11px (see the tabular-figures
+   block above). ADDENDUM C2 takes the 56px side inset off the band with the
+   summary's, and the columns are declared in the Addendum C block below. */
+.pipeline{padding:26px 0 30px;border-bottom:1px solid var(--rule);}
 .pipeline .sum-t{font-size:14.5px;line-height:1.38;}
-.pipeline .strip-note{max-width:1160px;}
-.pipe-d{font-size:9px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;
-  color:var(--ink-3);padding-top:4px;}
-.pipe-d span{display:block;padding-top:2px;}
+/* The note is justified prose, so it takes a measure (A6): 1160px was the plate's
+   width, ~186 characters at this size, and a justified line that long is a line
+   nobody returns from. */
+.pipeline .strip-note{max-width:500px;}
+.pipe-d,.pipe-c{color:var(--ink-3);}
 
 /* ==========================================================================
    READING UX (Jay, 2026-08-01): "the ui is clunky on the bills page. the high
@@ -184,48 +544,305 @@ h1.bill{display:block;}
    act pushed the statute a viewport and a half down. A closed row is now one
    scan line at ~31px; everything longer moved INTO the dropdown, nothing was
    deleted. Rulings 15 and 16 are untouched: delta sentence first, NEW ->
-   TIGHTENS -> MATCHES, chips inline in the scan column, one editorial band. */
-.summary{padding:22px 56px 24px;}
+   TIGHTENS -> MATCHES, attributions inline in the scan column, one promoted row. */
+/* ADDENDUM C2: the 56px side inset goes. The band is about to be as wide as the
+   page allows, and a band whose own padding pushes its rows back in is a band
+   arguing with itself; the width clamp in the Addendum C block leaves the outer
+   margin instead. This also retires the X6 phone override that existed only to
+   undo this inset on a 390px screen. */
+.summary{padding:22px 0 24px;}
 .sum-head{margin-bottom:3px;}
-.sum-lede{font-size:18.5px;line-height:1.4;margin:11px 0 15px;}
+/* ADDENDUM B1 puts body text at 17.5px; the delta paragraph is body text, and
+   592px of it (above) is ~68 characters at this size. */
+/* Jay, 2026-08-06 09:58: the lede block centres under its centred head
+   instead of hugging the left edge. Text stays justified; the COLUMN moves. */
+.sum-lede{font-size:17.5px;line-height:1.45;margin:11px auto 15px;}
 /* The delta is one paragraph per line (California's is a five-part stanza);
    a single-line delta keeps its old shape because the last child has no
    trailing margin. */
 .sum-lede p{margin:0 0 10px;}
 .sum-lede p:last-child{margin-bottom:0;}
-.summary .sum-row{grid-template-columns:168px 1fr 152px;padding:6px 0 5px;}
 .summary .sum-t{font-size:14.5px;line-height:1.38;}
-.summary .sum-l{font-size:11px;}
-/* the chip is the scan column: one line, left-aligned, so rows keep a common
-   baseline instead of being set by a two-line chip */
-.summary .chip{max-width:none;white-space:nowrap;text-align:left;
-  font-size:9px;letter-spacing:.085em;padding:2px 6px 1.5px;line-height:1.35;}
-/* the promoted band keeps its register, at the new rhythm */
-.summary .sum-row.hi{padding:8px 18px 7px;}
+/* THE APPARATUS GOES BEHIND THE CONTENT (design pass). Measured over the CA row
+   band: the cite column carried 144 inked pixels per column-pixel against the
+   sentence column's 158 — a reference set at 91% of the density of the thing it
+   references, which is Butterick's second maxim of page layout inverted ("divide
+   the page into foreground and background… background must not overshadow
+   foreground"). It also held 91% of every green pixel in the band, so twenty-nine
+   underlines and arrows stacked into a coloured rule down the right edge. One
+   step back on the ladder — --ink-2 to --ink-3, 4.83:1 on paper, still AA and
+   still underlined and still hovering to the spine green — puts the citation
+   where a printed apparatus sits without taking a word of it away. The cite
+   itself is NOT shortened: 22 of 29 open "Cal. Bus. & Prof. Code §" and a trimmed
+   citation is a wrong citation (Jay, 2026-08-04). */
+.summary .sum-l{font-size:12px;color:var(--ink-3);}
+/* the attribution is a run-in on the one row that still carries one: it stays on
+   its own line so the row keeps a common baseline */
+.summary .chip{white-space:nowrap;}
 .summary .sum-row.hi .sum-t{font-size:15.5px;}
+
+/* ---------- the band head: each group's tag, stated once ----------
+   The repetition this replaces is the page's loudest defect (see the block at
+   the head of the Addendum C section). It is a HEAD, so it takes the running
+   head's dress — the same 11px tracked capitals .sum-head h2 uses — and not
+   ruling 5's parenthetical chip: parentheses mark an attribution hung off a
+   line, and this is hung off a block. The parens are drawn by
+   .summary .chip::before/::after, which this is deliberately not.
+
+   THE SPACE IS ASYMMETRIC AND THE RULE IS ABOVE, both by Butterick: "the best
+   way to emphasize a heading is by putting space above and below", "you'll
+   probably want the space below to be smaller than the space above so the
+   heading is visually closer to the text it introduces", and heading rules sit
+   ABOVE the heading. So the head gets 22px of air over it — inside which the
+   previous row's own hairline sits, doing the rule's job — and 5px under it. */
+.sum-band{font-family:var(--serif);font-weight:400;text-transform:uppercase;
+  font-size:11px;letter-spacing:.11em;line-height:1.4;color:var(--ink-2);
+  margin:22px 0 0;padding:0 0 5px;}
+/* The first head follows the headnote's own ink rule, which already spent the
+   air above it. */
+/* Jay, 2026-08-06 09:58 + 10:07 ("the high level summary needs more space
+   after it"): a real pause between the lede's closing rule and the first
+   group head. */
+.sum-lede + .sum-band{margin-top:52px;}
+
+/* ---------- the status zone (D2) ----------
+   "we want to see date effective ASAP." The dress is the composite contents
+   column's, item for item (.sxi .e in composite-patch.css): right-aligned,
+   italic, --ink-3, tabular figures. Italic against the sentence's italic is not
+   a collision — the tint and the size separate them, and the italic is what says
+   this is our reading of the date rather than a word of the statute, exactly as
+   it does on the composite. hyphens:manual keeps "Eff. 1 Jan 2027" whole (A2). */
+.sum-s{font-family:var(--serif);font-style:italic;font-size:12px;
+  line-height:1.38;color:var(--ink-3);font-variant-numeric:tabular-nums;
+  hyphens:manual;-webkit-hyphens:manual;}
+
+/* ==========================================================================
+   ADDENDUM C — THE SUMMARY AND THE LEDGER TAKE THE HORIZONTAL SPACE
+   (Jay, 2026-08-05 19:06 ET: "the timeline and the summary take up way too much
+   space because we're not using the horizontal space well... we can use more
+   horizontal space.")
+
+   WHAT WAS WRONG. The restyle made both bands a hanging-indent footnote
+   apparatus (site.css: "Five columns of grid became a hanging-indent note"), and
+   at the print measure that is three lines per row: the attribution on line one,
+   the sentence wrapping inside a ~290px column on line two, the cite dropping to
+   line three. California's summary ran 28 rows at ~103px each — past 2900px, so
+   a full-page capture at 1440 never reached the statute — inside a 592px band on
+   a 1440px screen. The words were right; the shape wasted two thirds of the page
+   and paid for it in height.
+
+   WHAT REPLACES IT (C1, C2). The index's landscape table, which Jay approved,
+   already answers this for the site's other row-by-row comparison: a plate-wide
+   ruled body, a hairline under each row, an ink rule closing the last one, the
+   head rule above, fixed columns so the eye can read one column DOWN instead of
+   re-reading every row. Both bands take that vocabulary — three zones in the
+   summary (tag · sentence · cite), four in the ledger (date · branch · action ·
+   record) — and nothing about either band's content changes: same rows, same
+   order, same words, same dropdown behind the same + (C4).
+
+   THE WIDTH IS THE PLATE, NOT THE WINDOW (C3). --plate is the index table's own
+   band, the widest measure this site sets anything to, and it clamps against the
+   viewport, so a 13-inch laptop gets a table rather than a scrollbar (Addendum
+   B3). Wider than the plate would put the sentence column past 90 characters,
+   which is the outer bound correction A6 sets for anything anyone has to read.
+
+   THE COLUMNS ARE DECLARED BECAUSE EVERY ROW IS ITS OWN GRID. Tracks cannot be
+   derived across sibling grid containers — that needs subgrid on a shared parent,
+   or a real table — so alignment here is a promise the widths keep. They are
+   declared ONCE as tokens, and every rule that has to agree with them reads the
+   token instead of repeating a number: the expandable row's flex rail, the
+   drawer's indent, the ledger's date cell. The ledger's date and branch columns
+   add up to the summary's tag column by construction, so the action column and
+   the sentence column start at the same x on both bands.
+
+   THE TWO CONTENT WIDTHS ARE MEASURED, NOT PICKED (see below).
+
+   INSIDE min-width:900px, like the source card. Below it, ruling 12 and Addendum
+   B6 want a stacked, super-readable single column, mobile.css owns that shape,
+   and a four-column grid on a 390px screen is four slivers.
+   ========================================================================== */
+/* ==========================================================================
+   DESIGN PASS 2026-08-05 — WHAT ADDENDUM D AND THE TAG RULING CHANGE HERE.
+
+   Jay, 19:52: "the plusses are terrible. we do not want them. we want to see
+   date effective ASAP." Jay, 19:54, on the CA page as a whole: "wow this sucks."
+   The critique behind this block is
+   research/antislop_2026-08-05/drafts/billpage_design_critique.md; three of its
+   findings are settled in the rules below.
+
+   1. THE TAG ZONE IS GONE FROM THE SUMMARY. California spent 176px + a 24px
+      gutter — 20% of the plate, 16,606 inked pixels measured off the 1440
+      screenshot — printing "(BASELINE: CA)" twenty-nine times. A label that
+      matches every member of the set it labels discriminates nothing, and at
+      900px it was also what squeezed the sentence column until almost every row
+      wrapped to two lines. billpage_summary.js states each group's tag once, as
+      a `.sum-band` head; the sentence column takes the width back (516px ->
+      588px at 1440, 376px -> 448px at 900).
+
+   2. THE FOLD MARKS DIE (D1). The +/- were the page's link green on a glyph
+      that is not a link, trailing a sentence so they landed at a different x on
+      every row — a signifier that says "here" in twenty-nine different places
+      and points at the glyph rather than at the row, which is the control. What
+      replaces them is the house affordance the spine's rows already use: the
+      pointer, and the same wash the interaction contract quotes.
+
+   3. THE STATUS ZONE ARRIVES (D2/D3). Rightmost, right-aligned, tabular, in the
+      composite contents column's dress. On California it replaces a column that
+      discriminated nothing with one that discriminates two rows out of 29.
+   ========================================================================== */
+.summary,.pipeline{
+  --rowgap:24px;
+  /* --citew: the cite zone. Every § citation this site prints fits on one line
+     here — the widest is "Cal. Bus. & Prof. Code § 22757.12(c)(3)-(4)" at 12px.
+     Massachusetts prints two citations that are sentences rather than numbers
+     ("G.L. c. 93M s. 1 (proposed), definition of 'Critical safety incident'",
+     69 characters); those wrap inside the column onto a second line, which is
+     the one place C1's "no-wrap" gives way — to the 2026-08-04 ruling that a
+     trimmed citation is a wrong one. Making the column wide enough for them
+     would spend 40% of the band on two rows out of sixty. */
+  --citew:252px;
+  /* --statw: the status zone (D2). The composite's contents column sets its own
+     status at 8.6em right-aligned (.sxi .e, composite-patch.css); 8.6em of the
+     12px this column is set at is 103px, and the widest label the vocabulary
+     produces — "Eff. see note" — measured 79px at 1440. Same column, same dress,
+     one width rounded to the sheet's even numbers. */
+  --statw:104px;
+  /* The ledger's own three: branch ("SENATE" at the tag scale), date ("13 Jul
+     2026", tabular), and the record link ("H.5576"). The date column USED to be
+     derived from the summary's tag zone, so the two bands' prose columns started
+     at the same x; the design pass retired that zone, and the ledger's own
+     content is what sizes its cells now. 88px is "13 Jul 2026" at 11px tabular
+     with a hair of slack — the value the derivation produced, kept because it
+     was already measured, and stated outright because there is nothing left to
+     derive it from. The two bands still agree where it counts: same plate, same
+     gap, same rules, and both tables flush to the same left edge. */
+  --pipecw:64px;
+  --pipedw:88px;
+  --pipelw:132px;
+}
+
+@media (min-width: 900px){
+  /* C3: both bands leave the print measure for the plate, fluidly. site.css
+     centres them; only the width changes. */
+  .summary,.pipeline{width:min(var(--plate),100% - 3rem);}
+  /* The delta headnote and the ledger's closing note are PROSE and keep their
+     reading measure inside the wider band. The measure moves from the block to
+     its paragraphs, for two reasons: the block can then carry the table's
+     OPENING RULE across the whole band (the ink hairline .lst thead th carries,
+     and a rule two thirds the width of the table it opens reads as a mistake),
+     and the paragraphs can start where the SENTENCE COLUMN starts — the headnote
+     is the table's first entry, and at every width it lines up with the entries
+     under it instead of only at the plate, where centring happens to land on the
+     same pixel. */
+  .sum-lede{max-width:none;margin:11px 0 0;padding-bottom:26px;
+    border-bottom:1px solid var(--ink);}
+  /* DESIGN PASS: the headnote's paragraphs used to be pushed right by the width
+     of the tag zone so they lined up with the sentence column. The sentence
+     column starts at the band's own left edge now, so the indent that put them
+     in line would take them out of it. */
+  /* Jay, 2026-08-06 10:04 (second ask): the headnote CENTRES under its centred
+     head at every width — his ruling outranks the sentence-column alignment
+     argument above. The block keeps the full-band rule; the prose centres. */
+  .sum-lede p{max-width:592px;margin-left:auto;margin-right:auto;}
+  .pipeline .sum-head{padding-bottom:10px;border-bottom:1px solid var(--ink);}
+  .pipeline .strip-note{margin-left:calc(var(--pipedw) + var(--pipecw)
+    + var(--rowgap) + var(--rowgap));}
+
+  /* C1/C2: one ruled row, three zones or four. */
+  .summary .sum-row,.pipeline .sum-row{display:grid;align-items:baseline;
+    column-gap:var(--rowgap);margin:0;padding:7px 0 6px;text-indent:0;
+    border-top:none;border-bottom:1px solid var(--rule-2);}
+  .summary .sum-row{grid-template-columns:minmax(0,1fr) var(--citew) var(--statw);}
+  .pipeline .sum-row{grid-template-columns:
+    var(--pipedw) var(--pipecw) minmax(0,1fr) var(--pipelw);}
+  /* .lst closes its body with an ink rule on the last row. "A row with no row
+     after it" is the only way to say that here: :last-child is the ledger's
+     closing note, and so is :last-of-type. */
+  .summary .sum-row:not(:has(~.sum-row)),
+  .pipeline .sum-row:not(:has(~.sum-row)){border-bottom:1px solid var(--ink);}
+  /* The cells. site.css stacks them with top margins, which is what a footnote
+     wants and what a row cannot have: in a row they are cells on one baseline.
+     The cite is flush right, against the ink rule that closes the band. */
+  .summary .sum-t,.pipeline .sum-t{margin:0;}
+  .summary .sum-l,.pipeline .sum-l,.summary .sum-ls{margin:0;text-align:right;}
+  /* D3: the status is the row's last zone and reads down its own edge. */
+  .summary .sum-s{text-align:right;}
+  /* The promoted row is the same three zones with more air (register A above
+     takes its rules up to ink); its own padding, or it would inherit the
+     footnote's 2.2em hanging indent and print out of column. Its star needs no
+     offset of its own here: once it is positioned at all (register A above), the
+     15px it has always declared lands it level with the row's first line. */
+  .summary .sum-row.hi{padding:10px 0 9px;}
+}
 
 /* ---------- rows that expand ----------
    The <details> spans the chip and heading columns of the row grid; the cite
    link is its sibling in column 3, never its child (a closed <details> hides
    everything but its <summary>). The summary line is a flex whose first box is
    the width of the chip column, so expandable and plain rows stay aligned. */
-.sum-x{grid-column:1/3;}
-.sum-x>summary.sum-line{display:flex;gap:0 20px;align-items:baseline;
+.sum-x{grid-column:1;}
+/* ADDENDUM C1: the gap is the row grid's gap, read from the same token. It was a
+   hand-set 20px against a grid that declared no gap at all, so the sentence in
+   an expandable row started 20px left of where a plain row's did — invisible
+   while the rows were three-line footnotes and a broken column now that they
+   are not. The tag rail this flex used to hold is gone (design pass); the
+   sentence takes the whole line, and min-width:0 is what lets it wrap inside a
+   grid track instead of pushing the track wider. */
+.sum-x>summary.sum-line{display:flex;gap:0 var(--rowgap);align-items:baseline;
   cursor:pointer;list-style:none;}
 .sum-x>summary.sum-line::-webkit-details-marker{display:none;}
-.sum-x>summary.sum-line>div:first-child{flex:0 0 168px;}
-/* the only affordance saying there is more under the line */
-.sum-x>summary.sum-line .sum-t::after{content:" ▸";font-family:var(--sans);
-  font-size:8.5px;color:var(--ink-3);vertical-align:1px;}
-.sum-x[open]>summary.sum-line .sum-t::after{content:" ▾";color:var(--blue-ink);}
-.sum-drop{margin:7px 0 3px 188px;padding-top:8px;
-  border-top:1px solid var(--rule-2);max-width:900px;
-  font-size:12px;line-height:1.6;color:var(--ink-3);}
+.sum-x>summary.sum-line>.sum-t{flex:1 1 auto;min-width:0;}
+
+/* ---------- D1: the fold has no mark, and the row is the mark ----------
+   The +/- are gone. Two things were wrong with them beyond Jay's verdict
+   ("the plusses are terrible"): they were painted in --blue-ink, the page's LINK
+   colour, on a glyph that is not a link — Butterick's colour rule is "don't
+   colour non-clickable text, or readers hunt for links that aren't there" — and
+   they trailed the sentence, so the one thing a signifier has to say ("the
+   action goes HERE") landed at a different x on all twenty-nine rows and named
+   the glyph rather than the row, which is what actually opens.
+
+   THE AFFORDANCE IS THE HOUSE ONE, unchanged from the spine: cursor:pointer on
+   the control, and the wash the interaction contract quotes —
+   rgba(21,24,28,.026), the same literal .split.bill .sec:hover carries at the
+   top of this file. It is scoped to :has(.sum-x…) so a row with nothing to open
+   never claims it can, and it lives OUTSIDE the width queries because a row is
+   clickable at every width. What it cannot do is reach a finger; that residue is
+   written down in the critique, and D2's status column is why it is affordable —
+   the fact people came for is now in the row, so the drawer is optional detail
+   rather than the only route to it. */
+.summary .sum-row:has(.sum-x>summary.sum-line:hover){background:rgba(21,24,28,.026);}
+/* A6's measure, in width: at 12.5px, 500px is ~80 characters, inside the 45-90
+   bounds, where the old 44em ran to ~88 and the strip's note ran to ~186.
+   DESIGN PASS: the drawer used to hang off the retired tag zone. It hangs off
+   nothing now, because the sentence it belongs to starts at the band's edge. */
+.sum-drop{margin:7px 0 3px;padding-top:8px;
+  border-top:1px solid var(--rule-2);max-width:500px;
+  font-size:12.5px;line-height:1.45;color:var(--ink-3);}
 .sum-why{margin-bottom:8px;}
 .sum-facts{display:grid;grid-template-columns:104px 1fr;column-gap:14px;row-gap:3px;}
-.sum-facts dt{font-size:9px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;
-  color:var(--ink-3);padding-top:2px;}
+.sum-facts dt{color:var(--ink-3);padding-top:2px;}
 .sum-facts dd{color:var(--ink-2);}
+/* ---------- ADDENDUM F: the comparison note (Jay, 2026-08-06 10:10 ET) -------
+   "when you click on a row shouldn't it explain how it 'tightens' CA?" The
+   answer is a paragraph, and the drawers file it as the last row of the fact
+   list they already print (build/notecmp.js). Two departures from the rows
+   above it, both because THIS ROW IS CONTENT AND THEY ARE FACTS (F5):
+
+   1. IT SPANS THE GRID. A fact is a date or a clause and fits the 1fr value
+      column beside its label; a 500-character paragraph set in that column runs
+      at the width of a date for fifteen lines. Label and note each take the full
+      track, so the note is set at the drawer's own measure — which is the width
+      Butterick's 45-90 characters was chosen for, and F5's own craft check.
+   2. IT TAKES PROSE FIGURES. `.sum-facts dd` and `.facts dd` set tabular
+      numerals for the columns of dates they hold; A6 puts tabular figures in a
+      number column and old-style ones in a sentence, and this is a sentence.
+
+   No colour, no rule, no size step: the note reads in the drawer's own body
+   ink. The label is the dt register the drawer already uses, unchanged. */
+.sum-facts dt.cmp,.drop .facts dt.cmp{grid-column:1/-1;padding-top:8px;}
+.sum-facts dd.cmp,.drop .facts dd.cmp{grid-column:1/-1;
+  font-variant-numeric:normal;text-align:justify;hyphens:auto;-webkit-hyphens:auto;}
 /* Jay, 2026-08-04 12:44 ("this is so broken"): with the baseline group expanded,
    the row-level cite link printed over the drop's own per-item cites. Open rows
    hide the row link — every expanded item carries its cite — and the drop takes
@@ -238,15 +855,20 @@ h1.bill{display:block;}
    the same size, each landing on its own row. */
 .sum-ls{display:flex;flex-direction:column;align-items:flex-end;gap:4px;}
 .sum-list{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:3px 24px;}
-.sum-list a{color:var(--ink-2);text-decoration:none;}
+.sum-list a{color:var(--ink-2);text-decoration:none;
+  hyphens:manual;-webkit-hyphens:manual;overflow-wrap:break-word;}
 .sum-list a:hover{color:var(--blue-ink);}
+/* B6 (phone): a nowrap § cite pushed 390px pages 115px past their right edge.
+   The cite keeps its one-token integrity through hyphens:manual + overflow-wrap
+   on .sum-list a above; nowrap on top of that was the overflow. */
 .sum-list .c{color:var(--blue-ink);border-bottom:1px solid rgba(46,93,60,.40);
-  margin-left:7px;font-size:11px;letter-spacing:.02em;white-space:nowrap;}
+  margin-left:7px;font-size:11.5px;}
 
 /* ---------- 2. arrival ----------
    A cite link used to teleport: the row appeared hard against the top edge with
    no sign of what had just happened. Now the page glides, the row lands with
-   room above it, and it flashes once so the eye finds it. */
+   room above it, and it flashes once so the eye finds it. The flash is the
+   selection wash at its peak and back — one register, not a second colour. */
 html{scroll-behavior:smooth;}
 #summary{scroll-margin-top:16px;}
 .split.bill .sec{scroll-margin-top:96px;scroll-margin-bottom:32px;}
@@ -255,30 +877,27 @@ html{scroll-behavior:smooth;}
   0%,20%{background:rgba(46,93,60,.24);}
   100%{background:rgba(46,93,60,.06);}
 }
-@keyframes sec-landed-new{
-  0%,20%{background:rgba(138,86,181,.30);}
-  100%{background:rgba(138,86,181,.075);}
-}
-.split.bill .sec:target{animation:sec-landed 1.5s ease-out 1;}
-.split.bill .sec.newhi:target{animation:sec-landed-new 1.5s ease-out 1;}
 
 /* ---------- the way back ----------
    Appears only once a spine row is targeted — i.e. only after a jump. Clicking
    it retargets the URL at #summary, which scrolls back AND drops :target off
-   the row, so the source panel (and, on a phone, the bottom sheet) closes. */
+   the row, so the source panel (and, on a phone, the bottom sheet) closes.
+
+   It keeps a fill because it floats over the reading column and has to stay
+   legible there; what the restyle took off it is the radius and the drop shadow
+   (printed matter casts none) and the uppercase grotesque. */
 .split.bill>.tosum{display:none;position:fixed;left:20px;bottom:20px;z-index:70;
-  font-family:var(--sans);font-size:10px;font-weight:600;
-  letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2);text-decoration:none;
-  background:var(--off);border:1px solid var(--rule);border-radius:2px;
-  padding:8px 12px 7px;box-shadow:0 2px 10px rgba(55,55,55,.16);}
-.split.bill>.tosum:hover{color:var(--ink);border-color:var(--blue-d);}
+  font-size:12px;letter-spacing:.09em;color:var(--ink-2);text-decoration:none;
+  background:var(--off);border-top:1px solid var(--ink);
+  border-bottom:1px solid var(--rule);padding:7px 12px 6px;}
+.split.bill>.tosum:hover{color:var(--ink);border-bottom-color:var(--ink);}
 .split.bill>.tosum:focus-visible{outline:2px solid var(--blue-d);outline-offset:2px;}
 .split.bill:has(.sec:target)>.tosum{display:inline-block;}
 
 /* Motion is an affordance, not a requirement. */
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto;}
-  .split.bill .sec:target,.split.bill .sec.newhi:target{animation:none;}
+  .split.bill .sec:target{animation:none;}
 }
 
 /* ---------- copy controls (change A) ----------
@@ -296,16 +915,16 @@ html{scroll-behavior:smooth;}
 .copylink.copied{color:var(--green);border-bottom-color:rgba(63,122,78,.42);}
 .copylink:focus-visible,.anchorlink:focus-visible{outline:2px solid var(--blue-d);
   outline-offset:2px;}
-.anchorlink{position:relative;margin-left:5px;color:#BEBEBE;text-decoration:none;
-  font-size:11px;font-weight:400;cursor:pointer;}
+.anchorlink{position:relative;margin-left:5px;color:var(--ink-3);text-decoration:none;
+  font-size:12px;font-weight:400;cursor:pointer;}
 .ourhead .anchorlink{visibility:hidden;}
 .sec:hover .ourhead .anchorlink,.sec:target .ourhead .anchorlink,
 .ourhead .anchorlink:focus-visible{visibility:visible;}
 .anchorlink:hover{color:var(--blue-ink);}
 .anchorlink.copied{color:var(--green);visibility:visible;}
 .anchorlink.copied::after{content:"Copied";position:absolute;left:calc(100% + 5px);top:0;
-  font-family:var(--sans);font-size:8.5px;font-weight:600;
-  letter-spacing:.11em;text-transform:uppercase;color:var(--green);white-space:nowrap;}
+  font-family:var(--serif);font-size:10px;text-transform:uppercase;
+  letter-spacing:.09em;color:var(--green);white-space:nowrap;}
 
 /* ---------- the version stamp is a link (change B) ----------
    Which version a page reads is the most consequential word on it, so the stamp
@@ -313,10 +932,12 @@ html{scroll-behavior:smooth;}
    inherits its colour and keeps a hairline underline, so the meta column and the
    spine label read exactly as before until the reader goes looking. */
 .mast .meta dd a{color:inherit;text-decoration:none;
-  border-bottom:1px solid var(--rule);padding-bottom:1px;}
+  border-bottom:1px solid var(--rule);padding-bottom:1px;
+  hyphens:manual;-webkit-hyphens:manual;overflow-wrap:break-word;}
 .mast .meta dd a:hover{color:var(--blue-ink);border-bottom-color:rgba(46,93,60,.40);}
 .sec-label a{color:inherit;text-decoration:none;
-  border-bottom:1px solid var(--rule);padding-bottom:1px;}
+  border-bottom:1px solid var(--rule);padding-bottom:1px;
+  hyphens:manual;-webkit-hyphens:manual;overflow-wrap:break-word;}
 .sec-label a:hover{color:var(--blue-ink);border-bottom-color:rgba(46,93,60,.40);}
 .mast .meta dd a:focus-visible,.sec-label a:focus-visible{
   outline:2px solid var(--blue-d);outline-offset:2px;}
@@ -327,7 +948,8 @@ html{scroll-behavior:smooth;}
    tooltip on an empty span and links nowhere. */
 a.chip.eff{color:inherit;text-decoration:none;}
 .effsrc{color:var(--blue-ink);text-decoration:none;font-size:.92em;
-  border-bottom:1px solid rgba(46,93,60,.40);padding-bottom:1px;white-space:nowrap;}
+  border-bottom:1px solid rgba(46,93,60,.40);padding-bottom:1px;white-space:nowrap;
+  hyphens:manual;-webkit-hyphens:manual;overflow-wrap:break-word;}
 .effsrc:focus-visible{outline:2px solid var(--blue-d);outline-offset:2px;}
 .effsrc-none{border-bottom:1px dotted var(--rule);cursor:help;
   display:inline-block;width:.9em;}
@@ -336,9 +958,79 @@ a.chip.eff{color:inherit;text-decoration:none;}
    it rendered in the browser's default link blue and visited purple (Jay,
    2026-08-04 16:52 ET: "this looks so ugly"). Same treatment as .drop's links. */
 .contd p a{color:var(--blue-ink);text-decoration:none;
-  border-bottom:1px solid rgba(46,93,60,.40);padding-bottom:1px;}
+  border-bottom:1px solid rgba(46,93,60,.40);padding-bottom:1px;
+  hyphens:manual;-webkit-hyphens:manual;overflow-wrap:break-word;}
 
-/* A status chip stays one box when its text wraps. The 2026-08-04 16:51 chip
-   broke into two bordered fragments at full-width; inline-block wraps the box
-   as a unit instead of splitting the border. */
-.mast .status{display:inline-block;line-height:1.6;}
+/* ==========================================================================
+   RULING 12: NARROW WIDTHS. mobile.css (loaded last) owns the phone LAYOUT for
+   every page kind — the stacked mast, the one-column split, the bottom sheet.
+   What belongs here is what the restyle introduced and mobile.css cannot know
+   about: a justified column at a phone's measure is a page of rivers, and the
+   masthead's double rules need the phone's tighter rhythm.
+   ========================================================================== */
+@media (max-width: 899px){
+  /* X6 (2026-08-05) took the 56px desktop inset off the band here, because it
+     left a 246px column on a 390px screen. ADDENDUM C2 took it off the band
+     itself, at every width, so there is nothing left to undo.
+
+     ADDENDUM C3: "phone keeps stacked blocks per B6". The plate-wide grid is
+     declared inside min-width:900px and never reaches here, so a row is what it
+     has been since the restyle — three stacked blocks. What it gains is the rule
+     between them: the index's landscape table stacks the same way at this width
+     and mobile.css gives each stacked row a hairline over it, because a run of
+     unmarked lines is not a list of rows (the defect test_lstbullets LB6 exists
+     for). Same vocabulary, same reason, on the band Addendum C just ruled. */
+  .summary .sum-row,.pipeline .sum-row{margin:0;padding:.9rem 0 .3rem;
+    border-top:1px solid var(--rule);}
+  .summary .sum-row:not(:has(~.sum-row)),
+  .pipeline .sum-row:not(:has(~.sum-row)){border-bottom:1px solid var(--ink);}
+  /* The ledger's date and branch are two cells with nothing to align to here, so
+     they read as one opening line of the stacked block rather than two. */
+  .pipe-d,.pipe-c{display:inline;}
+  /* DESIGN PASS, phone half.
+
+     THE BAND HEAD is what the phone gains most from: the tag used to be the
+     first of three stacked blocks in every row, so California spent twenty-nine
+     whole lines of a 390px screen on one repeated string. It is one line per
+     group now. It needs a rule of its own here because the row above it is a
+     stacked block whose hairline sits on its TOP edge (see the rule above), so
+     nothing would otherwise separate a group from the one before it.
+
+     THE STATUS rides the cite line (D3: "phone stacks per B6 with the status on
+     the cite line"). Both cells go inline and the status sits after the citation
+     with a space, so a stacked row ends in one line of apparatus rather than
+     two. */
+  .sum-band{margin:1.9rem 0 0;padding:.5rem 0 .45rem;
+    border-top:1px solid var(--ink);}
+  .sum-lede + .sum-band{margin-top:1.2rem;}
+  .summary .sum-band + .sum-row{border-top:none;}
+  /* inline-BLOCK, not inline: an inline box drops its vertical margin, and
+     .sum-l's .35rem of air over the cite line is what keeps it off the
+     sentence. */
+  .summary .sum-l,.sum-s{display:inline-block;}
+  .sum-s{margin:.35rem 0 0 .55em;}
+  /* ADDENDUM B6, and a real defect X6 left behind. site.css gives every .sum-row a
+     hanging indent (padding-left:2.2em with text-indent:-2.2em); the two bands on
+     this page override the PADDING and keep the INDENT, which on desktop merely
+     hangs the first line into the 56px inset — and with the inset gone at X6 hangs
+     it off the left edge of the screen. At 390px that clipped the opening "(B" off
+     every "(BASELINE: CA)" in the summary. The indent has nothing left to hang
+     from here, so it goes to zero rather than the padding coming back: a hanging
+     indent needs a margin, and a phone has none to spend. */
+  .summary .sum-row,.pipeline .sum-row{text-indent:0;}
+  .split.bill .leg,.sum-lede,.contd p,.strip-note,.sum-drop{text-align:left;
+    hyphens:manual;-webkit-hyphens:manual;}
+  h1.bill{font-size:20px;}
+  h1.bill::before{margin-bottom:11px;}
+  h1.bill::after{margin-top:10px;}
+  .mast.tight .eyebrow{margin-bottom:10px;}
+  /* The rail is a row of capital attributions here, not a stack of chips. */
+  .rail .chip{font-size:11px;}
+  /* The star hangs in the 12px gutter mobile.css leaves the row. */
+  .sec.newhi::before{left:0;top:15px;font-size:15px;}
+  /* ADDENDUM C3: the stacked row runs flush to the band's edge (that is the whole
+     point of the width a phone has), so the promoted row rents the star a gutter
+     of its own rather than hanging it off the screen at the desktop's -16px. */
+  .summary .sum-row.hi{padding-left:1.1rem;}
+  .summary .sum-row.hi::before{left:0;top:12px;}
+}

@@ -20,46 +20,133 @@
    before the page's own patch file, so a page can still override what it
    genuinely needs to. What is left in the patch files, and why:
      · the split ratio and the column overrides — page-level layout, not the card
-     · the card's padding (22/24/24 on a bill page, 20/22/20 on the composite)
-       and its sticky anchor (.panelwrap there, the panel itself here)
+     · the card's padding and its sticky anchor (.panelwrap on a bill page, the
+       panel itself on the composite)
      · .split.bill .src{max-width:none} — a bill-page-only release
      · the continuation link's spacing, which is tighter on the composite because
        a WHY note follows it
      · .right .note — the WHY note and the explainer entries are composite-only
 
-   The card's DESIGN was ruled on 2026-08-01 ("a static thing that does not
+   THE CARD'S DRESS, restyled 2026-08-05 (RESTYLE_SPEC ruling 7): "Bill pages
+   keep their source card interaction (whole-row click, card swaps — the
+   interaction-consistency gate stays green) but redressed: rules not boxes, no
+   shadow, no radius, law-review type."
+
+   What that replaced. The 2026-08-01 ruling ("a static thing that does not
    scroll ... clearly like a box that fills up with leg text as needed ... font
-   size smaller too"): a bounded box in the frozen language — panel fill,
-   hairline border, the 2px radius the chips already use — with the type two
-   steps down from the spine beside it. That ruling now lives in one place.
+   size smaller too") was read as a BOUNDED BOX in the old design language:
+   panel fill, hairline border, the 2px radius the chips used. Jay then judged
+   the whole site "Claude slop" in a blind A/B, and the box is one of the tells —
+   a law journal sets its source apparatus under a rule, never in a card. So the
+   ruling's substance survives (the card still ends where its text ends, still
+   holds the smaller type, still does not scroll) and its box does not: the card
+   OPENS ON A HAIRLINE and sits on the paper.
+
+   The METRICS, though, are untouched and stay desktop-scoped. They were measured
+   rather than guessed (~22 rendered lines at 12px in ~350px of column) and Jay
+   approved them on a live read; nothing in the restyle rulings reaches a size.
+   The DRESS sits outside the query on purpose, because below 900px this card is
+   the phone's bottom sheet (mobile.css) and the sheet is the same object.
    ========================================================================== */
+
+/* ---------- the card's own voice (ruling 9) ----------
+   The system old-style stack IS the design, and it is a token: no licensed
+   family is named here, so the card renders identically in the design and in
+   the published artifact. site.css sets the body in the sans, so every part of
+   the card that carries words asks for the serif by name — one declaration per
+   rule rather than a shared selector list, because a list ending in `.chip`
+   reads as a rule FOR the chip to anything grepping this file, tests included.
+
+   BUTTERICK A1 (spec addendum, 2026-08-05 16:45). This block asked for small
+   caps three hours ago. The stack has none — Iowan, Palatino and Georgia all
+   leave the small-caps variant to be SYNTHESISED, and a browser synthesises it
+   by shrinking capitals, which is the fake Butterick names. So the card's
+   one head is real capitals at a reduced size with tracking, and the fake is
+   gone from the sheet.
+
+   The EYEBROW does not take capitals, and that is deliberate rather than
+   unfinished. Its string is a statutory cite — "Source text: Cal. Bus. & Prof.
+   Code § 22757.11(c)(1)" — and in capitals the reader gets subsection (C),
+   which is a different subsection. That is A7's carve-out ("(c)" is not ©)
+   one rule over, so the eyebrow keeps its own case, drops the tracking capitals
+   would have earned it, and refuses hyphenation (A2: cites never break). It is
+   a LABEL, so it takes the tertiary ink rather than the link green: green is
+   chrome and never decoration (ruling 3). */
+.panel .p-eyebrow{font-family:var(--serif);font-weight:400;text-transform:none;
+  color:var(--ink-3);hyphens:manual;-webkit-hyphens:manual;
+  overflow-wrap:break-word;}
+.panel .p-title{font-family:var(--serif);font-weight:400;
+  text-transform:uppercase;letter-spacing:.07em;}
+.panel .p-cite{font-family:var(--serif);color:var(--ink-2);
+  hyphens:manual;-webkit-hyphens:manual;overflow-wrap:break-word;}
+
+/* The excerpt is QUOTED MATTER, and a hairline in its own margin is how printed
+   law says so — the same device the mockups' footnote apparatus uses for the
+   identical-text excerpt. It stays RAGGED: ruling 10 justifies the print
+   measures and leaves narrow margins and sidenotes ragged, and this column is
+   ~350px at 12px, where justification is a page of rivers. */
+.panel .src{font-family:var(--serif);padding-left:1.05em;
+  border-left:1px solid var(--rule-2);hyphens:manual;}
+
+/* The head and the statute are separated by the double rule of the mockups
+   (a rule over a hairline), where this was a single 1px bar. */
+.panel .p-rule{height:3px;background:none;
+  border-top:1px solid var(--ink);border-bottom:1px solid var(--rule);}
+
+/* ---------- ruling 5: the state chip retires into a parenthetical ----------
+   "State colors die in text sitewide: chips everywhere become parenthetical
+   small caps — (CA), (CA · In force) ... source strings stay verbatim."
+
+   The brackets are the stylesheet's and the label is the markup's, which is how
+   ruling 1 (words are FROZEN) holds by construction: build/sourcecard.js still
+   emits <span class="chip ca">CA</span> and no build writes a paren. Every
+   per-state hue goes with the box — the card carries no accent at all now.
+   The label is two letters and it is already capital in the markup, so A1's
+   real capitals cost nothing here: the transform states the intent for a chip
+   whose label were ever lower-case, and the tracking is what capitals need. */
+.panel .chip{font-family:var(--serif);display:inline;padding:0;border:0;
+  background:none;text-transform:uppercase;
+  font-weight:400;font-size:10.5px;
+  letter-spacing:.08em;color:var(--ink-2);white-space:nowrap;}
+.panel .chip::before{content:"(";}
+.panel .chip::after{content:")";}
 
 /* The continuation affordance under an excerpt the card could not hold whole:
    where the card stops, the official text carries on. Styled at every width —
-   the phone bottom sheet needs it as much as the desktop card does. */
+   the phone bottom sheet needs it as much as the desktop card does.
+   A1 also strips the .02em this line used to carry: it is a sentence, not a
+   label, and tracked prose is the tell A1 was written about. */
 .p-more{margin-top:14px;padding-top:12px;border-top:1px solid var(--rule);
-  font-size:11.5px;letter-spacing:.02em;}
+  font-size:11.5px;}
 .p-more a{color:var(--blue-ink);text-decoration:none;
   border-bottom:1px solid rgba(46,93,60,.40);padding-bottom:1px;}
 
 /* ==========================================================================
-   THE CARD (desktop only). Inside the min-width query so mobile.css keeps the
-   <900px bottom sheet exactly as approved: the sheet KEEPS its internal scroll,
-   because 55vh is nowhere near enough room to sit still, which is the whole
-   reason the desktop card can drop the scrollbar and the sheet cannot.
+   THE CARD'S METRICS (desktop only). Inside the min-width query so mobile.css
+   keeps the <900px bottom sheet exactly as approved: the sheet KEEPS its
+   internal scroll, because 55vh is nowhere near enough room to sit still, which
+   is the whole reason the desktop card can drop the scrollbar and the sheet
+   cannot.
    ========================================================================== */
 @media (min-width: 900px){
-  /* A bounded box, not a column. Fill, edge and radius only: padding and the
-     sticky offset differ by page and stay with the page. */
-  .panel{background:var(--panel);border:1px solid var(--rule);border-radius:2px;}
+  /* Rules, not a box (ruling 7). The card opens on a hairline and ends where
+     its text ends; no fill (the fill was already the paper), no edge, no radius,
+     no shadow. Padding and the sticky offset differ by page and stay with the
+     page. */
+  .panel{background:none;border-top:1px solid var(--ink);}
 
   /* Two steps smaller inside the card (statute 14.5px -> 12px, metadata to
      match): a card is a reference, not a reading column. */
-  .panel .p-eyebrow{font-size:8.5px;letter-spacing:.14em;}
+  .panel .p-eyebrow{font-size:8.5px;}
   .panel .p-head{margin-bottom:10px;}
   .panel .p-title{font-size:16px;margin-bottom:5px;}
   .panel .p-cite{font-size:10.5px;}
   .panel .p-rule{margin:13px 0;}
-  .panel .src{font-size:12px;line-height:1.7;}
+  /* A6 brings the leading into 1.2-1.45 (it was 1.7). The SIZES are untouched —
+     they were measured on a live read and are pinned from three other files —
+     and at 12px the excerpt keeps 17.4px of line, not far off the 20.4px it had.
+     mobile.css's `.right .src` still says 1.7 for the composite phone sheet; it
+     is L1's file, so the residue is in this lane's report. */
+  .panel .src{font-size:12px;line-height:1.45;}
   .panel .p-more{font-size:10.5px;}
 }

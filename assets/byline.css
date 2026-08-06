@@ -1,73 +1,98 @@
 /* ==========================================================================
-   BYLINE — the maintainer line and its corrections card (change 1, 2026-08-02).
-   Site-wide chrome, loaded by every page, kept OUT of site.css because the
-   design system there is frozen (BUILD_SPEC section 3: extract, don't invent)
-   and this card is new vocabulary rather than extracted mockup vocabulary.
-   Loads after site.css and any page patch, before mobile.css.
+   BYLINE — the maintainer line and the corrections block under it.
+   Site-wide chrome, loaded by every page after site.css and any page patch,
+   before mobile.css. It lives outside site.css because this is the site's own
+   vocabulary rather than vocabulary extracted from a mockup — the approved
+   law-review mockups show the byline line and its revealed block, but not the
+   note box that hangs off it.
+
+   RULING 8 (Jay, 2026-08-05 16:22) rebuilt the mechanism. The visible line is
+   one line — "maintained by Jay Kim · corrections welcome" and the mark — and
+   the email and the corrections page live INSIDE the revealed block. Opening is
+   :hover for a pointer and :focus-within for a tap or the keyboard, with no
+   script involved, which the 08-02 review had ruled out and this design earns
+   back: the block is IN FLOW and CONTIGUOUS with the trigger, so there is no
+   positioned gap for the pointer to fall through on the way to the textarea,
+   and focus holds the block open while someone is typing in it. The trigger
+   stays a real <button> because that is what makes a tap focus it.
+
+   The block is a RULE, not a card (ruling 7): a hairline over it, no border
+   box, no radius, no shadow. Green appears once, on the Send underline, which
+   is one of the spine's four jobs under ruling 3.
+   Pinned by build/test_feedback_toggle.test.js and build/test_byline.test.js.
    ========================================================================== */
-/* ---------- maintainer byline + corrections card (change 1) ----------
-   Site-wide chrome, so it belongs here and not in a page patch: map.html and
-   about.html load site.css and nothing else. Opening is a click when the script
-   runs (.byline-js .is-open) and CSS when it does not — :hover for a mouse,
-   :focus-within for a tap or the keyboard, since tapping the trigger focuses it
-   — so the issue link and the email stay reachable with scripting off. The two
-   CSS rules are scoped :not(.byline-js) because a live hover rule would undo
-   click-to-close while the pointer is still on the trigger (fix 1, 2026-08-02).
-   The card is out of flow: opening it never moves the page. */
-.byline{position:relative;display:inline-block;margin-top:16px;}
-.byline-t{font-family:var(--sans);font-size:11.5px;letter-spacing:.01em;
-  color:var(--ink-3);background:none;border:0;border-bottom:1px dotted #C8C8C8;
+/* Jay, 2026-08-06 10:10: on hover the block opens, the box widens to the card
+   width, and the trigger line lurched left. The trigger CENTRES in whatever
+   width the box has; the revealed card stays left-set reading matter. */
+.byline{display:inline-block;margin-top:1.5rem;text-align:center;
+  font-style:italic;font-size:.88rem;line-height:1.42;color:var(--ink-2);}
+.byline-t{font:inherit;font-style:italic;font-size:1em;letter-spacing:0;
+  color:var(--ink-2);background:none;border:0;border-bottom:1px solid var(--rule);
   padding:0 0 1px;cursor:pointer;}
-.byline:hover .byline-t,.byline:focus-within .byline-t{color:var(--ink-2);}
+.byline:hover .byline-t,.byline:focus-within .byline-t{color:var(--ink);border-bottom-color:var(--ink);}
 /* The browser's default focus ring is a heavy black box around the whole
-   trigger (Jay, 2026-08-05: "this is ugly"). Keep a visible ring for keyboard
-   focus, in the site's own green and offset off the text; a pointer click
-   gets the open card itself as its feedback. */
+   trigger (Jay, 2026-08-05: "this is ugly"). A pointer gets the open block as
+   its feedback; a keyboard gets a hairline ring in the site's own green, offset
+   off the text. */
 .byline-t:focus{outline:none;}
-.byline-t:focus-visible{outline:2px solid rgba(46,93,60,.55);outline-offset:3px;}
-.byline-card{position:absolute;left:0;top:calc(100% + 8px);z-index:20;width:320px;
-  max-width:calc(100vw - 40px);background:var(--off);border:1px solid var(--rule);
-  border-radius:2px;box-shadow:0 3px 12px rgba(55,55,55,.10);padding:14px 15px 13px;
-  visibility:hidden;opacity:0;transition:opacity .12s ease;}
-.byline:not(.byline-js):hover .byline-card,
-.byline:not(.byline-js):focus-within .byline-card{visibility:visible;opacity:1;}
-.byline.is-open .byline-card{visibility:visible;opacity:1;}
-.byline-who{font-size:12.5px;font-weight:500;color:var(--ink);letter-spacing:.005em;}
-.byline-creed{font-family:var(--serif);font-size:13.5px;line-height:1.5;
-  color:var(--ink-2);margin-top:4px;}
-.byline-ways{font-size:11.5px;line-height:1.5;margin-top:9px;}
-.byline-ways a{color:var(--blue-ink);text-decoration:none;white-space:nowrap;
-  border-bottom:1px solid rgba(46,93,60,.40);}
-.byline-ways .sep{color:#BEBEBE;padding:0 5px;}
-.byline-lab{display:block;font-size:9.5px;font-weight:600;letter-spacing:.14em;
-  text-transform:uppercase;color:var(--ink-3);margin:13px 0 6px;}
-.byline-card textarea{display:block;width:100%;font-family:var(--sans);
-  font-size:12px;line-height:1.5;color:var(--ink);background:#fff;border:1px solid var(--rule);
-  border-radius:2px;padding:7px 8px;resize:vertical;}
-.byline-card textarea:focus{outline:none;border-color:var(--blue-d);}
+.byline-t:focus-visible{outline:1px solid var(--spine-faint);outline-offset:3px;}
+/* IN FLOW, and closed means display:none rather than invisible: an in-flow
+   block that merely cannot be seen still holds its space open on every page and
+   leaves its textarea and its two links sitting in the tab order behind a
+   closed line. */
+.byline-card{display:none;max-width:26em;margin:.7rem 0 0;padding:.75rem 0 0;
+  border-top:1px solid var(--rule);font-style:normal;font-size:.8rem;line-height:1.42;
+  text-align:left;}
+.byline:hover .byline-card,
+.byline:focus-within .byline-card{display:block;}
+/* Correction A1: the maintainer's name was set in synthesized small caps. It is
+   real capitals now, a step smaller than the line it opens, tracked at A1's
+   ceiling; the two labels and the Send word below follow the same rule. */
+.byline-who{font-size:.92em;letter-spacing:.12em;color:var(--ink);
+  text-transform:uppercase;}
+.byline-creed{font-size:1em;line-height:1.42;color:var(--ink-2);margin-top:.2rem;letter-spacing:0;}
+.byline-ways{font-size:1em;line-height:1.42;margin-top:.35rem;}
+/* An email address and a page link: A2 says neither may ever hyphenate. */
+.byline-ways a{color:var(--ink);text-decoration:none;white-space:nowrap;
+  hyphens:manual;overflow-wrap:break-word;
+  border-bottom:1px solid var(--spine-faint);}
+.byline-ways a:hover{color:var(--blue-ink);border-bottom-color:var(--blue-ink);}
+.byline-ways .sep{color:var(--rule);padding:0 .5em;}
+.byline-lab{display:block;margin:.9rem 0 .35rem;font-size:.9em;letter-spacing:.12em;
+  color:var(--ink-3);text-transform:uppercase;}
+.byline-card textarea{display:block;width:100%;font:inherit;font-size:1em;
+  line-height:1.42;color:var(--ink);background:var(--off);
+  border:1px solid var(--rule);border-radius:0;padding:.4rem .5rem;resize:vertical;}
+.byline-card textarea:focus{outline:none;border-color:var(--ink-2);}
 #fb-hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0;}
-.byline-send{margin-top:8px;font-family:var(--sans);font-size:9.5px;
-  font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:var(--blue-ink);
-  background:transparent;border:1px solid rgba(46,93,60,.45);border-radius:2px;
-  padding:5px 11px 4px;cursor:pointer;}
-.byline-send:hover{background:rgba(46,93,60,.08);}
-.byline-send[disabled]{color:var(--ink-3);border-color:var(--rule);cursor:default;}
-.byline-status{font-size:11.5px;line-height:1.5;color:var(--ink-3);margin-top:8px;}
+/* The Send underline is one of the spine's four jobs (ruling 3): a word with a
+   green rule under it, not a button with a green box around it. */
+.byline-send{margin-top:.5rem;font:inherit;font-size:.9em;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--ink);background:none;border:0;
+  border-bottom:1px solid var(--blue-d);border-radius:0;padding:0 0 1px;cursor:pointer;}
+.byline-send:hover{color:var(--blue-ink);}
+.byline-send[disabled]{color:var(--ink-3);border-bottom-color:var(--rule);cursor:default;}
+.byline-status{margin-top:.5rem;font-size:.94em;line-height:1.42;
+  font-style:italic;color:var(--ink-3);}
 .byline-status:empty{display:none;}
-.byline-status a{color:var(--blue-ink);}
+.byline-status a{color:var(--ink);border-bottom:1px solid var(--spine-faint);
+  text-decoration:none;}
 
 /* ---------- the maker's mark (Jay, 2026-08-04 16:32 / 17:06 ET) ----------
-   One cactus, drawn once in build/byline.js, used twice on every page: inline
-   at the byline and as the colophon in the bottom-right corner. It lives beside
-   the byline rather than in site.css for the same reason the byline does — this
-   is new vocabulary, not extracted mockup vocabulary, and site.css is frozen.
-   Line art at the site's own hairline weight, one colour, no fill, so it reads
-   as a printer's mark and not as an icon set. --mark is green: at .62 a grey
-   colophon is nearly invisible on white and reads as a stray glyph, and a
-   decorative mark is not a link, so it may share the link hue. */
-.cactus-i{width:16px;height:16px;vertical-align:-3.5px;margin-left:8px;
+   One cactus, drawn once in build/byline.js, used twice on every page: inline at
+   the byline and as the colophon in the bottom-right corner. Line art at the
+   site's own hairline weight, one colour, no fill, so it reads as a printer's
+   mark and not as an icon set. --mark is green: a decorative mark is not a link,
+   so it may share the spine's hue, and at 62% a grey colophon is nearly
+   invisible on white. */
+.cactus-i{width:15px;height:15px;vertical-align:-.16em;margin-left:.45em;
   color:var(--mark);opacity:.9;}
 .colophon{display:flex;justify-content:flex-end;align-items:center;
-  padding:0 56px 44px;margin-top:6px;}
-.colophon .cactus-c{width:26px;height:26px;color:var(--mark);opacity:.62;}
-@media (max-width:899px){.colophon{padding:0 18px 30px;}}
+  width:min(var(--measure),100% - 3rem);margin:2.6rem auto 0;padding:0 0 2.6rem;}
+/* ADDENDUM B1: 19px -> 17px. The colophon mark is a printer's device signing the
+   page off, so it reads LARGER than the inline one and never larger than the
+   reading type it sits under; when the body came down from 19.5px to 17.5px the
+   19px mark went from a step under the type to a step over it. Pinned both ways by
+   build/test_cactusmark.test.js C4. */
+.colophon .cactus-c{width:17px;height:17px;color:var(--mark);opacity:.62;}
+@media (max-width:899px){.colophon{padding:0 0 1.8rem;}}

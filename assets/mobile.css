@@ -1,24 +1,30 @@
 /* ==========================================================================
-   mobile.css — phone layout for every v2 page. Loaded LAST on every page so
-   its overrides beat site.css (frozen design system), composite-patch.css and
-   billpage-patch.css without any of them being edited.
+   mobile.css — phone layout for every v2 page. Loaded LAST on every page so its
+   overrides beat site.css (the law-review design system), composite-patch.css
+   and billpage-patch.css without any of them being edited.
 
    Why this file exists: distribution is a Signal group opened on phones, and
    below ~900px the desktop split view (3fr/2fr) rendered as two unusable
-   slivers. Jay's ruling, 2026-08-01.
+   slivers. Jay's ruling, 2026-08-01. RESTYLE_SPEC ruling 12 keeps it load
+   bearing: "Mobile: no breakpoints, no ship."
 
    Contract, in one line each:
+     - the print measure keeps 1rem of margin instead of 1.5rem, and every
+       band, plate and table sits inside it;
      - one column below 900px: .mast, .board, .split and .sec all stack;
+     - JUSTIFICATION IS RELAXED (ruling 10): at a 320px measure justified text
+       opens rivers a hairline design cannot absorb, so every justified block
+       goes ragged-right here and keeps its hyphenation;
      - the source panel (.right) stops being a column and becomes a bottom
        sheet over the lower 55vh, hidden until a row is opened;
-     - the sheet carries a visible close affordance (.sheet-close) that
-       returns the reader to the text spine;
+     - the sheet carries a visible close affordance (.sheet-close) that returns
+       the reader to the text spine;
      - at >=900px NOTHING here applies: the approved desktop layout is
        untouched, which is why every rule below sits inside the media query
        except the two that hide the close affordance on desktop.
 
-   The two mechanisms differ because the pages differ. The composite runs a
-   small inline script already (open(n)); it toggles body.panel-open and the
+   The two sheet mechanisms differ because the pages differ. The composite runs
+   a small inline script already (open(n)); it toggles body.panel-open and the
    close button clears it. The bill pages are deliberately JavaScript-free, so
    the sheet opens on :has(.sec:target) — the same selector billpage-patch.css
    already uses to reveal a panel — and the close affordance is an <a> that
@@ -32,106 +38,122 @@
 @media (max-width: 899px){
 
   /* ---------- page frame ----------
-     56px of side padding is a third of a 390px screen. 18px throughout. */
-  body{max-width:none;}
+     1.5rem of side margin is a tenth of a 390px screen on each side; the
+     approved mockups drop to 1rem below 720px and so does this. */
+  /* ADDENDUM B6 (Jay, 2026-08-05 18:23 ET): "tablets and phones get a SUPER
+     READABLE single column ... comfortable body size (17.5-18px), generous
+     leading". 18px is the TOP of that band, taken deliberately: this column is
+     the full width of the screen rather than a print measure inside a page, it is
+     read at arm's length, and the leading it inherits from site.css is already at
+     A6's generous end (1.45). B1's sitewide 17.5px is the desktop figure; the
+     phone is the one place the ruling allows a half-point more. */
+  body{max-width:none;font-size:18px;}
+  .chrome,.mast,.summary,.strip,.page,.pipeline,.plate,.board,.colophon,
+  .legend,.mapcap,.xref{width:min(var(--measure),100% - 2rem);}
 
-  /* ---------- chrome / nav ----------
+  /* ---------- running head ----------
      The wordmark is a sentence, not a logotype, so it takes its own line and
-     wraps; the three nav items (ruling 19) stay on one line at a smaller size,
-     which is the whole reason the chrome stacks rather than wrapping as a row. */
-  .chrome{flex-direction:column;align-items:flex-start;gap:6px;
-    height:auto;padding:12px 18px 0;}
-  .wordmark{font-size:11.5px;line-height:1.4;letter-spacing:.045em;}
-  nav{gap:20px;flex-wrap:nowrap;white-space:nowrap;align-self:stretch;}
-  nav a{font-size:11.5px;padding:8px 0 7px;}
+     wraps; the three nav items (ruling 19) stay on one line under it. */
+  .chrome{flex-direction:column;align-items:flex-start;gap:.25rem;
+    height:auto;padding:1.2rem 0 .4rem;}
+  .wordmark{font-size:.62rem;line-height:1.42;}
+  nav{gap:.6em;flex-wrap:nowrap;white-space:nowrap;align-self:stretch;}
+  nav a{font-size:.62rem;padding:.2rem 0;}
 
-  /* ---------- masthead + map board: the 1fr/300px grids stack ----------
-     The meta rail's left rule becomes a top rule; it is a separator either way. */
-  .mast,.mast.tight{grid-template-columns:1fr;gap:22px;padding:24px 18px 22px;}
-  .board{grid-template-columns:1fr;gap:26px;padding:22px 18px 40px;}
-  .meta,.legend{border-left:none;border-top:1px solid var(--rule);
-    padding-left:0;padding-top:16px;margin-top:0;}
-  h1{font-size:27px;}
-  h1.bill{font-size:25px;}
-  .dek,.subdek,.entries,.strip-note{max-width:none;}
-  .entries{margin-top:16px;}
-  .sec-label,.sum-head{flex-wrap:wrap;gap:3px 12px;}
+  /* ---------- masthead and its ledger ----------
+     The ledger's two columns become one: a capitalized term with its value
+     under it, which is what a printed head-note does in a narrow measure. */
+  .mast,.mast.tight{padding:2.2rem 0 0;}
+  h1{font-size:1.7rem;padding:1.1rem .25rem 1rem;}
+  h1.bill{font-size:1.45rem;}
+  .dek,.subdek,.entries,.strip-note,.act,.assembled{max-width:none;}
+  .entries{margin-top:1.6rem;}
+  .meta{grid-template-columns:1fr;gap:0;}
+  .meta dt{margin-top:.6rem;}
+  .meta dd:first-of-type{margin-top:0;}
+  .byline{display:block;}
+  .byline-card{max-width:none;}
 
-  /* ---------- summary rows: chip / text / link stack ----------
-     billpage-patch.css compresses these rows to one desktop scan line with
-     `.summary .sum-row` selectors; the overrides below carry at least the same
-     specificity, or the three-column grid would survive past the breakpoint. */
-  .summary{padding:22px 18px 24px;}
-  .sum-head,.sum-lede,.sum-row,.strip .sec-label{max-width:none;}
-  .sum-lede{font-size:17px;margin:11px 0 16px;}
-  .summary .sum-row{grid-template-columns:1fr;gap:5px;padding:10px 0 9px;}
-  .summary .sum-row.hi{margin:0 -18px;padding:11px 18px;max-width:none;}
-  .sum-x>summary.sum-line{flex-direction:column;align-items:flex-start;gap:5px;}
-  .sum-x>summary.sum-line>div:first-child{flex:none;}
-  .summary .sum-t,.summary .sum-row.hi .sum-t{font-size:15px;}
-  .sum-l{text-align:left;white-space:normal;}
-  /* the row is one column here, so a grouped row's link stack starts at the
-     same left edge as its heading */
+  /* ---------- ragged right (ruling 10) ----------
+     Everything site.css justifies is listed here, so a new justified block on a
+     desktop page cannot quietly ship a 320px river. */
+  .leg,.prose p,.prose li,.src,.note p,.contd p,.meaning,.sum-lede,
+  .sum-t .sub,.mapcap{text-align:left;}
+
+  /* ---------- the footnote apparatus ----------
+     The rows are already hanging indents; they only need the room back. The
+     summary and the ledger are ruled tables at desktop widths since Addendum C
+     (2026-08-05 19:06 ET) and stack back to this shape here — the grid that does
+     it is gated behind min-width:900px in billpage-patch.css, which also owns the
+     rule between the stacked blocks. The strip never left the footnote form. */
+  .summary,.strip,.pipeline{padding-top:2.4rem;}
+  .sum-head,.sum-lede,.sum-row,.sum-row.hi{max-width:none;}
+  .sum-lede{font-size:1rem;margin:1.1rem 0 1.2rem;}
+  .sum-x>summary.sum-line{flex-direction:column;align-items:flex-start;gap:.3rem;}
+  /* ADDENDUM C1 gave the tag cell a name. Selecting it by position still worked —
+     it is the flex's first child — but two sheets reaching one cell two different
+     ways is how a rename half-lands, and the desktop rail this answers is
+     .sum-c's. */
+  .sum-x>summary.sum-line>.sum-c{flex:none;}
   .sum-ls{align-items:flex-start;}
   .sum-drop{margin-left:0;max-width:none;}
   .sum-list{grid-template-columns:1fr;}
 
   /* ---------- the split becomes one column ---------- */
   .split{grid-template-columns:1fr;}
-  .left{padding:24px 18px 40px;}
+  .left{padding:1.5rem 1rem 2.5rem;}
   /* Section index (2026-08-03): four columns do not survive 320px, so each row
-     becomes two lines — the obligation, then its two chips under it. The number
-     stays in its own narrow column so the list still scans as numbered. */
-  .secindex{max-width:none;margin-bottom:24px;}
-  .sxi tr{display:grid;grid-template-columns:30px 1fr;
-    border-top:1px solid var(--rule-2);}
+     becomes two lines — the obligation, then its two attributions under it. The
+     number stays in its own narrow column so the list still scans as numbered. */
+  .secindex{max-width:none;margin-bottom:1.5rem;}
+  .sxi tr{display:grid;grid-template-columns:2rem 1fr;border-top:1px solid var(--rule-2);}
   .sxi tr:first-child{border-top:1px solid var(--rule);}
-  .sxi td{border-top:none;padding:5px 0;}
-  .sxi-n{grid-row:1 / span 2;padding-right:10px;}
-  .sxi-h,.sxi-e{width:auto;text-align:left;display:inline-block;padding:0 8px 6px 0;}
-  .bill-head{padding:0 0 18px;text-align:left;}
-  .assembled{margin-left:0;max-width:none;}
-  .strip{padding:22px 18px 32px;}
-  /* The pipeline ledger stacks like the summary rows: date and branch, then the
-     recorded action, then the link — three lines instead of three columns. */
-  .pipeline{padding:22px 18px 26px;}
-  .pipeline .strip-note{max-width:none;}
-  .pipeline .sum-row{grid-template-columns:1fr;gap:5px;padding:10px 0 9px;}
-  .page{padding:24px 18px 40px;}
-  .prose{max-width:none;}
+  .sxi td{border-top:none;padding:.3rem 0;}
+  .sxi-n{grid-row:1 / span 2;padding-right:.6rem;}
+  .sxi-h,.sxi-e{width:auto;text-align:left;display:inline-block;padding:0 .5rem .35rem 0;}
+  .bill-head{padding:0 0 1.1rem;margin-top:2.6rem;}
+  .dbl{margin-bottom:1.6rem;}
 
-  /* ---------- statute rows: rail on top, text below ----------
-     site.css hangs .sec 20px into the left gutter so the selection bar sits
+  /* ---------- statute rows: attribution on top, text below ----------
+     site.css hangs .sec 1.2rem into the left gutter so the selection rule sits
      outside the text column. At 390px that gutter is off-screen, so the row
-     un-hangs and the bar moves to x=0 — otherwise the page scrolls sideways. */
-  .sec,.contd,details.sec>summary.sec-row{grid-template-columns:1fr;
-    gap:9px;}
-  .sec{margin:0 0 6px;padding:14px 0 15px 12px;}
-  .split.bill .sec{padding:15px 0 16px 12px;margin-bottom:4px;}
-  .sec.newhi{padding-top:16px;padding-bottom:18px;margin-bottom:18px;}
-  .sec.newhi::before,.sec.sel::before,.split.bill .sec:target::before{left:0;}
-  .rail{flex-direction:row;flex-wrap:wrap;align-items:center;
-    justify-content:flex-start;text-align:left;gap:7px;padding-top:0;}
+     un-hangs and the rule moves to x=0 — otherwise the page scrolls sideways. */
+  /* ADDENDUM B3/B6: SCOPED TO .split.bill. These three rules are bill-page
+     geometry — site.css hangs a bill row 1.2rem into the left gutter so the
+     selection bar can sit outside the text, and this un-hangs it and gives the
+     bar a 0.7rem gutter at x=0 instead. Unscoped, they also reached the
+     COMPOSITE, whose sections are a different object entirely: thirteen sections
+     came out with a 0.4rem bottom margin and a 0.7rem indent for a rule that
+     page does not draw. composite-patch.css owns that page's narrow layout
+     (its own 839px query) and now gets to keep it. `.sec`'s track list is
+     likewise bill-page-only in effect — billpage-patch.css sets
+     details.sec{display:block}, so the grid there lives on summary.sec-row —
+     and dropping it from this list is what lets the composite hold its
+     sidenotes in the margin down to 840px (B3) instead of losing them at 899. */
+  .contd,details.sec>summary.sec-row{grid-template-columns:1fr;gap:.5rem;}
+  .split.bill .sec{margin:0 0 .3rem;padding:.9rem 0 1rem .7rem;}
+  .split.bill .sec.newhi{padding-top:1rem;padding-bottom:1.1rem;margin-bottom:1.2rem;}
+  .sec.sel::before,.split.bill .sec:target::before{left:0;}
+  .rail{flex-direction:row;flex-wrap:wrap;align-items:baseline;
+    justify-content:flex-start;text-align:left;gap:.4em;padding-top:0;}
   .rail>*{margin-top:0 !important;}
   .rail .secno,.contd .secno{text-align:left;}
-  .chip.vs,.chip.same,.chip.new,.chip.newf,.chip.scope,
-  .chip.tag-tightens,.chip.tag-matches,.chip.tag-new{max-width:none;}
   .leg,.split.bill .leg,.meaning,.contd p{max-width:none;}
-  .meaning{grid-column:1;margin-top:13px;}
+  .meaning{grid-column:1;margin-top:.8rem;}
   .drop{grid-column:1;margin-left:0;padding-left:0;max-width:none;}
-  .contd{margin-top:22px;}
+  .contd{margin-top:1.6rem;}
 
   /* ---------- the source panel becomes a bottom sheet ----------
      Fixed to the lower 55vh, slid out of view until a row is opened. It is
-     `position:fixed`, so it takes no space in the stacked column and the
-     spine keeps its own scroll. */
+     position:fixed, so it takes no space in the stacked column and the spine
+     keeps its own scroll. The hairline on top is the only edge it needs; the
+     shadow the outgoing design used is a box, and this design rules. */
   .right{
     position:fixed;left:0;right:0;bottom:0;top:auto;
     height:55vh;max-height:55vh;width:auto;align-self:auto;
-    padding:14px 18px 26px;
+    padding:.9rem 1rem 1.6rem;
     background:var(--panel);
-    border-left:none;border-top:1px solid var(--rule);
-    box-shadow:0 -8px 26px rgba(55,55,55,.20);
+    border-left:none;border-top:1px solid var(--ink);
     overflow-y:auto;overscroll-behavior:contain;
     z-index:60;
     transform:translateY(100%);visibility:hidden;
@@ -145,24 +167,22 @@
   /* Neither panel stack sticks inside the sheet — the sheet is the viewport. */
   .panelwrap,.right>.panel{position:static;top:auto;}
   .right .src,.right .note p,.right .p-cite{max-width:none;}
-  .facts{grid-template-columns:96px 1fr;column-gap:12px;}
+  .facts{grid-template-columns:1fr;row-gap:0;}
+  .facts dt{margin-top:.5rem;}
 
   /* ---------- compact card typography in the sheet ----------
-     The desktop card steps its type down inside a min-width query, so below
-     900px the sheet was still inheriting site.css's full-size SPINE metrics
-     (14.5px statute, 20px title) — the widest column on the site rendered at
-     the narrowest width. Same numbers as the desktop card: 55vh of phone is
-     less room than the card has, not more. */
-  .right .p-eyebrow{font-size:8.5px;letter-spacing:.14em;}
-  .right .p-head{margin-bottom:10px;}
-  .right .p-title{font-size:16px;margin-bottom:5px;}
-  .right .p-cite{font-size:10.5px;}
-  .right .p-rule{margin:13px 0;}
-  .right .src{font-size:12px;line-height:1.7;}
-  .right .p-more{font-size:10.5px;margin-top:12px;padding-top:10px;}
-  .right .note{margin-top:15px;padding-top:12px;}
-  .right .note h3{font-size:8.5px;letter-spacing:.13em;margin-bottom:5px;}
-  .right .note p{font-size:11px;line-height:1.56;}
+     55vh of phone is less room than the desktop card has, not more, so the
+     card's own steps down apply here too. */
+  .right .p-eyebrow{font-size:.66rem;letter-spacing:.11em;}
+  .right .p-head{margin-bottom:.6rem;}
+  .right .p-title{font-size:.95rem;margin-bottom:.25rem;}
+  .right .p-cite{font-size:.7rem;}
+  .right .p-rule{margin:.8rem 0;}
+  .right .src{font-size:.8rem;line-height:1.45;}
+  .right .p-more{font-size:.7rem;margin-top:.8rem;padding-top:.6rem;}
+  .right .note{margin-top:1rem;padding-top:.8rem;}
+  .right .note h3{font-size:.66rem;letter-spacing:.11em;margin-bottom:.3rem;}
+  .right .note p{font-size:.74rem;line-height:1.42;}
 
   /* Room to keep reading the spine underneath an open sheet. */
   body.panel-open .left,
@@ -171,62 +191,81 @@
   /* ---------- close affordance ----------
      A <button> on the composite (script-driven), an <a href="#closed"> on the
      bill pages (retargets the URL, which closes the sheet with no script).
-     Sticky so it stays reachable however far the source text is scrolled. */
+     Sticky so it stays reachable however far the source text is scrolled. A
+     hairline square, because there are no pills in this design. */
   .sheet-close{
     display:flex;align-items:center;justify-content:center;
-    position:sticky;top:0;z-index:2;margin:0 0 6px auto;
-    width:34px;height:34px;border-radius:50%;
+    position:sticky;top:0;z-index:2;margin:0 0 .4rem auto;
+    width:1.9rem;height:1.9rem;border-radius:0;
     background:var(--off);border:1px solid var(--rule);
-    color:var(--ink-2);font-family:var(--sans);
-    font-size:15px;line-height:1;text-decoration:none;cursor:pointer;
-    box-shadow:0 1px 5px rgba(55,55,55,.14);
+    color:var(--ink-2);font:inherit;font-size:.9rem;line-height:1;
+    text-decoration:none;cursor:pointer;
   }
-  .sheet-close:focus-visible{outline:2px solid var(--blue-d);outline-offset:2px;}
+  .sheet-close:focus-visible{outline:1px solid var(--spine-faint);outline-offset:2px;}
 
   /* ---------- the way back to the summary ----------
      Shown by the same :target that opens the sheet, so on a phone it would
-     otherwise sit underneath it: it rides on top of the sheet's 55vh instead.
-     A landed spine row also needs far less headroom than on a desktop. */
-  .split.bill>.tosum{left:12px;bottom:12px;padding:7px 10px 6px;}
-  .split.bill:has(.sec:target)>.tosum{bottom:calc(55vh + 12px);}
-  .split.bill .sec{scroll-margin-top:18px;}
+     otherwise sit underneath it: it rides on top of the sheet's 55vh instead. */
+  .split.bill>.tosum{left:.7rem;bottom:.7rem;padding:.4rem .6rem;}
+  .split.bill:has(.sec:target)>.tosum{bottom:calc(55vh + .7rem);}
+  .split.bill .sec{scroll-margin-top:1.1rem;}
 
-  /* ---------- map ----------
-     mock4b hangs the Massachusetts tag off the right edge of the SVG at
-     left:100%. On a phone that is off-screen and drags a horizontal scrollbar
-     onto every page, so the tag drops below the map instead.
-     The desktop reserve (--matagw, site.css) exists only because the tag is
-     absolutely positioned outside the map's box; here it is a flow element
-     under the map, so the reserve would narrow the map for nothing. */
-  .mapwrap{margin-top:10px;--matagw:0px;}
-  /* The caption wraps to two or three lines on a phone; it must stay attached to
-     the map and above the MA tag, which is now also in normal flow. */
-  .mapcap{margin-top:10px;font-size:11px;max-width:none;}
+  /* ---------- map plate ----------
+     The Massachusetts callout hangs off the right edge of the SVG at left:100%.
+     On a phone that is off-screen and drags a horizontal scrollbar onto every
+     page, so the callout drops below the map instead and the desktop reserve
+     (--matagw) goes to zero rather than narrowing the plate for nothing. */
+  .board{grid-template-columns:1fr;gap:1.6rem;padding:1.1rem 0 2.4rem;}
+  .mapwrap{margin-top:.6rem;--matagw:0px;}
+  .mapcap{margin-top:.7rem;font-size:.72rem;max-width:none;}
+  .matag{position:static;margin:.9rem 0 0;left:auto;top:auto;
+    white-space:normal;width:auto;}
+  .legend{margin-top:1.6rem;}
+  .lrow{flex-wrap:wrap;line-height:1.42;}
+  .lead-dots{display:none;}          /* a leader needs a line to lead across */
+  .lrow .w{flex:1 0 100%;margin-left:1.1em;}
+  .lnote{max-width:none;}
 
-  /* ---------- landscape table stacks ----------
+  /* ---------- the landscape plate stacks ----------
      Five columns of statutory detail cannot shrink to 390px, and a sideways
-     scroll hides columns 3-5 entirely. Each row becomes a card and each cell
-     grows the column label it lost, from the same data-col attribute the
-     desktop header row prints. */
+     scroll hides columns 3-5 entirely. Each row becomes a hanging note and each
+     cell grows the column label it lost, from the same data-col attribute the
+     desktop header row prints — as real capitals a step smaller than the cell,
+     which is correction A1's mechanism and the desktop header's own. */
   .lscape{max-width:none;}
   .lst,.lst tbody,.lst tr,.lst th,.lst td{display:block;width:auto;}
   .lst thead{position:absolute;width:1px;height:1px;overflow:hidden;
     clip:rect(0 0 0 0);clip-path:inset(50%);}
-  .lst tr{border-top:1px solid var(--rule);padding:14px 0 4px;}
-  .lst th,.lst td{border-top:none;padding:0 0 10px;}
-  .lst td::before{content:attr(data-col);display:block;margin-bottom:3px;
-    font-size:9px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;
-    color:var(--ink-3);}
-  /* The bulleted cells (Jay, 2026-08-03) are the row's ONLY structure here: the
-     column header is a label stacked above each cell rather than a column
-     beside it, so nothing else separates one obligation from the next. They get
-     a little more air than in the desktop table, where the column rules do part
-     of that work. */
-  .lst .cl li{margin-bottom:6px;}
-  .lst-law{width:auto;font-size:15px;padding-bottom:12px;}
-  .lst tr.notlaw{margin:0 -18px;padding:14px 18px 4px;}
-  .lst tr.notlaw .lst-law::before{display:none;}
-  .matag{position:static;margin:14px 0 0;left:auto;top:auto;white-space:normal;
-    width:auto;}
-  .lnote{max-width:none;}
+  .lst tbody tr{border-top:1px solid var(--rule);border-bottom:none;padding:.9rem 0 .3rem;}
+  .lst tbody tr:last-child{border-bottom:1px solid var(--ink);}
+  .lst th,.lst td{border-top:none;padding:0 0 .6rem;}
+  .lst td::before{content:attr(data-col);display:block;margin-bottom:.15rem;
+    font-size:.9em;letter-spacing:.11em;color:var(--ink-3);
+    text-transform:uppercase;}
+  /* The em-dash cells are the row's ONLY structure here: the column header is a
+     label stacked above each cell rather than a column beside it, so nothing
+     else separates one obligation from the next. */
+  .lst .cl li{margin-bottom:.35rem;}
+  .lst-law{width:auto;font-size:1.05em;padding-bottom:.7rem;}
+  .lst tr.notlaw .lst-law{border-left:1px solid var(--rule);padding-left:.6rem;}
+}
+
+
+/* front-page rules (L3 request, integrator 2026-08-05; ruling 12) */
+@media (max-width:899px){
+  .leaf{width:auto;padding:0 18px 40px;}
+  .plate{width:auto;margin-left:0;transform:none;}
+  .mast{padding:22px 0 0;}
+  .mast h1{font-size:1.5rem;letter-spacing:.06em;padding:1rem 0 .9rem;}
+  .meta{margin-top:1.6rem;grid-template-columns:1fr;}
+  .mapframe{margin-top:1rem;}
+  .mapframe .mapwrap{max-width:none;}
+  .plate>.sec-label,.plate>.sum-head{margin-top:2.2rem;}
+  .legend{max-width:none;margin-top:1.6rem;}
+  .lrow{flex-wrap:wrap;line-height:1.45;}
+  /* leaders need one line to lead across */
+  .lrow .lead-dots{display:none;}
+  .lrow .w{flex:1 0 100%;padding-left:1.12em;}
+  .strip{max-width:none;margin-top:2.6rem;}
+  .notes-rule{width:52%;}
 }

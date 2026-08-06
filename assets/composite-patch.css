@@ -1,208 +1,561 @@
 /* ==========================================================================
-   composite-patch.css — page-scoped additions for site/index.html only.
-   site.css is the frozen design system and is not edited; everything here is
-   an affordance the static mockup had no need for (the mock was a still of one
-   selected section), plus the hidden-panel plumbing for the live split view.
-   No new colours, sizes or type: only state, cursor and visibility.
+   composite-patch.css — the composite views, set as a printed law review sets
+   a statute. Page-scoped: only composite.html and in-force.html link this file.
+
+   v2/RESTYLE_SPEC.md, Jay's rulings of 2026-08-05 15:13-16:24 ET. Visual
+   reference mockups/antislop_2026-08-05/lawreview.html (masthead, dotted-leader
+   contents, parenthetical small caps); apparatus reference gwern.html (the
+   right-margin sidenotes ruling 6 adopts).
+
+   WHY IT IS THIS LONG NOW. It used to be a patch over a frozen design system —
+   hidden panels, a hover label, a split ratio. Ruling 6 changed the composite's
+   LAYOUT, not its dressing: one column of authority at the print measure with
+   its provenance in the margin. So this file declares that layout, and does not
+   depend on site.css's .split / .sec / .chip vocabulary surviving the restyle of
+   its own lane. What it never does is pick colour: paper is #FFFFFF and every
+   grey is cool (ruling 2), green is the one chrome accent (ruling 3), and both
+   come from site.css's tokens.
+
+   THE MEASURES, once, here — and since ADDENDUM B3 they are RANGES, not numbers:
+     --measure   the statutory text column's ceiling (site.css: 37rem, ruling 10's
+                 print measure re-derived to B1's 17.5px body)
+     --sn-col    the sidenote column, clamp(12rem, 24vw, 17rem)
+     --gut       the gutter between them, clamp(1.25rem, 2vw, 2rem)
+   Front matter is set to the text measure; a section is a two-column grid of
+   [text, margin]; the two are left-aligned, so the masthead rules span exactly
+   the text they head and the notes hang off the right of it, which is what
+   marginalia do on paper.
+
+   WHY THE SHELL WENT FLUID (ADDENDUM B3, Jay 2026-08-05 18:20 ET: "a 13 inch
+   macbook pro let alone a 16 inch should be able to render this properly"). The
+   shell used to be a FIXED 40 + 2 + 17rem = 944px block with a hard stacking
+   query at 1080px, so a 13-inch laptop — a 1280px or 1440px screen with a window
+   that is rarely the whole screen — threw the citations under the statute and left
+   the reader with the two-column page they were promised only on a monitor. Fixed
+   was never the requirement; LEFT-ALIGNED was. So the three measures became a
+   range each, the text column takes the residue, and the whole shell tracks the
+   window from 840px up. The layout that stacks is now the phone's and the
+   tablet's alone, which is what ruling 12 always meant by a narrow layout.
    ========================================================================== */
 
-/* Sections are clickable (ruling 1: click a section, the source opens at right). */
-.sec[data-n]{cursor:pointer;}
-.sec[data-n]:focus-visible{outline:2px solid var(--blue-d);outline-offset:2px;}
-.sec[data-n]:hover{background:rgba(55,55,55,.026);}
-.sec[data-n]:hover .secno{color:var(--ink-2);}
-.sec.sel[data-n]:hover{background:rgba(46,93,60,.06);}
+/* ---------- the shell ----------
+   The template's split/left/right wrapper is not a split any more. `.right` is
+   empty (composite_render passes ""), so it is retired here rather than left to
+   draw its panel fill and border-left over nothing. mobile.css turns .right into
+   a fixed bottom sheet below 900px and never sets `display`, so this one
+   declaration retires it at every width without touching that lane's file. */
+.split{display:block;}
+.right,.sheet-close{display:none;}
 
-/* "Source →" is the affordance label: it belongs to the row you are on. */
-.sec .openat{visibility:hidden;}
-.sec.sel .openat,.sec[data-n]:hover .openat{visibility:visible;}
+/* ---------- the fluid measures (ADDENDUM B3) ----------
+   Declared on `body` rather than :root because this sheet is page-scoped (only
+   composite.html and in-force.html link it) and site.css owns :root. Each token
+   carries a percentage or a viewport unit, so it resolves AT THE USE SITE — which
+   is why --shell may be written once and used on both the masthead and the bill
+   column, two boxes with the same containing block.
 
-/* Selection chips: site.css colours the IL chip on the selected row; the other
-   three state chips need the same treatment now that any row can be selected. */
-.sec.sel .chip.ca{color:#fff;background:var(--ca);border-color:var(--ca);}
-.sec.sel .chip.ny{color:#fff;background:var(--ny);border-color:var(--ny);}
-.sec.sel .chip.ct{color:#fff;background:var(--ct);border-color:var(--ct);}
+   --sn-col  17rem holds the apparatus comfortably and 12rem is the narrowest a
+             citation, an excerpt and a Why-note can be set in at all; 24vw is the
+             line between them, so the margin gives ground before the statute does.
+   --gut     2rem is the printed gutter; 1.25rem is the least air that still reads
+             as a margin rather than as a second text column.
+   --shell   the text ceiling plus the margin plus the gutter, or the window less
+             its own padding, whichever is smaller. Above ~59rem of window the
+             first term wins and the shell is a constant 56rem, which is what makes
+             the section rail's arithmetic below exact. */
+body{
+  --sn-col:clamp(12rem,24vw,17rem);
+  --gut:clamp(1.25rem,2vw,2rem);
+  --shell-pad:clamp(2rem,4vw,3rem);
+  --shell:min(calc(var(--measure) + var(--gut) + var(--sn-col)),100% - var(--shell-pad));
+  /* The text column, for the front-matter blocks that must line up with it. On a
+     child of .left the percentage is the shell, so this is the grid's own first
+     track restated: one arithmetic, two places that need it. */
+  --txt:min(var(--measure),100% - var(--gut) - var(--sn-col));
+}
+/* THE WHOLE DOCUMENT IS SET IN ONE FACE (ruling 9: the system old-style stack IS
+   the design). site.css defaults the page to --sans and reaches for --serif per
+   block, which is the old two-voice system; a law review has one voice and marks
+   register with small caps, italic and size. So the composite's own blocks take
+   --serif and nothing here names a family of its own — when L1 re-derives the
+   token to the Iowan/Palatino stack, this follows it. */
+.split,.mast,body>.colophon{font-family:var(--serif);}
+.split *,.mast *,body>.colophon *{font-family:inherit;}
+/* THE BASE IS THE NARROW LAYOUT (ADDENDUM B3/B6). Everything up to 839px is one
+   full-width column with sane padding; the two-column shell is an ENHANCEMENT in
+   the min-width query below. Written this way round on purpose: mobile.css loads
+   after this sheet on every page, so a desktop-first base would have to be won
+   back rule by rule inside the 840-899px band the two sheets share. */
+.left{width:min(var(--measure),100% - 2rem);margin:0 auto;padding:0 0 4rem;}
+/* The masthead and colophon share the shell's box so they centre with the
+   document, but their CONTENT is padded off the margin column: the result is a
+   block sitting exactly over the statutory measure below it, which is what makes
+   the masthead rules span the text they head. Every `margin:auto` child inside
+   then centres on the text column rather than on the page. */
+.mast,body>.colophon{width:min(var(--measure),100% - 2rem);
+  margin:0 auto;padding:0;border-bottom:none;}
 
-/* One source panel per section; all but the open one are hidden. */
-.panel[hidden]{display:none;}
-.right > .panel{position:sticky;top:40px;}
+/* ---------- the two-column shell, 840px and up (ADDENDUM B3) ----------
+   840px is the floor B3 names: "citations stay in the RIGHT MARGIN down to ~860px
+   windows; stacking is for true tablet/phone widths (<~840px), never laptop
+   windows". At 840px the shell resolves to ~50rem, the margin to ~12.6rem and the
+   statute to ~36.5rem — still the full reading measure, with the apparatus beside
+   it. At 900px the statute is ~39rem and the margin ~13.5rem.
 
-/* ==========================================================================
-   THE SOURCE CARD, COMPOSITE HALF — Jay, 2026-08-01:
-   "a static thing that does not scroll ... less than half of the page in width
-   ... clearly like a box that fills up with leg text as needed ... font size
-   smaller too."
-
-   The card itself — its fill, edge, radius and type — is assets/card.css, the
-   one place it is styled for both page kinds (Jay, 2026-08-04 16:07 ET). What
-   is left here is what this page does NOT share with the bill pages: the split
-   ratio, the column override, the card's own padding and sticky offset, the
-   tighter continuation spacing (a WHY note follows it here), and the notes
-   themselves, which no bill-page card carries.
-
-   So the right side stops being a full-height scrolling column. site.css line
-   119-120 (`.right{height:100vh;overflow-y:auto}`) is FROZEN and is overridden
-   here, never edited: the column becomes plain page ground, and the panel
-   inside it becomes a bounded box that ends where its text ends and rides along
-   on position:sticky as the reader scrolls the bill.
-
-   Everything is inside the min-width query so mobile.css keeps the <900px
-   bottom sheet exactly as approved. The sheet KEEPS its internal scroll: 55vh
-   is not enough room to sit still, which is the whole reason the desktop card
-   can drop the scrollbar and the sheet cannot.
-   ========================================================================== */
-@media (min-width: 900px){
-  /* ~64/36 — the card is comfortably under half the page. */
-  .split{grid-template-columns:9fr 5fr;}
-  .right{position:static;height:auto;align-self:stretch;overflow:visible;
-    background:none;border-left:none;padding:20px 44px 60px 30px;}
-  .right > .panel{top:26px;padding:20px 22px 20px;}
-
-  /* The composite card carries a WHY note under the excerpt, so its
-     continuation link sits tighter than the bill page's. Size comes from
-     card.css; only the spacing is this page's. */
-  .right .p-more{margin-top:10px;padding-top:9px;}
-  /* The notes are composite-only — the WHY note on every source card and the
-     four entries of the how-to-read card — and have to clear the fold with the
-     excerpt (Jay, 08-01), so they step down with it. */
-  .right .note{margin-top:13px;padding-top:10px;}
-  .right .note h3{font-size:8.5px;letter-spacing:.13em;margin-bottom:5px;}
-  .right .note p{font-size:11px;line-height:1.56;}
+   THE `body`/`.left` PREFIXES ARE LOAD ORDER, NOT TASTE. mobile.css is linked last
+   on every page (its own contract: "so its overrides beat site.css,
+   composite-patch.css and billpage-patch.css without any of them being edited")
+   and its query runs to 899px, so between 840 and 899 it would otherwise narrow
+   this page's shell to the bare measure and take the margin away again — the exact
+   defect B3 is about. One class of extra specificity per rule buys the band back
+   without reordering the sheets or editing that file's phone contract. */
+@media (min-width:840px){
+  body .left{width:var(--shell);padding:0 0 5rem;}
+  /* Jay, 2026-08-06 09:59: the front matter centres on the PAGE, not the text
+     column — the text-column alignment begins where the sidenotes do (Sec. 1).
+     So the shell width stays and the right-column padding goes. */
+  body>.mast,body>.colophon{width:var(--shell);padding:0;}
+  /* Same band, same reason. mobile.css relaxes justification on every page below
+     900px, which is right where the measure has given out and wrong here: at
+     840px this column is still ~36.5rem, a full reading measure, so ruling 10's
+     justification is restored for the 60px the two sheets share. Hyphenation
+     comes with it — A2 makes it the condition of justifying at all. */
+  .left .leg,.left .contd p,.left .starnote p{text-align:justify;hyphens:auto;-webkit-hyphens:auto;}
 }
 
-/* The scope footnote reuses the .contd rail, so its label sits on the rail grid. */
-.contd .secno{text-transform:uppercase;}
-.entries .row .nowrap{white-space:nowrap;}
+/* ---------- masthead (ruling 5) ----------
+   Centred over the text column, small caps, between two double rules. */
+.mast{display:block;text-align:center;padding-top:2.7rem;}
+/* The colophon is a flex row justified to the end in byline.css; over a centred
+   masthead it belongs under the middle of the text column. */
+/* byline.css sets the colophon as a flex row justified to the end and pads it
+   off the old full-bleed page; both are overridden by element+class here rather
+   than edited there, since that file is L1's. */
+body>.colophon{display:block;text-align:center;margin:4.4rem auto 0;
+  padding-bottom:3rem;}
+/* site.css sets .mast as a two-column grid (copy | meta rail) and .meta as a
+   rule-bordered sidebar. Both are the wrong shape here: a journal's masthead is
+   one centred block with its ledger printed UNDER the title, not beside it. */
+.mast .entries,.mast .meta{border-left:none;border-top:none;padding-left:0;
+  max-width:none;}
+/* Lowercase italic, so it takes no letterspacing (A1: spacing is for capitals). */
+.mast .eyebrow{font-size:.7rem;font-style:italic;
+  color:var(--ink-2);margin:0 0 1.2rem;text-transform:none;}
+/* A6 caps every rule on this page at a hairline, so a double rule is what it is
+   on paper — two hairlines with air between them, the gap carrying the weight the
+   2.5px stroke used to. The nameplate's upper gap is the wider of the two. */
+.rule-dbl{border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);
+  height:5px;}
+/* Green plays the journal-spine role on the lower rule and nowhere else on the
+   masthead (ruling 3): one accent, structural, never data. */
+.rule-dbl.thin{height:3px;border-bottom-color:var(--green);}
+/* REAL CAPITALS, not synthesized small caps (A1), at every small-caps place in
+   this file: the system stack has no small-cap sort, so `font-variant` handed the
+   browser squashed capitals. Set the capitals, step the size down, letterspace
+   inside 0.05-0.12em. Lining figures go with capitals, so "onum" goes too. */
+.mast h1{margin:0;padding:1.2rem .5rem 1.1rem;font-weight:400;font-size:1.95rem;
+  line-height:1.2;letter-spacing:.08em;text-transform:uppercase;
+  font-feature-settings:"kern" 1;}
+.mast .dek{max-width:27em;margin:1.5rem auto 0;font-size:17.5px;line-height:1.45;
+  color:var(--ink);text-align:center;text-wrap:pretty;}
+.mast .dek b{font-weight:400;font-style:italic;}
+/* A5 (2026-08-03) — the status label on the face of the composite. Centred with
+   the rest of the masthead now; the left rule that used to mark it as the
+   document's own status line would read as a pull quote in this set. */
+.mast .subdek{margin:.9rem auto 0;font-size:.78rem;letter-spacing:.11em;
+  color:var(--ink-2);text-transform:uppercase;}
+.mast .byline{margin:1.2rem auto 0;}
 
-/* ---------- view switch (two-view ruling, 2026-08-02) ----------
-   "Viewing: Enacted · In force today" on the masthead, in the existing entries
-   list — no new design vocabulary. The view you are on is inert text, carrying
-   the weight of the page's own ink; the other view is an ordinary entries link. */
-.entries .here{color:var(--ink);font-weight:500;}
-/* site.css sized .entries for a single dt/dd pair; a second pair needs the
-   gap the first one gets from .entries' own padding-top. */
-.entries dd + dt{margin-top:15px;}
-/* Moved to the meta rail (Jay, 2026-08-05 15:00 ET): the row keeps the entries
-   treatment — flex with the sep spaced, the current view in the page's own ink,
-   the other view a quiet link — restated under .meta because site.css scopes
-   all of it to .entries and site.css is frozen. */
-.meta .row{display:flex;flex-wrap:wrap;align-items:baseline;gap:0 4px;}
-.meta .row a{color:var(--ink-2);text-decoration:none;border-bottom:1px solid #C8C8C8;}
-.meta .row .sep{color:#BEBEBE;padding:0 4px;}
-.meta .here{color:var(--ink);font-weight:500;}
+/* ---------- bills tracked ---------- */
+/* A6's leading band is 1.2-1.45, so the air BETWEEN entries is paragraph space
+   on the dd, not leading inside a line — which is what it always was doing. */
+.mast .entries{margin:2rem auto 0;text-align:center;font-size:.87rem;
+  line-height:1.4;}
+.mast .entries dt{display:block;font-size:.64rem;letter-spacing:.12em;
+  color:var(--ink-3);margin-bottom:.15rem;text-transform:uppercase;}
+.mast .entries dd{margin:0 0 .38rem;}
+.mast .entries a{color:var(--ink);text-decoration:none;
+  border-bottom:1px solid var(--rule);white-space:nowrap;}
+.mast .entries a:hover{border-bottom-color:var(--ink);}
+.entries .row .nowrap{white-space:nowrap;}
+.mast .conf{font-style:italic;color:var(--ink-3);font-size:.94em;}
+.sep{color:var(--rule);padding:0 .5em;}
+
+/* ---------- the ledger (meta rail) ----------
+   Two hairlines top and bottom, small-caps dt labels, values in the page's ink:
+   a journal's masthead ledger, and the only place on the composite where
+   letterspaced small caps are UI rather than typography (ruling 9). */
+.mast .meta{margin:2.3rem auto 0;padding:.8rem 0 .85rem;text-align:left;
+  border-left:none;
+  border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);
+  display:grid;grid-template-columns:10.5em 1fr;gap:.28rem 1.2rem;
+  font-size:.84rem;line-height:1.45;}
+.mast .meta dt{letter-spacing:.09em;font-size:.9em;color:var(--ink-3);
+  text-transform:uppercase;}
+.mast .meta dd{margin:0;color:var(--ink);}
+.mast .meta a{color:var(--ink);text-decoration:none;
+  border-bottom:1px solid var(--rule);}
+.mast .meta a:hover{border-bottom-color:var(--ink);}
+/* The view switch (2026-08-02; moved to the meta rail 2026-08-05 15:00 ET): the
+   view you are on is inert small caps, the other view an ordinary ledger link. */
+.meta .row{display:flex;flex-wrap:wrap;align-items:baseline;gap:0 .1em;}
+.meta .here{color:var(--ink);letter-spacing:.06em;font-size:.94em;
+  text-transform:uppercase;}
+
+/* ---------- the star note: "How to read this page" ----------
+   Ruling 6 retired the card this copy used to live on, so it takes the place a
+   law review gives exactly this note: the star note in the front matter, hanging
+   asterisk, note measure, run-in labels in italic. It declares its type ONCE
+   here (Jay, 2026-08-04 08:40 ET: the explainer may not carry a private scale). */
+.starnote{margin:2.1rem auto 0;max-width:var(--txt);padding:0 0 0 1.9rem;position:relative;
+  max-width:var(--txt);font-size:.8rem;line-height:1.45;color:var(--ink-2);}
+.starnote::before{content:"*";position:absolute;left:.35rem;top:.1rem;
+  font-size:1.05rem;color:var(--ink);}
+.starnote .st-lab{letter-spacing:.12em;font-size:.9em;color:var(--ink-3);
+  text-transform:uppercase;}
+.starnote .st-title{font-style:italic;color:var(--ink);}
+.starnote p{margin:.45rem 0 0;text-align:justify;hyphens:auto;-webkit-hyphens:auto;}
+.starnote .rin{font-style:italic;color:var(--ink);font-weight:400;
+  padding-right:.45em;}
+
+/* ==========================================================================
+   THE CONTENTS (rulings 5, 10, 11) — a journal's contents page.
+   Four table columns and two coloured chips became one flex line per row with a
+   DOTTED LEADER across the dead space, the attribution in parenthetical small
+   caps and the date in italic. Subordinated, per ruling 11: smallest register on
+   the page, hairlines, no fill, no verdict.
+   ========================================================================== */
+.secindex{max-width:var(--txt);margin:2.9rem 0 0;max-width:var(--txt);margin-left:auto;margin-right:auto;}
+/* site.css sets .sec-label as a flex row with the count pushed to the far right,
+   which is a dashboard header. A contents page centres its title and drops the
+   count under it as a quiet italic line. */
+.secindex .sec-label{display:block;text-align:center;margin:0;padding:0;
+  border:none;}
+/* 0.22em was outside A1's band: a contents head that wide stops being a word. */
+.secindex h2{margin:0;font-weight:400;font-size:.88rem;letter-spacing:.12em;
+  text-transform:uppercase;}
+.secindex .count{display:block;margin-top:.2rem;font-style:italic;
+  font-size:.78rem;color:var(--ink-3);}
+/* Set VISIBLY now (the approved mockup prints it): the sentence is the one that
+   was already authored for the screen-reader-only <caption>, unchanged. */
+.sxi-cap{margin:.55rem auto 1.05rem;max-width:26em;text-align:center;
+  font-style:italic;font-size:.76rem;line-height:1.45;color:var(--ink-3);}
+.sxi{list-style:none;margin:0;padding:.8rem 0 .9rem;
+  border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);}
+.sxi li{margin:0;}
+/* One anchor per row, and the anchor IS the row (Jay, 2026-08-04 08:42 ET: "the
+   whole row must be clickable"). No stretched pseudo-element and no second tab
+   stop: the flex children fill the link. The row's air is padding, not leading:
+   A6 bounds leading at 1.45, and a contents row wants space between rows, not
+   inside its one line. */
+.sxi-jump{display:flex;align-items:baseline;gap:.35em;color:var(--ink);
+  text-decoration:none;font-size:.86rem;line-height:1.45;padding:.28rem 0;}
+.sxi-jump:hover .t{border-bottom:1px solid var(--ink);}
+.sxi-jump:focus-visible{outline:2px solid var(--green);outline-offset:2px;}
+/* Tabular figures in both number columns (A6): the section numbers align above
+   one another at the head of each leader, and the dates align at its foot. */
+.sxi .n{flex:0 0 2.1em;text-align:right;color:var(--ink-3);font-size:.92em;
+  font-variant-numeric:tabular-nums;}
+.sxi .t{flex:0 0 auto;max-width:none;}
+.sxi .lead{flex:1 1 auto;min-width:1.5em;position:relative;top:-.3em;
+  border-bottom:1px dotted var(--rule);}
+.sxi .h{flex:0 0 auto;letter-spacing:.07em;color:var(--ink-2);font-size:.88em;
+  text-transform:uppercase;}
+.sxi .e{flex:0 0 8.6em;text-align:right;font-style:italic;color:var(--ink-3);
+  font-size:.92em;font-variant-numeric:tabular-nums;}
+
+/* ---------- AN ACT ---------- */
+.bill-head{max-width:var(--txt);margin:3.7rem auto 0;padding:0;text-align:center;}
+.bill-head .act{font-size:1.06rem;line-height:1.45;max-width:36em;margin:0 auto;
+  text-wrap:balance;}
+.bill-head .sc{letter-spacing:.1em;font-size:1.04em;font-weight:400;
+  text-transform:uppercase;}
+.bill-head .assembled{margin:1.05rem auto 0;max-width:none;font-style:italic;
+  font-size:.79rem;line-height:1.45;color:var(--ink-2);letter-spacing:0;}
+.dbl{max-width:var(--txt);margin:1.2rem 0 0;height:3px;opacity:1;
+  border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);}
+
+/* ==========================================================================
+   SECTIONS + MARGIN SIDENOTES (rulings 5, 6, 10)
+   Each section is its own two-column grid: the statute at the print measure,
+   its source apparatus level with it in the right margin. The section is no
+   longer a button — nothing swaps, so there is no cursor, no wash, no selected
+   state and no "Source →" label.
+   ========================================================================== */
+/* ADDENDUM B3: the track list is a RANGE. The statute clamps between 30rem — the
+   floor B3 names, below which a justified column is not worth setting — and the
+   print measure; the margin is --sn-col; the gutter is --gut. `min(30rem,100%)`
+   rather than a bare 30rem so the floor can never make the grid wider than its
+   container: below 840px the query at the foot of this file has already collapsed
+   the second track, and this keeps the track list honest in between. */
+.sec{display:grid;grid-template-columns:minmax(min(30rem,100%),var(--measure)) var(--sn-col);
+  column-gap:var(--gut);
+  margin:2.9rem 0 0;padding:0;border-radius:0;position:relative;}
+.sec>*{grid-column:1;}
+.sec>.sn{grid-column:2;grid-row:1 / span 4;}
+.sec .secno{text-align:center;letter-spacing:.12em;font-size:.82rem;
+  color:var(--ink);text-transform:uppercase;font-weight:400;white-space:nowrap;}
+/* Ruling 5: every chip is now parenthetical small caps, and no state carries a
+   colour in text. The tooltip and the deep link onto the establishing clause
+   (change D) survive on the date half. */
+.attrib{margin-top:.15rem;text-align:center;font-size:.72rem;letter-spacing:.09em;
+  color:var(--ink-2);text-transform:uppercase;}
+.attrib a{color:inherit;text-decoration:none;
+  border-bottom:1px solid var(--rule-2);}
+.attrib a:hover{border-bottom-color:var(--ink-2);}
+.attrib .live{font-style:italic;letter-spacing:.06em;}
+/* Ruling 10: justified with hyphens, at the measure, which is what makes the
+   column read as set type rather than as a web paragraph; A2 makes hyphenation
+   and the page's `lang="en"` the condition of it. ADDENDUM B1: 17.5px over 1.45,
+   which supersedes A6's 19.5/1.42 — Jay read that live and judged it unreadable —
+   and 17.5px over 37rem is ~68 characters a line, inside B1's 65-70 target. */
+.leg{margin:.95rem 0 0;max-width:none;font-size:17.5px;line-height:1.45;
+  letter-spacing:0;text-align:justify;hyphens:auto;-webkit-hyphens:auto;}
+.leg .rin{font-style:italic;font-weight:400;}
+.gloss{font-size:.86em;color:var(--ink-2);font-family:inherit;line-height:inherit;
+  letter-spacing:0;}
+
+/* ---------- the source sidenote (ruling 6) ----------
+   Ragged, not justified: ruling 10 says justification stops where the measure is
+   too narrow to hold it, and 17rem is that. */
+.sn{font-size:.78rem;line-height:1.45;color:var(--ink-2);text-align:left;
+  hyphens:manual;-webkit-hyphens:manual;
+  border-top:1px solid var(--rule);padding-top:.4rem;margin-top:.3rem;}
+.sn p{margin:0 0 .4rem;}
+/* A2's other half: a citation and an official-text URL are tokens, not words.
+   They wrap at their own punctuation or they overflow the margin; they never
+   take a hyphen, which in a cite would read as part of the cite. */
+.sn .sn-cite,.sn .sn-src,.sn a{hyphens:manual;-webkit-hyphens:manual;
+  overflow-wrap:break-word;word-break:normal;}
+.sn .sn-lab{letter-spacing:.055em;font-size:.94em;color:var(--ink);
+  text-transform:uppercase;}
+.sn .sn-title{font-style:italic;color:var(--ink);margin:.1rem 0 .25rem;}
+.sn .dot{color:var(--ink-3);padding:0 .35em;}
+.sn a{color:var(--ink-2);text-decoration:none;
+  border-bottom:1px solid var(--rule-2);}
+.sn a:hover{color:var(--ink);border-bottom-color:var(--green);}
+.sn .sn-src{padding-left:.7rem;border-left:1px solid var(--rule-2);
+  color:var(--ink);}
+/* The identical excerpt is marked with a rule under the words, not a fill:
+   site.css's .hl is a green wash with a shadow, and in a 17rem margin that reads
+   as the one coloured object on the page — which ruling 3 reserves for chrome and
+   ruling 2 reserves against warmth. Overridden, not edited: site.css is L1's. */
+.sn .hl{background:none;box-shadow:none;padding-bottom:0;color:var(--ink);
+  border-bottom:1px solid var(--ink-3);}
+.sn .sn-why{margin:.45rem 0 0;}
+.sn .sn-why h3{display:inline;font-size:.94em;font-weight:400;letter-spacing:.06em;
+  color:var(--ink);text-transform:uppercase;}
+.sn .sn-why h3::after{content:". ";}
+.sn .sn-why p{display:inline;margin:0;}
+
+/* ---------- the scope coda ---------- */
+.contd{display:block;max-width:var(--txt);margin:3.4rem 0 0;padding-top:1.5rem;
+  border-top:1px solid var(--rule);}
+.contd .secno{text-align:center;margin-bottom:.85rem;color:var(--ink);
+  letter-spacing:.12em;font-size:.82rem;text-transform:uppercase;}
+/* The coda is body prose — the same claim-bearing text as the statute column, in
+   the page's own voice — so it takes the body size A6 sets, a step back in ink. */
+.contd p{margin:0;max-width:none;font-size:17px;line-height:1.45;
+  color:var(--ink-2);text-align:justify;hyphens:auto;-webkit-hyphens:auto;}
 
 /* ---------- copy controls (change A) ----------
-   Two quiet affordances, both anchors so they work with scripting off.
-
-   .seclink — directly BELOW the section text (Jay, 2026-08-02 11:34 ET), on
-   the leg column so it lines up with the statute it copies. Reveals itself on
-   hover or when the section is selected, like the "Source →" label on the rail:
-   the reader's eye should meet statute text, not a row of buttons.
+   Two quiet affordances, both anchors so they work with scripting off. They no
+   longer hide until hover: the section is not a hover target any more, so a
+   control that appeared on hover would be a control nobody could find. Small
+   caps at the note size, which is the register the rest of this apparatus uses.
 
    .anchorlink — the § beside the run-in heading. It never swaps its glyph (that
    would reflow the first line of a section), so its confirmation is an absolute
    ::after flag instead. */
-.seclink{grid-column:1;margin-top:12px;}
-.sec .seclink{visibility:hidden;}
-.sec.sel .seclink,.sec[data-n]:hover .seclink,.sec .copylink:focus-visible{visibility:visible;}
-.copylink{font-family:var(--sans);font-size:9px;font-weight:600;
-  letter-spacing:.11em;text-transform:uppercase;color:var(--ink-3);text-decoration:none;
-  border-bottom:1px solid var(--rule);padding-bottom:2px;cursor:pointer;white-space:nowrap;}
-.copylink:hover{color:var(--blue-ink);border-bottom-color:rgba(46,93,60,.40);}
-.copylink.copied{color:var(--green);border-bottom-color:rgba(63,122,78,.42);}
-.copylink:focus-visible,.anchorlink:focus-visible{outline:2px solid var(--blue-d);
+.seclink{margin-top:.6rem;text-align:right;}
+.copylink{font-family:inherit;font-size:.7rem;font-weight:400;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-3);text-decoration:none;
+  border-bottom:1px solid transparent;padding-bottom:1px;cursor:pointer;
+  white-space:nowrap;}
+.copylink:hover{color:var(--ink);border-bottom-color:var(--ink);}
+.copylink.copied{color:var(--green);border-bottom-color:var(--green);}
+.copylink:focus-visible,.anchorlink:focus-visible{outline:2px solid var(--green);
   outline-offset:2px;}
-.anchorlink{position:relative;margin-left:5px;color:#BEBEBE;text-decoration:none;
-  font-size:11px;cursor:pointer;}
-.anchorlink:hover{color:var(--blue-ink);}
+.anchorlink{position:relative;margin-left:.15em;padding:0 .1em;color:var(--ink-3);
+  text-decoration:none;font-size:.85em;cursor:pointer;}
+.anchorlink:hover{color:var(--ink);}
 .anchorlink.copied{color:var(--green);}
-.anchorlink.copied::after{content:"Copied";position:absolute;left:calc(100% + 5px);top:-1px;
-  font-family:var(--sans);font-size:8.5px;font-weight:600;
-  letter-spacing:.11em;text-transform:uppercase;color:var(--green);white-space:nowrap;}
+.anchorlink.copied::after{content:"Copied";position:absolute;left:calc(100% + .35em);
+  top:0;font-size:.6rem;letter-spacing:.1em;color:var(--green);white-space:nowrap;
+  text-transform:uppercase;}
 
-/* ---------- one-line notes (change C) ----------
-   "WHY → one line; FIN → claim + source only" (Jay, 2026-08-02). The card is
-   attribution and proof, so its notes are labels with one line beside them, not
-   stacked paragraphs. The label keeps its uppercase register and never wraps
-   away from the sentence it introduces. */
-.note.one{display:flex;align-items:baseline;gap:9px;}
-.note.one h3{margin-bottom:0;white-space:nowrap;}
-.note.one p{margin:0;}
-
-/* ---------- the effective-date chip cites its clause (change D) ----------
-   A cited date is a link out to the clause that establishes it; an uncited one
-   stays an inert span whose tooltip names the general rule instead. The link
-   must not read as a call to action — a chip that changed colour would look
-   like a state change, and the chip's job is to state a date. */
-a.chip.eff{color:inherit;text-decoration:none;cursor:pointer;}
-a.chip.eff:hover{border-color:var(--blue-d);color:var(--blue-ink);}
-a.chip.eff:focus-visible{outline:2px solid var(--blue-d);outline-offset:2px;}
-
-/* A5 (2026-08-03) — the status label on the face of the composite.
-   Reuses the frozen .subdek scale; the rule at the left marks it as the
-   document's own status line rather than another line of the standfirst. */
-.mast .subdek.notalaw{margin-top:10px;padding-left:10px;
-  border-left:2px solid var(--rule);color:var(--ink-2);}
-
-/* ==========================================================================
-   SECTION INDEX (2026-08-03) — the table of contents above AN ACT.
-   Ruling 11 killed the standalone comparison board, so this is styled to read
-   as apparatus, not as a headline: the design system's smallest type, hairline
-   rules, chips at their existing size, and no fill of its own. Nothing here
-   introduces a colour or a size that site.css does not already define.
-   ========================================================================== */
-.secindex{max-width:620px;margin:0 0 30px;}
-.secindex .sec-label{margin-bottom:8px;}
-.sxi{width:100%;border-collapse:collapse;table-layout:auto;}
-/* The caption states what the columns are; it is read aloud by screen readers
-   and hidden visually, because on screen the columns are self-evident and a
-   second line of prose here would make the index look like a section. */
-.sxi-cap{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);
-  clip-path:inset(50%);white-space:nowrap;}
-.sxi td{border-top:1px solid var(--rule-2);padding:6px 10px 6px 0;
-  vertical-align:baseline;}
-.sxi tr:first-child td{border-top:1px solid var(--rule);}
-.sxi-n{width:34px;font-size:10.5px;font-weight:600;letter-spacing:.11em;
-  color:var(--ink-3);text-align:right;padding-right:14px;}
-.sxi-t{font-size:12.5px;line-height:1.45;letter-spacing:.005em;}
-.sxi-h,.sxi-e{width:1%;white-space:nowrap;text-align:right;padding-right:0;}
-.sxi-h{padding-right:8px;}
-.sxi a{color:var(--ink-2);text-decoration:none;border-bottom:1px solid transparent;}
-.sxi a:hover{color:var(--ink);border-bottom-color:#C8C8C8;}
-.sxi a:focus-visible{outline:2px solid var(--blue-d);outline-offset:2px;}
-
-/* ---------- the whole row jumps (Jay, 2026-08-04 08:42 ET) ----------
-   "the whole row must be clickable to jump to that section, not just the
-   literal title text". A STRETCHED LINK, not a click handler on a <tr>: the row
-   is the containing block and the title anchor's ::after covers it, so the hit
-   area is the row while the anchor stays the one real, focusable, right-clickable
-   link. Keyboard behaviour is unchanged and the row is now ONE tab stop, not two
-   (the section number was a second anchor to the same place; it is plain text
-   now). Hover and cursor are the spine's own row treatment, not a new language. */
-.sxi tbody tr{position:relative;cursor:pointer;}
-.sxi tbody tr:hover{background:rgba(55,55,55,.026);}
-.sxi-jump::after{content:"";position:absolute;inset:0;}
-
-/* ==========================================================================
-   THE DEFAULT CARD (2026-08-04) — "How to read this page".
-   Before any section is clicked the rail carries the page's own instructions
-   instead of Sec. 1 (composite_howto.js). PURPOSE, copy implication 3: the
-   verification affordance has to be discoverable or flow C never happens.
-
-   IT DECLARES NO TYPE OF ITS OWN (rewritten 08-40 after Jay's live read: "super
-   ugly please fix this font and spacing"). The first cut gave the card a private
-   scale, which looked passable in the licensed fonts and became body prose in a
-   rail panel once publish.sh stripped the @font-face and the fallback stacks
-   took over. Each entry is now a .note block — what the WHY note on every source
-   card already is — so size, leading, label register and the hairline that
-   separates entries all come from .note / .right .note above. The only rule left
-   is structural: the lede sits directly under the card's own .p-rule, so it must
-   not draw a second one.
-   ========================================================================== */
-.panel.howto .note:first-of-type{margin-top:0;padding-top:0;border-top:none;}
+/* ---------- cite this page (cite.js, in the ledger) ---------- */
+.citeblk summary{cursor:pointer;list-style:none;display:inline-block;}
+.citeblk summary::-webkit-details-marker{display:none;}
+.cite-body{margin:.7rem 0 .2rem;padding-left:1.1rem;
+  border-left:1px solid var(--rule-2);}
 
 /* The two First. markers in the key-obligations lists are anchors onto their
-   enacted-first receipts (Jay, 2026-08-04: First means first enacted); they
-   take the site link treatment rather than browser default. */
-.cl a{color:var(--blue-ink);text-decoration:none;
-  border-bottom:1px solid rgba(46,93,60,.40);padding-bottom:1px;}
+   enacted-first receipts (Jay, 2026-08-04: First means first enacted); they take
+   the site link treatment rather than the browser default. */
+.cl a{color:var(--green);text-decoration:none;
+  border-bottom:1px solid var(--green);padding-bottom:1px;}
+
+/* ==========================================================================
+   THE SECTION RAIL (Jay, 2026-08-05 18:12 ET) — build/composite_rail.js.
+   "we need a way for people to navigate the page using the sidebar. right now
+   you have to scroll section by section." Thirteen sections of justified statute
+   is four screens past the contents page, so the contents are restated small and
+   PERSISTENT in the LEFT margin — the right one is the sidenotes' (ruling 6).
+
+   WHY FIXED AND NOT STICKY. Sticky sticks inside its containing block, and the
+   only block tall enough here is .left, whose contents are the text measure
+   itself: a sticky child of .left is a child IN THE FLOW, so it would push the
+   star note and the contents page down by its own height before it stuck. The
+   escapes from that are a negative-margin float (sticky floats are barely
+   implemented) or absolute positioning (which is not sticky at all). Fixed asks
+   a different, answerable question — WHERE IS THE MARGIN — and the answer is
+   arithmetic, because the shell is a known measure centred in the window.
+
+   RE-DERIVED UNDER ADDENDUM B4 (Jay, 2026-08-05 18:22 ET: "the section rail
+   re-derives its arithmetic from the fluid shell ... lower the cutoff as far as
+   the fluid shell allows without overlap"). The shell is a RANGE now, not a
+   number — but only below ~59rem of window, where `100% - --shell-pad` is the
+   smaller term. Everywhere the rail can exist the shell is pinned at its ceiling,
+   so the arithmetic is still exact, and the ceiling itself came down 3rem with
+   B1's measure:
+
+     shell     37 + 2 + 17 = 56rem, so its left edge is at 50% - 28rem
+     rail      10.5rem wide, 2rem clear of that edge
+     hence     left: calc(50% - 28rem - 2rem - 10.5rem) = calc(50% - 40.5rem)
+
+   That is why the rail can never touch the text column or the sidenotes at any
+   width: it is positioned off the same centre they are, not off the window.
+
+   AND WHY IT IS OFF BY DEFAULT. The left margin exists only when the window is
+   wider than the shell plus the rail plus air on both sides — 56 + 2(10.5 + 2) =
+   81rem, and the cutoff is 83rem so the narrowest admitted window still leaves a
+   full 1rem outside the rail. That is 4rem lower than the 87rem the fixed shell
+   forced: the rail now arrives at 1328px rather than 1392px. It cannot go lower
+   than 83rem without the rail hanging off the left edge of the window, which is
+   what B4's "as far as no-overlap allows" means in this direction. Below the
+   cutoff the rail is display:none and the contents page at the head of the
+   document is the whole answer (ruling 12: a phone gets a working layout, not a
+   squeezed one). No script anywhere: thirteen anchors. */
+.secrail{display:none;}
+@media (min-width:83rem){
+  .secrail{display:block;position:fixed;top:5rem;left:calc(50% - 40.5rem);
+    width:10.5rem;padding:.5rem 0 .55rem;
+    border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);}
+  /* A1: real capitals stepped down and letterspaced inside the 0.05-0.12em band,
+     as everywhere else on this page the design says small caps. */
+  .secrail .sr-lab{font-size:.68rem;letter-spacing:.1em;color:var(--ink-3);
+    text-transform:uppercase;margin:0 0 .45rem;}
+  /* Bounded by the WINDOW, not by the section count: a fixed box taller than the
+     viewport has a foot nobody can reach. */
+  .secrail .sr-list{list-style:none;margin:0;padding:0;
+    max-height:calc(100vh - 11rem);overflow-y:auto;}
+  .secrail li{margin:0;}
+  /* The site's quiet-control link treatment (as .copylink): our ink, a hairline
+     that arrives on hover. Thirteen standing underlines in a 10.5rem column read
+     as stripes, which is the one thing a margin rail must not do. */
+  .secrail a{display:flex;align-items:flex-start;gap:.35em;padding:.2rem 0;
+    font-size:.72rem;line-height:1.34;color:var(--ink-2);text-decoration:none;
+    border-bottom:1px solid transparent;}
+  .secrail a:hover{color:var(--ink);border-bottom-color:var(--rule-2);}
+  .secrail a:focus-visible{outline:2px solid var(--green);outline-offset:2px;}
+  /* A fixed gutter with tabular figures, so the titles start on one vertical
+     line from Sec. 1 to Sec. 13 (A6). */
+  .secrail .sr-n{flex:0 0 2.9em;color:var(--ink-3);white-space:nowrap;
+    font-variant-numeric:tabular-nums;}
+  /* CLIPPED, never shortened in the build: the heading is authored copy (ruling
+     1), so the two lines the margin can hold are the design's business and the
+     ellipsis is the design's mark. */
+  .secrail .sr-t{flex:1 1 auto;min-width:0;overflow:hidden;
+    display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;
+    line-clamp:2;}
+}
+
+/* ==========================================================================
+   TABLETS AND PHONES: ONE SUPER-READABLE COLUMN (ADDENDUM B6, Jay 2026-08-05
+   18:23 ET), and the ruling-12 rule it replaces.
+
+   WHAT WAS WRONG. The old narrow layout was one declaration — collapse the grid
+   at 1080px — on the theory that "nothing else moves". Two things did. mobile.css
+   owns every page's phone layout and its rules are written for the BILL page's
+   .sec (a row that hangs 1.2rem into the gutter so a selection bar can sit
+   outside the text), so below 900px the composite's sections inherited a 0.4rem
+   bottom margin and a 0.7rem indent: thirteen sections nearly touching, in a
+   column indented for a rule that does not exist here. And the apparatus stacked
+   under its section at 12.5px, which is a margin size read at margin distance,
+   not a phone size read at arm's length.
+
+   WHAT B6 ASKS FOR, item by item: a comfortable body (mobile.css takes it to
+   18px), generous leading (1.45, already), the full width with sane padding (the
+   base rule at the head of this file: 100% - 2rem), the sources as clearly-set
+   stacked blocks that are hairline-ruled and VISIBLY SUBORDINATE (below: a rule,
+   an inset, 15px against the body's 18px, and the secondary ink), and compact
+   front matter. mobile.css's own bill-page rules are scoped to .split.bill in
+   that file so they stop reaching this page at all.
+   ========================================================================== */
+@media (max-width:839px){
+  /* One column, note under section, with real air between one section and the
+     next: at this width the section number, the attribution, the statute and the
+     apparatus are four stacked blocks, and the only thing separating THIS section
+     from the next one is white space. */
+  .sec{grid-template-columns:minmax(0,1fr);column-gap:0;margin-top:2.6rem;}
+  /* The air between a stacked note and the section it belongs to is a property of
+     that relation, so it sits on .sec>.sn — which is also where test_mobile M5
+     looks for it. What sits on .sn below is the note's own dress. */
+  .sec>.sn{grid-column:1;grid-row:auto;margin-top:1.2rem;}
+  /* Subordinate by three devices at once, because one is not enough when the note
+     is directly under the text rather than beside it: the hairline it already
+     carried, an indent off the statute's own left edge, and a step down in size
+     and ink. 15px against an 18px body is the printed footnote ratio (~83%). */
+  .sn{padding:.5rem 0 0 .85rem;font-size:15px;
+    border-left:1px solid var(--rule-2);}
+  .sn .sn-src{padding-left:.6rem;}
+  /* THE TEXT MEASURE IS THE WHOLE COLUMN HERE. --txt subtracts the margin column
+     from the shell, which is the right arithmetic where there IS a margin column
+     and nonsense where there is not: at 390px it resolved to ~9rem and collapsed
+     the star note, the contents, the AN ACT head and the coda into slivers. Below
+     the breakpoint the statute column IS the shell, so the token says so. */
+  .left{--txt:100%;}
+  /* The contents rows keep their one-line leader form as far down as the line can
+     hold it — a tablet has the room, and the leader is what ties an obligation to
+     its date. They only take a step up in size. */
+  .sxi-jump{font-size:16px;padding:.45rem 0;}
+  /* Front matter, compact (B2 and B6 pull the same way here). */
+  .mast h1{font-size:1.7rem;}
+  .mast .meta{grid-template-columns:1fr;gap:0;}
+  .mast .meta dt{margin-top:.6rem;}
+  .starnote{margin-top:1.7rem;}
+  .secindex{margin-top:2.2rem;}
+  .bill-head{margin-top:2.6rem;}
+  /* THE BILLS-TRACKED ROW WAS RUNNING OFF THE SCREEN. Its five links are written
+     with no whitespace between them (`</a><span class=sep>·</span><a`), so an
+     inline run of nowrap anchors had no break opportunity anywhere and overflowed
+     a 390px window horizontally. A wrapping flex row gives every link and every
+     separator its own break point without touching one authored byte (ruling 1),
+     and the Massachusetts note — glued by an &nbsp; in the markup — is allowed to
+     wrap inside itself here, where the alternative is a 300px unbreakable line. */
+  .mast .entries .row{display:flex;flex-wrap:wrap;justify-content:center;
+    align-items:baseline;}
+  .mast .entries .row .nowrap{white-space:normal;}
+  /* Justification breaks before the measure does on a narrow column; ruling 10
+     says ragged is the right answer where it breaks. */
+  .leg,.contd p,.starnote p{text-align:left;}
+}
+
+/* ---------- the contents, on a phone (ADDENDUM B6) ----------
+   600px is where the one-line row gives out: below it the obligation, the state and
+   the date cannot share a line without the leader collapsing to nothing and the
+   date wrapping to the left margin under the number, which is what the row did
+   before B6. So the row becomes a two-line GRID — the number keeps its own column
+   so the list still scans as numbered, the obligation takes the rest of line one,
+   and the attribution and its date sit under the OBLIGATION rather than under the
+   number. The leader goes: a dotted leader needs a line to lead across. */
+@media (max-width:600px){
+  .sxi-jump{display:grid;grid-template-columns:2.1em 1fr auto;column-gap:.5em;
+    row-gap:.1rem;align-items:baseline;}
+  .sxi .lead{display:none;}
+  .sxi .n{grid-area:1 / 1;}
+  .sxi .t{grid-area:1 / 2 / 2 / 4;}
+  .sxi .h{grid-area:2 / 2;}
+  .sxi .e{grid-area:2 / 3;flex:0 0 auto;text-align:right;}
+}

@@ -23,8 +23,8 @@
     <div class="eyebrow">About</div>
     <h1>What this is, and how to check it</h1>
     <div class="dek">This site assembles the frontier AI obligations that US states have <b>actually enacted</b> into one readable bill, and gives every state with a law its own page. Everything on it is a quotation from an official text, and every quotation is machine-checked against an archived copy of that text before the page is built.</div>
-  <div class="byline" id="fb-byline">
-  <button class="byline-t" id="fb-open" type="button" aria-expanded="false">maintained by Jay Kim &middot; corrections welcome</button><svg class="cactus-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9.4 21.6V4.6a2.6 2.6 0 0 1 5.2 0V21.6"/><path d="M9.4 18.2H7a4.8 4.8 0 0 1-4.8-4.8V9a2 2 0 0 1 4 0v4.4a.8.8 0 0 0 .8.8h1.8"/><path d="M14.6 15.6H17a4.8 4.8 0 0 0 4.8-4.8V7a2 2 0 0 0-4 0v3.8a.8.8 0 0 1-.8.8h-2.4"/><path d="M5.6 21.6h12.8"/></svg>
+    <div class="byline" id="fb-byline">
+  <button class="byline-t" id="fb-open" type="button">maintained by Jay Kim &middot; corrections welcome</button><svg class="cactus-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9.4 21.6V4.6a2.6 2.6 0 0 1 5.2 0V21.6"/><path d="M9.4 18.2H7a4.8 4.8 0 0 1-4.8-4.8V9a2 2 0 0 1 4 0v4.4a.8.8 0 0 0 .8.8h1.8"/><path d="M14.6 15.6H17a4.8 4.8 0 0 0 4.8-4.8V7a2 2 0 0 0-4 0v3.8a.8.8 0 0 1-.8.8h-2.4"/><path d="M5.6 21.6h12.8"/></svg>
   <div class="byline-card">
     <div class="byline-who">Jay Kim</div>
     <p class="byline-ways"><a href="mailto:jay.ifp.automation@gmail.com">jay.ifp.automation@gmail.com</a><span class="sep">&middot;</span><a href="/corrections.html">What this site got wrong</a></p>
@@ -94,55 +94,46 @@
       </div>
     </div>
 
-    <div class="block" id="gate">
-      <div class="sec-label"><h2>The verifier gate</h2><span>Why the quotations can be trusted</span></div>
-      <div class="prose">
-        <p>Nothing reaches a page on the strength of anyone&rsquo;s memory, human or machine. Before the site is built, a verifier loads every quotation, opens the archived source file that the quotation names, and requires a whitespace-normalized string match. A single miss names the failing provision and stops the build.</p>
-        <p>The same match does double duty. Source links carry a text fragment (<code>#:~:text=</code>) built from a short, distinctive span of the quotation, so a click lands on the highlighted words on the official page rather than at the top of a long statute; the fragment is validated against the source by the same string match that proved the quotation. Browsers without fragment support fall back to the plain official page. After the HTML is generated, the verifier runs again over the rendered pages, so that a template cannot quietly mangle a quotation on its way out.</p>
-        <p class="small">This exists because it was needed: during drafting, a fabricated &ldquo;verbatim&rdquo; lead-in survived two rounds of human review. Mechanical checking is the defense this site relies on.</p>
-      </div>
-    </div>
-
     <div class="block" id="provenance">
       <div class="sec-label"><h2>Provenance</h2>
         <span>Archived official texts &middot; retrieval time on each row</span></div>
 
       <div class="sum-row">
-        <div><span class="chip ca">CA</span></div>
+        <span class="chip ca">CA</span>
         <div class="sum-t">SB 53, chaptered 29 September 2025
           <span class="sub">retrieved 2026-08-01T18:04Z</span></div>
         <a class="sum-l" href="https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=202520260SB53"><u>leginfo.ca.gov</u> &#8599;</a>
       </div>
 
       <div class="sum-row">
-        <div><span class="chip ny">NY</span></div>
+        <span class="chip ny">NY</span>
         <div class="sum-t">S8828, Chapter 96 of the Laws of 2026: the text that repealed and replaced Article 44-B
           <span class="sub">retrieved 2026-08-01T18:11Z</span></div>
         <a class="sum-l" href="https://nyassembly.gov/leg/?default_fld=&amp;leg_video=&amp;bn=S08828&amp;term=2025&amp;Text=Y"><u>nyassembly.gov</u> &#8599;</a>
       </div>
 
       <div class="sum-row">
-        <div><span class="chip il">IL</span></div>
+        <span class="chip il">IL</span>
         <div class="sum-t">Public Act 104-0538, enrolled text
           <span class="sub">retrieved 2026-08-03T16:22Z</span></div>
         <a class="sum-l" href="https://www.ilga.gov/documents/legislation/PublicActs/104/104-0538.htm"><u>ilga.gov</u> &#8599;</a>
       </div>
 
       <div class="sum-row">
-        <div><span class="chip ct">CT</span></div>
+        <span class="chip ct">CT</span>
         <div class="sum-t">Public Act 26-15 (SB 5), official act PDF
           <span class="sub">retrieved 2026-08-01T18:04Z</span></div>
         <a class="sum-l" href="https://www.cga.ct.gov/2026/ACT/PA/PDF/2026PA-00015-R00SB-00005-PA.PDF"><u>cga.ct.gov</u> &#8599;</a>
       </div>
 
       <div class="sum-row">
-        <div><span class="chip ma">MA</span></div>
+        <span class="chip ma">MA</span>
         <div class="sum-t">S.3228, Senate-engrossed text: a pending bill, not law
           <span class="sub">retrieved 2026-08-01T18:09Z</span></div>
         <a class="sum-l" href="https://malegislature.gov/Bills/194/S3228/Senate/Bill/Text"><u>malegislature.gov</u> &#8599;</a>
       </div>
 
-      <div class="prose" style="margin-top:20px">
+      <div class="prose" style="margin-top:1.6rem">
         <p class="small">Each archived file carries the source URL and the UTC retrieval time in its header. Quotations are matched against these files, not against the live web, so a page that changes upstream cannot silently change what this site says it says. Statuses on the Massachusetts page follow the bill history published on malegislature.gov: the House non-concurred in the Senate amendment on 30 July 2026 and committees of conference were appointed in both branches.</p>
       </div>
     </div>
@@ -153,7 +144,7 @@
         <p>The obligation categories adapt pillar language from the <a href="https://encodeai.org/wp-content/uploads/2025/09/SB-53-Coalition-Letter-9_24_2025.pdf">SB 53 coalition letter to Gov. Newsom</a> (Encode AI and 22 other signatory organizations, 24 September 2025), and the framing of what these laws still leave uncovered follows the <a href="https://secureaiproject.org/about">Secure AI Project&rsquo;s statement of policy priorities</a>. Neither organization is responsible for how the vocabulary is used here.</p>
         <p>The annotated-statute format owes a debt to <a href="https://sb53.info/">sb53.info</a>, Miles Kodama&rsquo;s annotated SB 53 (written while at GovAI). All quotations on this site are drawn directly from official statute texts. The state outlines are from <a href="https://simplemaps.com/resources/svg-license">simplemaps.com</a>, free for commercial use.</p>
         <p><b>Corrections are welcome.</b> If a quotation does not match the enacted text, if a section is attributed to the wrong state, or if a law has moved since 1 August 2026, that is a defect and it will be fixed. Maintainer: Jay Kim, in a personal capacity. File corrections as <a href="https://github.com/JayIoAurelius/frontier-ai-state-laws/issues">GitHub issues</a> or by email to <a href="mailto:jay.ifp.automation@gmail.com">jay.ifp.automation@gmail.com</a>.</p>
-        <p class="small">Corrections that changed a page, and every republication of the site, are listed on the <a href="changelog.html">changelog</a>.</p>
+        <p class="small">Corrections that changed a page, and every republication of the site, are listed on the <a href="/corrections.html">changelog</a>.</p>
       </div>
     </div>
 
@@ -167,8 +158,6 @@
       <span class="w">Not a law, not a ranking, not legal advice</span></a>
     <a class="jump" href="#method">Method
       <span class="w">One baseline, one tag, one cite per provision</span></a>
-    <a class="jump" href="#gate">The verifier gate
-      <span class="w">String-matched quotations and deep links</span></a>
     <a class="jump" href="#provenance">Provenance
       <span class="w">Five archived official texts, with retrieval times</span></a>
     <a class="jump" href="#credits">Credits and corrections
@@ -179,29 +168,6 @@
 
 <script id="feedback">
 (function () {
-  var root = document.getElementById("fb-byline");
-  var trig = document.getElementById("fb-open");
-  if (root && trig && root.classList && root.contains) {
-    /* Take the open state off the CSS: .byline-js turns the hover and
-       focus-within rules off, so nothing fights the toggle. */
-    root.classList.add("byline-js");
-    var open = false;
-    var setOpen = function (next) {
-      open = next;
-      if (next) { root.classList.add("is-open"); } else { root.classList.remove("is-open"); }
-      trig.setAttribute("aria-expanded", next ? "true" : "false");
-    };
-    trig.addEventListener("click", function () { setOpen(!open); });
-    document.addEventListener("click", function (e) {
-      // The trigger's own handler has already run; the card is inside root, so
-      // this closes on outside clicks only.
-      if (open && !root.contains(e.target)) { setOpen(false); }
-    });
-    document.addEventListener("keydown", function (e) {
-      if (open && (e.key === "Escape" || e.key === "Esc")) { setOpen(false); trig.focus(); }
-    });
-  }
-
   var box = document.getElementById("fb-text");
   var send = document.getElementById("fb-send");
   var out = document.getElementById("fb-status");
