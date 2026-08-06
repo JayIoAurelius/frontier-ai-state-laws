@@ -91,8 +91,15 @@ body{
    document, but their CONTENT is padded off the margin column: the result is a
    block sitting exactly over the statutory measure below it, which is what makes
    the masthead rules span the text they head. Every `margin:auto` child inside
-   then centres on the text column rather than on the page. */
-.mast,body>.colophon{width:min(var(--measure),100% - 2rem);
+   then centres on the text column rather than on the page.
+
+   ADDENDUM O5 (Jay, 2026-08-06 16:20): the masthead is out of the padding half
+   of this rule. It only ever wanted the box; `padding:0` also took the front
+   page's air off the top of the nameplate, and then a second declaration below
+   put a copy of it back — the fork this addendum retires. The colophon keeps its
+   own padding, which is the foot of the page and nothing to do with the hero. */
+.mast{width:min(var(--measure),100% - 2rem);margin:0 auto;border-bottom:none;}
+body>.colophon{width:min(var(--measure),100% - 2rem);
   margin:0 auto;padding:0;border-bottom:none;}
 
 /* ---------- the two-column shell, 840px and up (ADDENDUM B3) ----------
@@ -113,8 +120,16 @@ body{
   body .left{width:var(--shell);padding:0 0 5rem;}
   /* Jay, 2026-08-06 09:59: the front matter centres on the PAGE, not the text
      column — the text-column alignment begins where the sidenotes do (Sec. 1).
-     So the shell width stays and the right-column padding goes. */
-  body>.mast,body>.colophon{width:var(--shell);padding:0;}
+     So the shell width stays and the right-column padding goes.
+     ADDENDUM O5: `padding:0` here was that ruling's mechanism and this ruling's
+     defect. It was written to drop the RIGHT-hand padding the margin column no
+     longer needed, and it dropped the top air with it — element+class beats the
+     `.mast` rule that carries it, so the nameplate sat 5px under the nav at
+     every width above 840px while the phone layout, which this query never
+     reaches, had the full 2.7rem. The masthead now states only its width and
+     inherits its air from site.css, with the front page. */
+  body>.mast{width:var(--shell);}
+  body>.colophon{width:var(--shell);padding:0;}
   /* Same band, same reason. mobile.css relaxes justification on every page below
      900px, which is right where the measure has given out and wrong here: at
      840px this column is still ~36.5rem, a full reading measure, so ruling 10's
@@ -123,9 +138,20 @@ body{
   .left .leg,.left .contd p,.left .starnote p{text-align:justify;hyphens:auto;-webkit-hyphens:auto;}
 }
 
-/* ---------- masthead (ruling 5) ----------
-   Centred over the text column, small caps, between two double rules. */
-.mast{display:block;text-align:center;padding-top:2.7rem;}
+/* ---------- masthead (ruling 5, as ADDENDUM O5 sets it) ----------
+   Centred over the text column, small caps, between two double rules.
+
+   O5 (Jay, 2026-08-06 16:20, "the combined state law hero should also look like
+   this? and make sure to update both of them") makes the front page's masthead
+   the reference for both composite views. The mechanism is SUBTRACTION: what
+   this sheet used to restate — the top air, the double rules, the title's size
+   and tracking, the byline's margin — it now inherits from site.css, which is
+   where the front page reads the same declarations. So the three heroes cannot
+   drift apart one value at a time, which is the ruling's heart ("please keep
+   spacing similar across website"). What stays below is what is genuinely this
+   page's: the shell box, the blocks the front page has no analogue for (the A5
+   status line, the entry list), and the ledger's own rows. */
+.mast{display:block;text-align:center;}
 /* The colophon is a flex row justified to the end in byline.css; over a centred
    masthead it belongs under the middle of the text column. */
 /* byline.css sets the colophon as a flex row justified to the end and pads it
@@ -143,21 +169,20 @@ body>.colophon{display:block;text-align:center;margin:4.4rem auto 0;
    `.mast .eyebrow` rule that dressed it goes with it rather than sitting here
    waiting to dress a line nobody asked for again. site.css keeps the sitewide
    .eyebrow rule: About, Corrections and the five bill pages still have one. */
-/* A6 caps every rule on this page at a hairline, so a double rule is what it is
-   on paper — two hairlines with air between them, the gap carrying the weight the
-   2.5px stroke used to. The nameplate's upper gap is the wider of the two. */
-.rule-dbl{border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);
-  height:5px;}
-/* Green plays the journal-spine role on the lower rule and nowhere else on the
-   masthead (ruling 3): one accent, structural, never data. */
-.rule-dbl.thin{height:3px;border-bottom-color:var(--green);}
-/* REAL CAPITALS, not synthesized small caps (A1), at every small-caps place in
-   this file: the system stack has no small-cap sort, so `font-variant` handed the
-   browser squashed capitals. Set the capitals, step the size down, letterspace
-   inside 0.05-0.12em. Lining figures go with capitals, so "onum" goes too. */
-.mast h1{margin:0;padding:1.2rem .5rem 1.1rem;font-weight:400;font-size:1.95rem;
-  line-height:1.2;letter-spacing:.08em;text-transform:uppercase;
-  font-feature-settings:"kern" 1;}
+/* ADDENDUM O5: the nameplate itself is site.css's now, in one copy for the whole
+   site. What used to be here, and what the shared rules say instead:
+     .rule-dbl        5px of air between the hairlines → 4px, the front page's
+     .rule-dbl.thin   the spine green as var(--green) #3F7A4E → var(--blue-ink)
+                      #2E5D3C, the same family (ruling 3) and the same value the
+                      approved front page draws
+     .mast h1         1.95rem/.08em real capitals → 1.9rem/.075em, identical in
+                      every other declaration (A1's mechanism is untouched: real
+                      capitals, stepped down, letterspaced inside 0.05-0.12em)
+     .mast .byline    1.2rem of air over the byline → 1.3rem
+   Each was a copy of a front-page value with one digit changed, which is how two
+   pages that were meant to read as one system stopped doing it. Pinned by
+   build/test_hero_o5.test.js O5.3, which holds BOTH halves: nothing here, and
+   the idiom still declared over there. */
 .mast .dek{max-width:27em;margin:1.5rem auto 0;font-size:17.5px;line-height:1.45;
   color:var(--ink);text-align:center;text-wrap:pretty;}
 .mast .dek b{font-weight:400;font-style:italic;}
@@ -166,7 +191,6 @@ body>.colophon{display:block;text-align:center;margin:4.4rem auto 0;
    document's own status line would read as a pull quote in this set. */
 .mast .subdek{margin:.9rem auto 0;font-size:.78rem;letter-spacing:.11em;
   color:var(--ink-2);text-transform:uppercase;}
-.mast .byline{margin:1.2rem auto 0;}
 
 /* ---------- bills tracked ---------- */
 /* A6's leading band is 1.2-1.45, so the air BETWEEN entries is paragraph space
@@ -522,8 +546,13 @@ body>.colophon{display:block;text-align:center;margin:4.4rem auto 0;
      hold it — a tablet has the room, and the leader is what ties an obligation to
      its date. They only take a step up in size. */
   .sxi-jump{font-size:16px;padding:.45rem 0;}
-  /* Front matter, compact (B2 and B6 pull the same way here). */
-  .mast h1{font-size:1.7rem;}
+  /* Front matter, compact (B2 and B6 pull the same way here).
+     ADDENDUM O5: the narrow title size goes with the desktop one. It was
+     `.mast h1{font-size:1.7rem}` and it never applied to a single pixel —
+     mobile.css loads after this sheet and sets the same selector to 1.5rem
+     across the whole band this query covers, so the composite was already
+     wearing the front page's phone title. Deleting the dead copy is the fix
+     stated once: one nameplate, one sheet. */
   .mast .meta{grid-template-columns:1fr;gap:0;}
   .mast .meta dt{margin-top:.6rem;}
   .starnote{margin-top:1.7rem;}
