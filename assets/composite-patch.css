@@ -138,9 +138,11 @@ body>.colophon{display:block;text-align:center;margin:4.4rem auto 0;
    one centred block with its ledger printed UNDER the title, not beside it. */
 .mast .entries,.mast .meta{border-left:none;border-top:none;padding-left:0;
   max-width:none;}
-/* Lowercase italic, so it takes no letterspacing (A1: spacing is for capitals). */
-.mast .eyebrow{font-size:.7rem;font-style:italic;
-  color:var(--ink-2);margin:0 0 1.2rem;text-transform:none;}
+/* ADDENDUM O4 (Jay, 2026-08-06 16:02, "totally useless remove"): the masthead's
+   running head — "Composite view" — is gone from both composite pages, so the
+   `.mast .eyebrow` rule that dressed it goes with it rather than sitting here
+   waiting to dress a line nobody asked for again. site.css keeps the sitewide
+   .eyebrow rule: About, Corrections and the five bill pages still have one. */
 /* A6 caps every rule on this page at a hairline, so a double rule is what it is
    on paper — two hairlines with air between them, the gap carrying the weight the
    2.5px stroke used to. The nameplate's upper gap is the wider of the two. */
